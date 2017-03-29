@@ -11,4 +11,6 @@ Article.prototype.update = function(data){
     //do an AJAX request or save it in the local storage
     
     //play with git
+    
+    //added branch
 };
