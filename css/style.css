@@ -1,0 +1,173 @@
+/* CSS Selector - element: Se aplica stilurile de mai jos pe elementul <article> */
+/*Specificity=1*/
+article{
+    color:yellow;
+    background-color: #8080ff; 
+    font-size: large;
+    margin: 1px;
+    overflow: auto;
+}
+
+/*CSS Selector - class: se aplica stilurile de mai jos elementelor din clasa "float-left"*/
+/*Specificity=10*/
+.float-left{
+    float:left;
+}
+
+/*CSS Selector - class: se aplica stilurile de mai jos elementelor din clasa "float-right"*/
+/*Specificity=10*/
+.float-right{
+    float: right;
+}
+
+/*CSS Selector - element: se selecteaza elementele <hr>*/
+/*Specificity=1*/
+hr{
+    clear: both;
+    margin: 2px;
+   
+}
+
+/*CSS Selector - child+Pseudo-element: se aplica primei linii text a descendentului direct(child) <P> al elementului <article>*/
+/*Specificity=3*/
+article>p::first-line{
+    color:black;
+    font-size: larger;
+    line-height: 300%;
+}
+/*CSS Selector - child: Se selecteaza si se aplica stilurile descendentilor <a> a elementului <nav>*/
+/*Specificity=2*/
+nav>a{
+    border:1px solid;
+    background-color:rgb(64,64,64);
+    color: rgb(255,255,255);
+    padding: 10px;
+    margin: 0px;
+    text-decoration: none
+    
+}
+/*CSS Selector - element: Se aplica stilul elementelor <nav>*/
+/*Specificity=1*/
+nav{
+   overflow: auto;
+   margin: 1px;
+}
+
+/*CSS Selector - class+pseudo-class: Se aplica stilurile la trecerea cu mouse-ului pe itemele meniului*/
+/*Specificity=20*/
+.menuitem:hover{
+    background-color: black;
+    padding:15px;
+    color:yellow;
+    font-size: larger;
+}
+
+/*CSS Selector - element:Se aplica stilurile tuturor elementelor <h3>*/
+/*Specificity=1*/
+h3{
+    color: magenta;
+    font-size: x-large;
+    text-decoration: underline;
+    text-align: center;
+}
+/*CSS Selector - ID: se aplica stilurile sectiunii cu ID-ul "about"*/
+/*Specificity=100*/
+#about{
+    background-image: url("../Resources/keep-calm-this-is-me-8.png");
+    background-repeat: repeat-y;
+    background-size: 8%;
+    background-position: right top;
+    background-color: rgb(255,255,145);
+    margin: 1px;
+    overflow: auto
+}
+
+/*CSS Selector - ID+element:Se aplica stilul pe toate elementele <P> continute in interiorul elementului cu ID-ul:'about'*/
+/*Specificity=101*/
+#about p{
+    width:30%;
+}
+
+/*CSS Selector - ID+element+pseudo-class: selecteaza primul paragraf din elementul cu ID-ul "about" */
+/*Specificity=111*/
+#about p:first-of-type{
+    width:90%;
+    text-align: justify
+}
+
+/*CSS Selector - element: Selectie si aplicre stil pe elemente <figure>*/
+/*Specificity=1*/
+figure{
+    overflow: auto;
+    padding:1px;
+    margin:1px;
+    text-align: center;
+}
+
+/*CSS Selector - class+pseudo-class: se aplica stilurile cand se trece cu mouse-ul peste elementul cu clasa "mypic"*/
+/*Specificity=20*/
+.mypic:hover{
+    height: 200px;
+    width: 150px;
+}
+
+/*CSS Selector - class*/
+/*Specificity=10*/
+.house-pos{
+    position: relative;
+    right: 25%;
+    top: -35px 
+}
+
+/*CSS Selector - ID*/
+/*Specificity=100*/
+#blogroll{
+ background: linear-gradient(to bottom,#339933 0%,#6666ff 100%);
+ margin: 1px;
+ border-style: inset;
+}
+
+/*CSS Selector - element: */
+/*Specificity=1*/
+ul{
+    background-color: #3399ff;
+    position: relative;
+    width:50%;
+    left:15%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+/*CSS Selectors - Child: Se aplica stilurile elementelor listei*/
+/*Specificity=2*/
+ul>li{
+    background-color: #ccffff;
+    width:80%;
+    list-style-type: square;
+    list-style-position: inside;
+    margin: 5px;
+    color: red;
+}
+
+ /*CSS Selector - child: Se aplica stilurile elementelor anchor continute in elemente <li>*/
+/*Specificity=2*/
+li>a{
+    color:brown;
+    text-decoration: none;
+    font-size: large;
+}
+
+/*CSS Selector - child+pseudo-class: Se aplica stilul la hover asupra elementelor <a> continute in elementele <li> */
+/*Specificity=12*/
+li>a:hover{
+    font-size: x-large;
+    color: green;
+}
+
+/*CSS Selector- ID: Se aplica stilul pe elementul cu ID-ul "footer"*/
+/*Specificity=100*/
+#footer{
+    background-color: #f0f0f0;
+    margin: 1px;
+    border: solid;
+    border-color: #f0f0f0;
+}
