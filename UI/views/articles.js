@@ -8,101 +8,80 @@ $(document).ready(onHtmlLoaded);
 
 	var totalArticles;   //Total number of articles in DB
 	var pageSize = 5;    //Max. Number of articles on each page 
-	var totalPages = 0; //Total number of page - initilized with 0
+	var totalPages = 0; //Total number of page - initialized with 0
 	var articles = new Articles(); //create Articles object
-	
-// function addMockedData() {
-// 		var articles = [{
-// 			title:"Title1",
-// 			content:"Content1",
-// 			id:1
-// 		},{
-// 			title:"Title2",
-// 			content:"Content2",
-// 			id:2
-// 		},{
-// 			title:"Title3",
-// 			content:"Content3",
-// 			id:3
-// 		},{
-// 			title:"Title4",
-// 			content:"Content4",
-// 			id:4
-// 		},{
-// 			title:"Title5",
-// 			content:"Content5",
-// 			id:5
-// 		}];
-        
-//         if(localStorage.getItem("articles") == null){
-        	
-//         	var stringifiedData = JSON.stringify(articles);
-//         	localStorage.setItem("articles",stringifiedData);
-//         }
-		
-// }
-// addMockedData();
-//----------------------------------------------------------------------
-
 
 //Function executed after document is fully loaded
 function onHtmlLoaded() {
 	
+	//get total number of articles existing in DB
+	articles.Count().done(function(count){
 	
+		if(count.length > 0 ){
+			totalArticles = parseInt(count[0].NumOfArticles,10);
+			if(totalArticles > 0){
+				totalPages = Math.ceil(totalArticles/pageSize);
+			}
+		}else{
+			console.log("Server response not as expected!");
+		}
+			createArticlesNavigation(totalPages);
+	});
 	
-	// //get total number of articles 
-	// articles.Count().done(function(count){
-	// 	if(count.length > 0 ){
-	// 		totalArticles = parseInt(count[0].NumOfArticles,10);
-	// 		if(totalArticles > 0){
-	// 			totalPages = Math.ceil(totalArticles/pageSize);
-	// 		}
-	// 	}else{
-	// 		console.log("Server response not as expected!");
-	// 	}
-	// });
-	
-	// articles.getPageArticles(1,pageSize).done(displayArticles);
+	articles.getPageArticles(1,pageSize).done(displayArticles);
 	
 	//Add top buttons and links based on user logged in 
 	addTopMenu();
-	
-	//get all articles from server
-	articles.getAll().done(function(){
+
+	// //get all articles from server
+	// articles.getAll().done(function(){
 		
-		//Calculate number of pages based on total number of articles
-		totalArticles = articles.models.length;
-		if(totalArticles > 0){
-			totalPages = Math.ceil(totalArticles/pageSize);
-		}else{
-			totalPages = 1;
-		}
-		createArticlesNavigation(totalPages);
-		displayArticles(1);
-	});
+	// 	//Calculate number of pages based on total number of articles
+	// 	totalArticles = articles.models.length;
+	// 	if(totalArticles > 0){
+	// 		totalPages = Math.ceil(totalArticles/pageSize);
+	// 	}else{
+	// 		totalPages = 1;
+	// 	}
+	// 	createArticlesNavigation(totalPages);
+	// 	displayArticles(1);
+	// });
 
 	
 }//END onHtmlLoaded function
 
+// //Function for displaying articles
+// function displayArticles(page){
+	
+// 	var container = $("#container"); //get data container <ul>
+// 	var begin,end;
+	
+// 	//calculate limits in articles array that need to be displayed  
+// 	begin = (page-1)*pageSize;
+// 	end =   (begin + pageSize) < totalArticles ? (begin+pageSize) : totalArticles ;
+	
+// 	container.empty();//clear list of old content
+	
+// 	//iterate through articles list and add them to the <ul> container
+// 	for(var i = begin; i<end; i++) {
+// 		var articleElem = createArticleListElement(articles.models[i]);
+// 		container.append(articleElem);
+// 	}
+// }//End DisplayArticles function
+
 //Function for displaying articles
-function displayArticles(page){
+function displayArticles(){
 	
 	var container = $("#container"); //get data container <ul>
-	var begin,end;
-	
-	//calculate limits in articles array that need to be displayed  
-	begin = (page-1)*pageSize;
-	end =   (begin + pageSize) < totalArticles ? (begin+pageSize) : totalArticles ;
-	
+
 	container.empty();//clear list of old content
-	
+
 	//iterate through articles list and add them to the <ul> container
-	for(var i = begin; i<end; i++) {
+	for(var i = 0; i<articles.models.length; i++) {
 		var articleElem = createArticleListElement(articles.models[i]);
 		container.append(articleElem);
 	}
 }//End DisplayArticles function
-
 
 function goToArticlePage() {
 	var currentArticleId = $(this).attr("data-value");
@@ -182,7 +161,9 @@ function navigate(){
 	} //End Switch
 	
 	
-	displayArticles(futurePage); //display new articles;
+	//displayArticles(futurePage); //display new articles;
+	articles = new Articles(); //create new object to reset models[] array
+	articles.getPageArticles(futurePage,pageSize).done(displayArticles); //get and display new articles;
 	
 	//Manage visual spects
 	$("a").removeClass('active');           //remove active class for all elements

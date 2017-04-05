@@ -1,31 +1,13 @@
 <?php
     require "app/models/ArticlesModel.php";
- 
-    // class Articles{
-
-    //     function getAll(){
-    //         $articlesModel = new ArticlesModel();
-    //         return $articlesModel->selectAll();
-    //     }
-        
-    //     function createItem(){
-           
-    //         if(!empty($_POST['title']) && !empty($_POST['content'])){
-    //             $articlesModel = new ArticlesModel();
-    //             return $articlesModel->insertItem($_POST);
-    //         }
-    //         else{
-    //             return "All fields are required!";
-    //         }
-    //   }
-    
-    // }
     
       class Articles {
         private $articlesModel;
+        private $isAdmin;
         
         function __construct() {
             $this->articlesModel = new ArticlesModel();    
+            $this->isAdmin = (isset($_SESSION['isLogged']) && isset($_SESSION['role']) && $_SESSION['isLogged'] == true && strtolower($_SESSION['role']) == 'admin' ) ? true : false;
         }
         
         function getAll() {
@@ -46,12 +28,18 @@
             }
         }
         function count(){
-            return $this->articlesModel->countArticles();
+            
+          //  $isAdmin = $this->isAdminLogged();
+            
+            return $this->articlesModel->countArticles($this->isAdmin);
         }
+        
         function getArticlesForPage(){
+            
             if(isset($_GET['pageNum']) && isset($_GET['pageSize'])){
                 if($_GET['pageNum']>=0 && $_GET['pageSize'] >=0 ) {
-                     return $this->articlesModel->selectArticlesPage($_GET['pageNum'],$_GET['pageSize']);
+                    
+                     return $this->articlesModel->selectArticlesPage($_GET['pageNum'],$_GET['pageSize'],$this->isAdmin);
                 }else{
                      return "Page number and/or number of articles per page invalid!";
                 }
@@ -90,6 +78,11 @@
         function deleteItem(){
             global $REQUEST;
             return $this->articlesModel->deleteItem($REQUEST['id']);
+        }
+        
+        private function isAdminLogged(){
+            if(isset($_SESSION['isLogged']) && isset($_SESSION['role']) && $_SESSION['isLogged'] == true && strtolower($_SESSION['role']) == 'admin' ) return true;
+            else return false;
         }
     }
 

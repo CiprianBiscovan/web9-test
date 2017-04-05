@@ -61,14 +61,25 @@
     }
     
     //Get number of articles stored
-    function countArticles(){
+    function countArticles($isAdmin = false){
         $sql = "SELECT count(id) as NumOfArticles FROM articles";
+        if($isAdmin == false){
+            $sql .= " WHERE published = 1";
+        }
         return $this->selectSQL($sql);
     }
     
     //Get articles for one page based on page number and pageSize(number of articles/page)
-    function selectArticlesPage($pageNum,$pageSize){
-        $sql = "SELECT * FROM articles LIMIT " . (($pageNum-1) * $pageSize) . "," . $pageSize;
+    function selectArticlesPage($pageNum,$pageSize,$isAdmin = false){
+        $sql = 'SELECT art. * , usr.email AS userEmail, CONCAT( usr.first_name,  " ", usr.last_name ) AS userName, cat.name AS category,
+                (SELECT COUNT(id) FROM comments comm WHERE comm.article_id = art.id ) as commCount
+                FROM  articles art
+                INNER JOIN users usr ON usr.id = art.user_id 
+                INNER JOIN category cat ON cat.id = art.category_id';
+        if($isAdmin == false){
+            $sql .= ' HAVING published = 1 ';
+        }
+        $sql .= ' LIMIT ' . (($pageNum-1) * $pageSize) . "," . $pageSize;
         
         //return $sql;
         return $this->selectSQL($sql);

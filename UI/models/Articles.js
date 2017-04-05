@@ -5,38 +5,8 @@ function Articles(){
 	this.models = []; // articles list
 }
 
-//Method to get selected article
-//Articles.prototype.findArticleById = function(id) {
-	//USED WHEN DATA WAS STORED ON LOCAL STORAGE
-	// var result;
-	// for (var i=0; i<this.models.length; i++) {
-	// 	if (this.models[i].id == id) {
-	// 		result = this.models[i];
-	// 	}
-	// }
-	// return result;
-	//----------------------------------------------
-	
-	
-//}; //END FindArticleById method
-
 // Method to get all articles from DB
 Articles.prototype.getAll = function() {
-	//get all article items from server/localStorage
-	// var articlesStr = localStorage.getItem("articles");
-	// var articles = JSON.parse(articlesStr);
-	// //reset models for current object
-	// this.models = [];
-	// if (articles) {
-	// 	for (var i=0; i<articles.length; i++) {
-	// 		var article = new Article(articles[i]);
-	// 		this.models.push(article);
-	// 	}
-
-	// 	console.log(articles);
-	// 	console.log(this.models);
-	// }
-	//-------------------------------------------------------------
 	   
 	    var that = this; //save current object instance
 		
@@ -48,7 +18,7 @@ Articles.prototype.getAll = function() {
 			
 			// Function to execute in case of req. succeded
 			success: function(resp) {
-				//console.log(resp);
+			 
 				//load articles received from server to articles list
 				for (var i=0; i<resp.length; i++) {
 					var article = new Article(resp[i]);
@@ -97,6 +67,7 @@ Articles.prototype.getPageArticles = function(pageNum,pageSize){
 		
 		// Function to execute in case of req. succeded
 		success: function(resp) {
+			 
 			//load articles received from server to articles list
 			for (var i=0; i<resp.length; i++) {
 				var article = new Article(resp[i]);
