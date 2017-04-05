@@ -1,4 +1,4 @@
-/*global $ */
+/*global $ UI_PAGE Login*/
 
 //Wait for page to be fully loaded
 $(document).ready(onHtmlLoaded);
@@ -6,53 +6,62 @@ $(document).ready(onHtmlLoaded);
 //Function executed after page loads
 function onHtmlLoaded(){
     
-    var loginBtn = $("#login_btn"); //get Login button reference
-    var logoutBtn = $("#logout_btn"); //get Logout button reference
+    var loginBtn  = $("#login_btn");   //get Login button reference
+    var logoutBtn = $("#logout_btn");  //get Logout button reference
+    var errEmail  = $("#error-email"); //get container for email error
+    var errPass   = $("#error-pass");  //get container for password error
     var loginModel; 
     
     //check if user is already logged in
     if($.cookie("loggedIn")){
-        
         var userLogged = $("#user-logged");
         var userInfo = JSON.parse($.cookie("loggedIn"));
-       // userLogged.html("Welcome: <strong>" + userInfo.name + " [" +userInfo.role+ "] " + "</strong>" );
         userLogged.html("<strong>" + userInfo.role.toUpperCase() + ": " +userInfo.name + "</strong>" );
-       
     }
     
    //Subscription to click event on Login button 
     loginBtn.on("click",function(){
         
         //get user inputs
-        var suppliedEmail = $("[name='user_email']").val().trim(); 
-        var suppliedPassword = $("[name='user_password']").val().trim();
+        var suppliedEmail    = $("[name='user_email']").val(); 
+        var suppliedPassword = $("[name='user_password']").val();
         
         //Validate email address introduced
         if(suppliedEmail.length === 0){
-            console.log("empty email");
+            errEmail.html("Email can`t be empty!");
+            errEmail.toggleClass("hidden");
             return;
         }else if(!isValidEmail(suppliedEmail)){
-                console.log("email not valid");
+                errEmail.html("Email is not valid!");
+                errEmail.toggleClass("hidden");
                 return;
             }  
         
         //validate password introduced
         if(suppliedPassword.length === 0){
-            console.log("empty password");
+            errPass.html("Password can`t be empty!");
+            errPass.toggleClass("hidden");
             return;
         }
         else if(suppliedPassword.length < 3 ){
-            console.log("Password too short");
+            errPass.html("Password too short! (Should be at least 3 characters long)");
+            errPass.toggleClass("hidden");
             return;
         }
         
+        // at this point all error messages must be hidden
+        errEmail.addClass("hidden");
+        errEmail.html("*");
+        errPass.addClass("hidden");
+        errPass.html("*");
+        
         //prepare user data to be sent to the server for authentication
-        loginModel = new Login({
+        loginModel = new User({
             email:suppliedEmail,
             pass:suppliedPassword
         });
           
-        var loginReq = loginModel.signIn(); //send data to the server
+        var loginReq = loginModel.login(); //send data to the server
           
         // get server message in case of success
         loginReq.done(redirectUserToArticlesPage);
@@ -61,19 +70,33 @@ function onHtmlLoaded(){
         
         //Subscription to click event on logout button
         logoutBtn.on("click",function(){
-            console.log("Loging out...");
-           loginModel = new Login({email:"",pass:""});
-           var logoutReq = loginModel.signOut(); //send data to server
-           
-           logoutReq.done(function(){
-               if(loginModel.success){
-                   $.removeCookie("loggedIn");
-                   if(!$.cookie("loggedIn")){
-                       alert("You successfully LogOut!");
-                   }
-                   window.location.href = UI_PAGE + "login.html";
-               }
-           });
+            
+            if(!$.cookie("loggedIn")){
+                alert("You are not logged in!");
+                return;
+            }
+            
+            var logoutModel = new User();
+            
+            var logoutReq = logoutModel.logout(); //send data to server
+            
+            logoutReq.done(function(){
+                
+                if(logoutModel.success){
+                    $.removeCookie("loggedIn");
+                    
+                    if(!$.cookie("loggedIn")){
+                        alert("You successfully LogOut!");
+                    }
+                    
+                    window.location.href = UI_PAGE + "login.html";
+                    
+                }else{
+                    
+                    alert(logoutModel.message);
+                }
+            });
+            
        });//END LogOut Subscription
         
         
@@ -84,9 +107,9 @@ function onHtmlLoaded(){
                 
                 //store user info in a temporary cookie to avoid traffic to server
                 var userInfo = {
-                    name: loginModel.name,
-                    id: loginModel.id,
-                    role: loginModel.role
+                    name: loginModel.name.trim(),
+                    id: loginModel.id.trim(),
+                    role: loginModel.role.trim()
                 };
                 $.cookie("loggedIn",JSON.stringify(userInfo));
                 
@@ -97,11 +120,14 @@ function onHtmlLoaded(){
                 
                 alert("Login failed");
             }
-        }
+        }//END RedirectUser... function
         
         //Validate user email
         function isValidEmail(email){
+            
             const regEx =/^[a-z]{1}(?!.*(\.\.|\.@))[a-z0-9!#$%&*+/=?_{|}~.-]{0,63}@(?=.{0,253}$)([a-z0-9]\.|[a-z0-9][a-z0-9-]{0,63}[a-z0-9]\.)+[a-z0-9]{1,63}$/gmi;
             return email.match(regEx);
-        }
-}
+            
+        }//END isValidEmail function
+        
+}//END OnHtmlLoaded function

@@ -4,15 +4,17 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script> <!--for coockies-->
         <script type="text/javascript" src="../configs/configs.js"></script>
-        <script type="text/javascript" src="../models/Login.js"></script>
-        <script type="text/javascript" src="../views/login.js"></script>
+        <script type="text/javascript" src="../models/User.js"></script>
+        <script type="text/javascript" src="../views/user.js"></script>
     </head>
     <body>
         <p id="user-logged"></p>
         <section>
             <input type="email" name="user_email" placeholder="Email"/>
+            <p id="error-email" class="">*</p>
             <br>
             <input type="password" name="user_password" placeholder="Password"/>
+            <p id="error-pass" class="">*</p>
             <br>
             <button id="login_btn">Login</button>
             <button id="logout_btn">Logout</button>

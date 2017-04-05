@@ -1,0 +1,6 @@
+<IfModule mod_rewrite.c>
+RewriteEngine on
+# RewriteRule ^(.*)$ index.php [L]
+# Redirect all pages that don`t refere /uploads folder so the images can be displayed in UI
+RewriteRule ^((?!uploads).)*$ index.php [L]  
+</IfModule>

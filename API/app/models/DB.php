@@ -13,19 +13,19 @@
                 
             }catch(PDOException $e){
                 
-                print 'DB ERROR PLS CONTACT ADMIN';
+                print 'DB ERROR PLEASE CONTACT ADMIN';
                 die();
-                
             }
+            
         }//END constructor
         
-        // Execute Select queries
+        // Execute SELECT queries
         function selectSQL($sql){
             $stmt = $this->dbh->prepare($sql);
             $stmt->execute();
         
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
-    }
+    }//END DB Class
 
 ?>

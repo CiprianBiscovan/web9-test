@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script type="text/javascript" src="../configs/configs.js"></script>
+        <script type="text/javascript" src="../models/Articles.js"></script>
+        <script type="text/javascript" src="../models/Article.js"></script>
+        <script type="text/javascript" src="../views/newArticle.js"></script>
+    </head>
+    <body>
+        <form >
+            <fieldset>
+                <legend>Create New Article</legend>
+                
+                <label for="title">Title</label><br>
+                <input type="text" name="title" id="title" size="100"/><br>
+                <br>
+                <label for="content">Content</label><br>
+                <textarea type="text" name="content" id="content" rows="20" cols="100"></textarea><br>
+                <br>
+                <input type="file" id="article_file" name="main_image_url"/>
+                <br>
+                <input type="submit" id="submit-btn" value="SEND" />
+                
+            </fieldset>
+        </form>
+    </body>
+</html>

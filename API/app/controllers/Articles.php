@@ -29,9 +29,36 @@
         }
         
         function getAll() {
-            return $this->articlesModel->selectAll();
+            if(isset($_SESSION['isLogged']) && isset($_SESSION['role']) && $_SESSION['isLogged'] == true && strtolower($_SESSION['role']) == 'admin' ){
+                return $this->articlesModel->selectAll();
+            }else{
+                return $this->articlesModel->selectPublished();
+            }
+            
         }
         
+        function getArticle(){
+            if(isset($_GET['articleId'])){
+                return $this->articlesModel->selectArticle($_GET['articleId']);
+            }
+            else{
+                return "No ID received!";
+            }
+        }
+        function count(){
+            return $this->articlesModel->countArticles();
+        }
+        function getArticlesForPage(){
+            if(isset($_GET['pageNum']) && isset($_GET['pageSize'])){
+                if($_GET['pageNum']>=0 && $_GET['pageSize'] >=0 ) {
+                     return $this->articlesModel->selectArticlesPage($_GET['pageNum'],$_GET['pageSize']);
+                }else{
+                     return "Page number and/or number of articles per page invalid!";
+                }
+            }else{
+                return "No page number and/or number of articles per page provided!";
+            }
+        }
         function createItem() {
             //return $_SESSION["isLogged"];
            

@@ -8,14 +8,14 @@ require "app/configs/config.php";
 require "app/configs/routes.php";
     
 //Define part of path to be removed from url 
-const BLOG = '/Blog/Server';
+const BLOG = '/Blog/API';
 
    //in case of redirection to this page
    if (!empty($_SERVER['REDIRECT_URL'])) {
     
         $url = $_SERVER['REDIRECT_URL'];   //save requested url
-        $page = str_replace(BLOG,'',$url); // stripp requested url of directory path to obtain the needed file
-     
+        $page = str_replace(BLOG,'',$url); // strip requested url of directory path to obtain the needed file
+      
         //Check if there is any route to the requested file
         if (array_key_exists($page, $routes)) {
             

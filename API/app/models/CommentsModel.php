@@ -6,7 +6,10 @@ class CommentsModel extends DB{
     
     function selectAll(){
         
-        $sql = "SELECT * FROM comments";
+        // $sql = "SELECT * FROM comments";
+        $sql = 'SELECT comm . * , usr.nick_name AS nickname, CONCAT( usr.first_name,  " ", usr.last_name ) AS userName
+                FROM comments comm
+                INNER JOIN users usr ON comm.user_id = usr.id';
         return $this->selectSQL($sql); 
     }
     
@@ -19,7 +22,11 @@ class CommentsModel extends DB{
          return $this->dbh->lastInsertId();
     }
     function getCommentsForArtID($artId){
-        $sql = 'SELECT * FROM comments WHERE article_id = ?';
+        //$sql = 'SELECT * FROM comments WHERE article_id = ?';
+         $sql = 'SELECT comm . * , usr.nick_name AS nickname, CONCAT( usr.first_name,  " ", usr.last_name ) AS userName
+                FROM comments comm
+                INNER JOIN users usr ON comm.user_id = usr.id
+                HAVING comm.article_id = ?';
          $stmt = $this->dbh->prepare($sql);
          $stmt->execute(array($artId));
          

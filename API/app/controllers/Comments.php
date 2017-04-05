@@ -28,9 +28,9 @@
         
         function getCommentsForArticle(){
             
-            if(!empty($_POST["article_id"])){
+            if(!empty($_GET["article_id"])){
                 
-                return $$this->comments->getCommentsForArtID($_POST["article_id"]);
+                return $this->comments->getCommentsForArtID($_GET["article_id"]);
             }
             else{
                 return "You must specify and article ID!";
