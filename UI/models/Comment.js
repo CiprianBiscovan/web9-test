@@ -14,43 +14,44 @@ function Comment(options){
     }
 } //END Class
 
-//Function for getting all comments from server
-Comment.prototype.getAll= function(){
+//Method for edit comment
+Comment.prototype.update= function(comm){
     
-    var that = this //save current object
-    
-    //Configure the request for comments
     var config = {
-        url:    URL_PHP + "comments",
-        method: "GET",
-       
-        //function to execute on req. fail
-        error: function(){
-            console.log("Oops! Something went wrong while getting comments");
-        }
-    }; //END Config Object
-    
-    return $.ajax(config); //send req. to server and return the response
-}//END getAll function
-
-//Function for getting all comments for given article
-Comment.prototype.getCommentsForArticle = function(articleId){
-    
-    var that = this //save current object
-    
-    //Configure the request for comments
-    var config = {
-        url:    URL_PHP + "comments/forArticle",
-        method: "GET",
-        data:{
-            article_id: articleId
+        url:URL_PHP + "comments/edit",
+        method:'PUT',
+        data: {
+            title: comm.title,
+            content: comm.content,
+            article_id: comm.article_id,
+           user_id: comm.userId
         },
         
-        //function to execute on req. fail
+        //function to execute in case of request fail
         error: function(){
-            console.log("Oops! Something went wrong while getting comments");
+            console.log("Oops! Somethign went wrong while trying to edit comment");
         }
-    }; //END Config Object
+    };
     
-    return $.ajax(config); //send req. to server and return the response
-}//END getCommentsForArticle
+    return $.ajax(config); //send request to the server and return the result
+};//End EDIT method
+
+//Method for edit comment
+Comment.prototype.delete= function(commId,loggedUserId){
+    
+    var config = {
+        url:URL_PHP + "comments/delete",
+        method:'DELETE',
+        data: {
+            id: commId,
+            userId: loggedUserId
+        },
+        
+        //function to execute in case of request fail
+        error: function(){
+            console.log("Oops! Somethign went wrong while trying to delete comment");
+        }
+    };
+    
+    return $.ajax(config); //send request to the server and return the result
+};//End EDIT method

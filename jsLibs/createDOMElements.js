@@ -39,10 +39,17 @@ function addArticlesLink(){
     topMenu.children().click(topMenuClick);
 }
 
+//function create content for unathorized page access
+function unauthorizedPage(){
+    $(document.body).append($("<button id='login'>Login</button>").click(topMenuClick))
+           .append($("<button id='go-to-articles'>Articles</button>").click(topMenuClick));
+           
+}
+
 //create article element and send it to caller;
 function createArticleElement(art){
 
-   var articleElem = $("<article id='Article" + art.id + "'></article>");
+   var articleElem = $("<article id='Article" + art.id + "' data-value='" + art.id + "'></article>");
     articleElem.append("<h1>" + art.title + "</h1>")
                .append("<div id='article-author'><strong><em>Posted by:" + art.userName + "</em></strong></div>")
                .append("<div id='article-category'><strong><em>About:" + art.category + "</em></strong></div>")
@@ -61,7 +68,7 @@ function createArticleElement(art){
 }
 //create comment element and send it to caller
 function createCommentElement(comm){
-    var commentElem = $("<div class='comment'></div>");
+    var commentElem = $("<li id='"+comm.id+"' class='comment'></li>");
     commentElem.append("<h4>" + comm.title + "</h4>")
                .append("<div id='comm-author'><em>Posted by:" + comm.userName + "</em></div>")
                .append("<div id='comm-created'><em>On:" + comm.dateCreate + "</em></div>")
@@ -88,9 +95,10 @@ function addCommentSection(){
                 "<textarea name='commContent' placeholder='Your comment'rows='10' cols='40'></textarea>" +
                 "<br>" +
                 "<button id='post-comment'>Add comment</button>" +
+                "<div id='error-comment'><p>*</p></div>" +
                 "</section>"
     commentSection.append(html);
-    commentSection.find("#post-comment").click(newCommentClick);
+    commentSection.find("#post-comment").click(saveCommentClick);
 }//END addCommentSection funtion
 
  //function for creation of pagination menu
@@ -152,21 +160,27 @@ function topMenuClick(){
 
 //Edit Article click event handler
 function editArticleClick(event){
-    //event.preventDefault();
+  
     event.stopPropagation();
     var article = new Article();
-    console.log(article);
-//	console.log("Edit article");
+    var markedId = $(this).parents('article').attr("data-value");
+    window.location.href = UI_PAGE + "newArticle.html?id=" + markedId;
 
 }//END EditArticleClick
 
 //Delete Article click event handler
 function deleteArticleClick(event){
-    // event.preventDefault();
+  
      event.stopPropagation();
      var articles = new Articles();
-     console.log(articles);
-//	console.log("delete article");
+     var markedId = $(this).parents('article').attr("data-value");
+     
+     if(markedId){
+         articles.removeArticle(markedId).done(deleteResponse);
+     }else{
+         console.log("error getting article ID");
+     }
+
 
 }//END deleteArticleClick
 
@@ -174,19 +188,121 @@ function deleteArticleClick(event){
 function editCommentClick(event){
     //event.preventDefault();
     event.stopPropagation();
-	console.log("Edit comment");
+    
+    var target = $(this);
+    var comTitle = target.siblings('h4').html();
+    var comContent = target.siblings('#comm-content').children('p').html();
+    var commentSection = $("#new-comment");
+    var saveButton = $("<button id='update-comment'>Save</button>");
+    var cancelButton = $("<button id='cancel-update'>Cancel</button>");
+    saveButton.on('click',saveCommentClick);
+    cancelButton.on('click',cancelUpdateClick);
+    $('#post-comment').remove();
+    saveButton.remove();
+    cancelButton.remove();
+    commentSection.append(saveButton)
+                  .append(cancelButton);
+                  
+    commentSection.children().find("input[name='commTitle']").val(comTitle);
+    commentSection.children().find("textarea[name='commContent']").val(comContent);
 }//END editCommentClick
 
 //Delete Comment click event handler
 function deleteCommentClick(event){
     // event.preventDefault();
      event.stopPropagation();
-	console.log("delete comment");
+	var commentId = $(this).parents('li').attr('id');
+	if(commentId){
+	  var comment = new Comment();
+	  comment.delete(commentId,loggedUserId).done(commentsOperation);
+	}else{
+	  console.log("Delete comment fail!");  
+	}
 }//END deleteComentClick
 
 //New Comment click event handler
-function newCommentClick(event){
+function saveCommentClick(event){
     //event.preventDefault();
     event.stopPropagation();
-	console.log("Add comment");
-}//END newCommentClick
+	//console.log("Add comment");
+	
+    var comTitle = $('input[name="commTitle"]').val().trim();
+    var comContent = $('textarea[name="commContent"]').val().trim();
+	var articleId = $('article[data-value]').attr('data-value');
+	
+	if(comTitle.length === 0 || comContent.length === 0){
+	    $('#error-comment>p').html('*Please fill in both Title and Content for your comment!');
+	    return;
+	}
+	else{
+	    $('#error-comment>p').html('*');
+	}
+	
+	
+	if(articleId){
+
+	    var comm = {
+	        title: comTitle,
+	        content: comContent,
+	        article_id: articleId,
+	        user_id:loggedUserId
+	    }
+	    
+	    if(this.id === "post-comment" )	{
+	        var comment = new Comments();
+	        comment.add(comm).done(commentsOperation);
+	    }else{
+	        var comment = new Comment();
+	        comment.update(comm).done(commentsOperation);
+	    }
+	}
+	else{
+	    console.log("Error saving comment");
+	}
+	
+}//END saveCommentClick
+
+//Function for building category list in Select element
+function fillCategorySelectElement(){
+    
+    var selectElement = $("#categories"); //get select element container
+    var categories = new Categories();    //create Categories instance
+    
+    selectElement.empty();
+    selectElement.append("<option value='' selected>Choose Category</option>")
+    //function to get all categories from server and add them to the options list
+    categories.getAll().done(function(){
+      
+        for(var i = 0; i < categories.categoriesList.length; i++){
+        selectElement.append("<option value=" + categories.categoriesList[i].id + ">" + categories.categoriesList[i].name + "</option>");
+    }
+    }); //End fillCategorySelectElement function
+    
+    
+}//END fillCategorySelectElement function
+
+function deleteResponse(response,statusText,jqXHR){
+
+        if(response.success === true){
+            console.log(response.message);
+            window.location.href = UI_PAGE + "articles.html"; 
+        }else{
+            console.log(response.message);
+        }
+}//End manageArticlesOperations
+
+//Callback function for add/delete/update ajax requests
+function commentsOperation(response,textStatus,jqXHR){
+    if(response && response.success === true){
+        console.log(response.message);
+        window.location.reload();
+    }else{
+        console.log(response.message);
+    }
+}//END commentsOperation callback function
+
+//Function for canceling comment editing
+function cancelUpdateClick(){
+    $("#new-comment").empty();
+    addCommentSection();
+}//END cancelUpdate

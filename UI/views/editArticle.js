@@ -4,46 +4,40 @@ $(document).ready(onHtmlLoaded);
   if(isLogged === false || isAdmin === false){
        window.location.href = UI_PAGE + "unauthorizedAccess.html";
     }
-//global variables
-var imgFile = '';
+// global variables
+var imgFile = null;
 var validationErrors = false;
 var publish = 0;
 var article = new Article();
-var articleId = null;
 
 function onHtmlLoaded(){
-    
-  fillCategorySelectElement();  //Create list with available categories
-  articleId = getUrlParam('id');
-  if(articleId){
-       article.getArticleById(articleId).done(fillArticleData);
-       $('#legend-articles').html("Edit Article");
-  }
   
+   var articleId = getUrlParam('id'); 
+   
+   fillCategorySelectElement();  //Create list with available categories
+     
+   article.getArticleById(articleId).done(fillArticleData);
+   
+   //get reference to html elements that 
+    var saveButton        = $("#save-btn");     //get Save Button element
+    var publishButton     = $('#publish-btn');  //get Publish button element
+    var chooseImg         = $("#article_file"); //get Choose File button Element
+    var categoryList      = $('#categories');   // get category list element
   
-  //get reference to html elements that 
-    var saveButton        = $("#save-btn");       //get Save Button element
-    //var publishButton     = $('#publish-btn');  //get Publish button element
-    var chooseImg         = $("#article_file");   //get Choose File button Element
-    var categoryList      = $('#categories');     // get category list element
-    var deleteImage       = $('#delete-img');     // get delete image button
     //Subscribe elements to events
     saveButton.on("click",sendData);
- //   publishButton.on("click",sendData);
+    publishButton.on("click",sendData);
     chooseImg.change(pictureSelected);
     categoryList.change(selectionChanged);
     $(".manage-categories").on("click",manageCategories);
-   deleteImage.on("click",function(){
-       imgFile = '';
-       chooseImg.val("");
-       $("#main-image").attr('src','/Blog/Resources/image_comming_soon.png');
-   });
+ 
     
     addTopMenu();                 //Add top menu buttons
     $("#new-article").remove();   //Remove uneeded <New Article> button 
     addArticlesLink();            //Add link to Articles page
-    
-     function fillArticleData(articleData){
+  
+  
+    function fillArticleData(articleData){
         if(articleData.length > 0 ){
             article = new Article(articleData[0]);
             
@@ -53,12 +47,12 @@ function onHtmlLoaded(){
             $('#category').html(article.category);
             $('#content').val(article.content);
             $('select').val(article.category_id);
-            $("input[type='radio'][value='" + article.published + "']").prop("checked",true);
-            imgFile = articleData[0].main_image_url;
+            
         }else{
             console.log("Article does not exist");
         }
     }
+ 
     
 } //END onHtmlLoaded
   
@@ -70,7 +64,7 @@ function sendData(ev){
     var titleText = $("#title").val().trim();
     var contentText = $("#content").val().trim();
     var selectedCategory = $("select").val().trim();
-    var publish = $("input[type='radio']:checked").val().trim();
+   // var imgFile = $("#article_file")[0].files[0];
    
    //Check and create error messages for each required field
     if(titleText.trim() === "") {
@@ -97,33 +91,25 @@ function sendData(ev){
     else{
         $("#error-content>p").html("*");
     }
-    if(publish.trim() !== "1") {
-      
-       $("#warning-publish>p").html("*Unpublished articles are not be visible to other users!");
-        
-    }
-    else{
-        $("#warning-publish>p").html("*");
-    }
    
    //If there were any errors return this function now
     if(validationErrors) return;
  
-    // switch($(ev.target).attr("id")){
-    //     case "save-btn":
-    //         publish = 0;
-    //         break;
-    //     case "publish-btn":
-    //         publish = 1;
-    //         break;
-    //     default:
-    //         publish = 0;
-    //         break;
-    // };
+    switch($(ev.target).attr("id")){
+        case "save-btn":
+            publish = 0;
+            break;
+        case "publish-btn":
+            publish = 1;
+            break;
+        default:
+            publish = 0;
+            break;
+    };
     
-    
+    var articles = new Articles();
+
     var newArticle= {
-        id: articleId,
         title: titleText,
         content:contentText,
         category_id: selectedCategory,
@@ -131,19 +117,9 @@ function sendData(ev){
         published: publish,
     };
     
-    if(articleId){
-        
-        article.update(newArticle).done(function(response){
-                
-                window.location.reload();
-        });
-        
-    }else{
-        
-        var articles = new Articles();
-        articles.save(newArticle).done(showArticles);
-        
-    }
+    var response = articles.save(newArticle);
+    console.log(response);
+    response.done(showArticles);
      
 }   //End sendData function
 
@@ -165,7 +141,7 @@ function sendData(ev){
         $("#warning-image>p").html("*");
      }
      else{
-         imgFile = '';
+         imgFile = null;
        
          $("#warning-image>p").html("* Selected file is not valid. Only images are accepted!");
      }
@@ -228,7 +204,6 @@ function sendData(ev){
     }
     
  }//End doneModifyCategory
- 
  
   //util function, will return the url param for the provided key
     function getUrlParam(name){

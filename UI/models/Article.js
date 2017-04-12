@@ -17,13 +17,49 @@ function Article(options){
 }
 
 //Method for updating article
-Article.prototype.update = function(data){
+Article.prototype.update = function(articleData){
     //here we should save the data to the server
     //do an AJAX request or save it in the local storage
     
-    //play with git
+    var that = this; //save current object
+	
+	 //prepare data with image to upload
+	 var formData = new FormData();
+	 formData.append("id", articleData.id);
+	 formData.append("main_image_url",articleData.img);
+  	 formData.append("title", articleData.title);
+	 formData.append("content", articleData.content);
+	 formData.append("category_id",articleData.category_id);
+	 formData.append("published", articleData.published);
+	 
+	 //configure request for uploading pictures/file
+	 var config = {
+	 	
+	 	url: URL_PHP + "articles/edit",
+        method: "POST",
+        data: formData,
+        processData:false,        // To send DOMDocument or non processed data file it is set to false
+	    contentType: false,
+	   
+	    //function to execute in case of req. succeded
+        success: function(response){
+        //console.log(response);
+        	//not used
+        },
+        
+        //function to execute in case of req. fails
+        error: function(xhr,status,error){
+        	alert("Oops!Something is wrong" + error);
+        },
+        
+        //function to execute when req. is completed
+        complete: function(){
+        	//not used
+        }
+    };
     
-    //added branch
+    return $.ajax(config); //send request to the server and return the result
+   
 };
 
 //Method to get article by ID

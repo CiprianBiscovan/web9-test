@@ -13,7 +13,7 @@ class CommentsModel extends DB{
         return $this->selectSQL($sql); 
     }
     
-    function insertComment($comm){
+    function insertItem($comm){
         
          $sql = "INSERT INTO comments (title,content,article_id,user_id) VALUES(?,?,?,?)";
          $stmt = $this->dbh->prepare($sql);
@@ -26,19 +26,28 @@ class CommentsModel extends DB{
          $sql = 'SELECT comm . * , usr.nick_name AS nickname, CONCAT( usr.first_name,  " ", usr.last_name ) AS userName
                 FROM comments comm
                 INNER JOIN users usr ON comm.user_id = usr.id
-                HAVING comm.article_id = ?';
+                HAVING comm.article_id = ? AND comm.deleted = 0';
          $stmt = $this->dbh->prepare($sql);
          $stmt->execute(array($artId));
          
          return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
-     function deleteItem($id){
-        $sql = 'delete from comments where id=?';
+     function deleteItem($id,$dateModif){
+        $sql = 'UPDATE comments SET deleted = 1, last_modified = ? where id = ?';
         $stmt = $this->dbh->prepare($sql);
-        $stmt->execute(array($id));
-        
-        return $stmt->rowCount();    
+        $stmt->execute(array($dateModif,$id));
+        return array('rowsAffected'=>$stmt->rowCount(),'error'=>$stmt->errorInfo()[1]);    
+    }
+    
+     function updateItem($item){
+        $sql = 'UPDATE comments SET title = ?, content = ?, last_modified = ? where id = ?';
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->execute(array($item['title'],
+                              $item['content'],
+                              $item['last_modified'],
+                              $item['id']));
+        return array('rowsAffected'=>$stmt->rowCount(),'error'=>$stmt->errorInfo()[1]);    
     }
 }
 

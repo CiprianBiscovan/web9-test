@@ -27,7 +27,8 @@ class Accounts {
             if(empty($suppliedEmail)){
                    return array("isLogged"=>FALSE,'message'=>"Empty email!"); 
             }
-            if(!isValidEmail($suppliedEmail)){
+            // if(!isValidEmail($suppliedEmail)){
+            if(!filter_var($suppliedEmail,FILTER_VALIDATE_EMAIL)){
                 return array("isLogged"=>FALSE,'message'=>"Email not valid!");
             }
             
@@ -91,9 +92,9 @@ class Accounts {
     
 } //END ACCOUNTS Class  
 
-    //Function to validate email using regex
-    function isValidEmail($email){
-        $regEx = '/^[a-z]{1}(?!.*(\.\.|\.@))[a-z0-9!#$%&*+\/=?_{|}~.-]{0,63}@(?=.{0,253}$)([a-z0-9]\.|[a-z0-9][a-z0-9-]{0,63}[a-z0-9]\.)+[a-z0-9]{1,63}$/mi';
-        return preg_match($regEx,$email);
-    }//END isValidEmail fuction
+    // //Function to validate email using regex
+    // function isValidEmail($email){
+    //     $regEx = '/^[a-z]{1}(?!.*(\.\.|\.@))[a-z0-9!#$%&*+\/=?_{|}~.-]{0,63}@(?=.{0,253}$)([a-z0-9]\.|[a-z0-9][a-z0-9-]{0,63}[a-z0-9]\.)+[a-z0-9]{1,63}$/mi';
+    //     return preg_match($regEx,$email);
+    // }//END isValidEmail fuction
 ?>

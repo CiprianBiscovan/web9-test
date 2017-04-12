@@ -2,27 +2,58 @@
 <html>
     <head>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script><!--for coockies-->
         <script type="text/javascript" src="../configs/configs.js"></script>
+        <script type="text/javascript" src="../models/Category.js"></script>
+        <script type="text/javascript" src="../models/Categories.js"></script>
+        <script type="text/javascript" src="/Blog/jsLibs/createDOMElements.js"></script>
         <script type="text/javascript" src="../models/Articles.js"></script>
         <script type="text/javascript" src="../models/Article.js"></script>
-        <script type="text/javascript" src="../views/newArticle.js"></script>
+        <script type="text/javascript" src="../views/editArticle.js"></script>
     </head>
     <body>
-        <form >
+        <div id='top-menu' ></div>
+        <!--<form >-->
             <fieldset>
-                <legend>Create New Article</legend>
-                
-                <label for="title">Title</label><br>
-                <input type="text" name="title" id="title" size="100"/><br>
-                <br>
-                <label for="content">Content</label><br>
-                <textarea type="text" name="content" id="content" rows="20" cols="100"></textarea><br>
-                <br>
-                <input type="file" id="article_file" name="main_image_url"/>
-                <br>
-                <input type="submit" id="submit-btn" value="SEND" />
-                
+                <legend>Edit Article</legend>
+                <div id='img-container'>
+                    <div id='warning-image'> <p>*</p></div>
+                    <img id='main-image' src='/Blog/Resources/image_comming_soon.png'>
+                    <br>
+                    <input type="file" id="article_file" name="main_image_url" accept="image/*"/>
+                    <br>
+                </div>
+                <div id='inputs-container'>
+                    <label for="title">Title</label><br>
+                    <input type="text" name="title" id="title" size="100" placeholder='Article title...'/><br>
+                    <div id='error-title'> <p>*</p></div>
+                    <p>About</p>
+                    <h3 id='category'>Default Topic</h3>
+                    <p><em>!Choose category from < Manage Categories > section below...</em></p>
+                    <div id='error-category'> <p>*</p></div>
+                    <br>
+                    <label for="content">Content</label><br>
+                    <textarea type="text" name="content" id="content" rows="20" cols="100" placeholder='Content here...'></textarea>
+                    <br>
+                    <div id='error-content'> <p>*</p></div>
+                    <br>
+                    <input type="submit" id="save-btn" value="Save Article" />
+                    <input type="submit" id="publish-btn" value="Publish Article" />
+                </div>
             </fieldset>
-        </form>
+        <!--</form>-->
+            <fieldset>
+                <legend>Manage Categories</legend>
+                <div>
+                    <input type="text" name="newCategoryName" placeholder="New Category Name"/>
+                    <select id='categories'>
+                        <option value='' selected>Choose Category</option>
+                    </select>
+                    <div id='error-new-category'> <p>*</p></div>
+                    <br>
+                    <button id='add-category' class='manage-categories'>Add Category</button>
+                    <button id='delete-category' class='manage-categories'> Delete Selected Category</button>
+                </div>
+            </fieldset>
     </body>
 </html>

@@ -32,7 +32,7 @@ addArticlesLink();
     article.getArticleById(currentArticleId).done(displayArticle);  //request article by id and display it
     
     //get comments for current article
-    var comments = new Comment();
+    var comments = new Comments();
     comments.getCommentsForArticle(currentArticleId).done(displayComments);
     
     // var containerElement = $("#container");
@@ -88,9 +88,9 @@ addArticlesLink();
     }//END displayArticle
     
     function displayComments(response){
-      
+       
         if(response.length > 0 && response[0].article_id === currentArticleId){
-            var commentsContainer = $("#comm-container");
+            var commentsContainer = $("#comments-list");
             for(var i = 0; i < response.length; i++){
                 var comm = new Comment(response[i]);
                 commentsContainer.append(createCommentElement(comm));            

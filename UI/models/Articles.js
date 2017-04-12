@@ -90,33 +90,38 @@ Articles.prototype.removeArticle = function(articleId) {
 	//here we will search for article model by id
 	//and we remove it from models array and from 
 	//server/localStorage
+	
+	//config request for deleting article
+	var config = {
+		url: URL_PHP + "articles/delete",
+		method: 'DELETE',
+		data: {
+			id: articleId	
+		},
+		//function to be executed in case of error
+		error: function(){
+			console.log("Oops! Something went wrong while trying to delete article");
+		}
+	};
+	
+	return $.ajax(config); //send request to the server and return the response
+	
+	
+	
 };//END Delete Article method
 
 //Method to save new article
 Articles.prototype.save = function(articleData) {
-	//here we should save the new article to server
-	
-	// var articles = new Articles();
-	// var strModels;
-	
-	// articles.getAll();
-	// articles.models.push(articleData);
-	// strModels = JSON.stringify(articles.models);
-	
-	// localStorage.setItem("articles",strModels);
-	//---------------------------------------------------
-	
-//	console.log(articleData);
 
 	var that = this; //save current object
-	 
+	
 	 //prepare data with image to upload
 	 var formData = new FormData();
 	 formData.append("main_image_url",articleData.img);
   	 formData.append("title", articleData.title);
 	 formData.append("content", articleData.content);
-	 formData.append("user_id", "1");
-	 formData.append("category_id", "1");
+	 formData.append("category_id",articleData.category_id);
+	 formData.append("published", articleData.published);
 	 
 	 //configure request for uploading pictures/file
 	 var config = {
@@ -129,7 +134,7 @@ Articles.prototype.save = function(articleData) {
 	   
 	    //function to execute in case of req. succeded
         success: function(response){
-        	console.log(response);
+        	//not used
         },
         
         //function to execute in case of req. fails
@@ -139,7 +144,7 @@ Articles.prototype.save = function(articleData) {
         
         //function to execute when req. is completed
         complete: function(){
-        	console.log("The request is complete!");
+        	//not used
         }
     };
     

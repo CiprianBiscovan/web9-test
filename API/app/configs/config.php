@@ -12,4 +12,5 @@ ini_set('display_errors', 1);
     
     // define('PASS_SALT', '$1$12ab!');
     const PASS_SALT = '$1$12ab!';
+    const DB_DUPLICATE_ENTRY = '1062'; 
 ?>

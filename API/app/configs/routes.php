@@ -12,7 +12,12 @@
     $routes['/comments/forArticle'] = array("class"=>"Comments", "method"=>"getCommentsForArticle");
     $routes['/comments/add'] = array("class"=>"Comments", "method"=>"createItem");
     $routes['/comments/delete'] = array("class"=>"Comments", "method"=>"deleteItem");
+    $routes['/comments/edit'] = array("class"=>"Comments", "method"=>"updateItem");
     
     $routes['/login'] = array("class"=>"Accounts", "method"=>"login");
     $routes['/logout'] = array("class"=>"Accounts", "method"=>"logout");
+    
+    $routes['/categories'] = array('class'=>"Categories",'method'=>"getAll");
+    $routes['/categories/add'] = array('class'=>"Categories",'method'=>"createItem");
+    $routes['/categories/delete'] = array('class'=>"Categories",'method'=>"deleteItem");
 ?>
