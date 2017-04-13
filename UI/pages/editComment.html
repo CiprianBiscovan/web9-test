@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script><!--for coockies-->
+        <script type="text/javascript" src="../models/User.js"></script>
+        <script type="text/javascript" src="../configs/configs.js"></script>
+         <script type="text/javascript" src="../models/Comment.js"></script>
+        <script type="text/javascript" src="../views/editComment.js"></script>
+    </head>
+    <body>
+        <section id='selected-comment'>
+            <h1>Edit Comment</h1>
+            <fieldset>
+            <legend>Comment Details</legend>
+            <div id='comment-element-container'>
+                
+            </div>
+            </fieldset>
+        </section>
+        
+        <section id='edit-comment'>
+            <fieldset>
+            <legend>Edit Comment</legend>
+                <input type='text' name='commTitle' placeholder='Title'/> <br>
+                <textarea name='commContent' placeholder='Your comment'rows='10' cols='40'></textarea> <br>
+                <button id='save-comment'>Save</button>
+                <button id='cancel-edit'>Cancel</button>
+                <div id='error-comment'><p>*</p></div>
+            </fieldset>
+        </section>
+    </body>
+</html>

@@ -14,6 +14,25 @@ function Comment(options){
     }
 } //END Class
 
+//Metho to get comment by ID
+Comment.prototype.getComment = function(commId){
+     
+    var config = {
+        url:URL_PHP + "comment",
+        method:'GET',
+        data: {
+          id: commId
+        },
+        
+        //function to execute in case of request fail
+        error: function(){
+            console.log("Oops! Something went wrong while trying to get comment");
+        }
+    };
+    
+    return $.ajax(config); //send request to the server and return the result
+}
+
 //Method for edit comment
 Comment.prototype.update= function(comm){
     
@@ -24,7 +43,8 @@ Comment.prototype.update= function(comm){
             title: comm.title,
             content: comm.content,
             article_id: comm.article_id,
-           user_id: comm.userId
+            user_id: comm.userId,
+            id: comm.id
         },
         
         //function to execute in case of request fail

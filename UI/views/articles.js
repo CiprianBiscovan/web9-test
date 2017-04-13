@@ -10,9 +10,13 @@ $(document).ready(onHtmlLoaded);
 	var pageSize = 5;    //Max. Number of articles on each page 
 	var totalPages = 0; //Total number of page - initialized with 0
 	var articles = new Articles(); //create Articles object
+	var user = new User();
 
 //Function executed after document is fully loaded
 function onHtmlLoaded() {
+	
+	//Add top buttons and links based on user logged in 
+	addTopMenu();
 	
 	//get total number of articles existing in DB
 	articles.Count().done(function(count){
@@ -25,49 +29,28 @@ function onHtmlLoaded() {
 		}else{
 			console.log("Server response not as expected!");
 		}
-			createArticlesNavigation(totalPages);
+		
+		createArticlesNavigation(totalPages);
 	});
 	
 	articles.getPageArticles(1,pageSize).done(displayArticles);
 	
-	//Add top buttons and links based on user logged in 
-	addTopMenu();
-
-	// //get all articles from server
-	// articles.getAll().done(function(){
-		
-	// 	//Calculate number of pages based on total number of articles
-	// 	totalArticles = articles.models.length;
-	// 	if(totalArticles > 0){
-	// 		totalPages = Math.ceil(totalArticles/pageSize);
-	// 	}else{
-	// 		totalPages = 1;
-	// 	}
-	// 	createArticlesNavigation(totalPages);
-	// 	displayArticles(1);
-	// });
-
-	
 }//END onHtmlLoaded function
 
-// //Function for displaying articles
-// function displayArticles(page){
-	
-// 	var container = $("#container"); //get data container <ul>
-// 	var begin,end;
-	
-// 	//calculate limits in articles array that need to be displayed  
-// 	begin = (page-1)*pageSize;
-// 	end =   (begin + pageSize) < totalArticles ? (begin+pageSize) : totalArticles ;
-	
-// 	container.empty();//clear list of old content
-	
-// 	//iterate through articles list and add them to the <ul> container
-// 	for(var i = begin; i<end; i++) {
-// 		var articleElem = createArticleListElement(articles.models[i]);
-// 		container.append(articleElem);
-// 	}
-// }//End DisplayArticles function
+// ------------------------------------------------DOM Manipulation------------------------------------------------------------
+//Function for creating top menu 
+function addTopMenu(){
+    var topMenu = $("#top-menu");
+   
+        user.isLogged ? topMenu.append("<h3>"+ user.loggedUserRole + ": " + user.loggedUserName + "</h3>").append("<button id='logout'>Logout</button>") :
+                   topMenu.append("<button id='login'>Login</button>");
+        
+        user.isAdmin ? topMenu.append("<button id='new-article'>New Article</button>") :
+                  topMenu.append("<button id='contact-us'>Contact Us</button>");
+     
+        topMenu.children().click(topMenuClick);
+    
+}//END addTopMenu function
 
 //Function for displaying articles
 function displayArticles(){
@@ -91,20 +74,68 @@ function goToArticlePage() {
 function createArticleListElement(art){
 	var li = $("<li data-value=" + art.id + "></li>"); 
 	li.append(createArticleElement(art));
-	// 	li.html("<h1> " + art.title + "</h1>");
-	 	li.on("click", goToArticlePage);
-	// 	li.append("<div id='author'><strong><em>Posted by:" + art.userName + "</em></strong></div>")
-	// var imgContainer = $("<div class='img-container'></div>");
-	// var contentContainer = $("<div class='content-container'></div>");
-	
-	// imgContainer.append("<img class='main-img' height='150px' src= " + art.img + " alt='Main Image'>");
-	// contentContainer.append("<p>" + art.content +"</p>");
-	
-	// li.append(imgContainer).append(contentContainer);
-	// li.append("<em id='created'>Created: "+art.dateCreate+"</em>").append("<em id='updated'>Updated: "+art.dateModif+"</em>")
+	li.on("click", goToArticlePage);
 	return li;
 }
 
+//create article element and send it to caller;
+function createArticleElement(art){
+
+   var articleElem = $("<article id='Article" + art.id + "' data-value='" + art.id + "'></article>");
+    articleElem.append("<h1>" + art.title + "</h1>")
+               .append("<div id='article-author'><strong><em>Posted by:" + art.userName + "</em></strong></div>")
+               .append("<div id='article-category'><strong><em>About:" + art.category + "</em></strong></div>")
+               .append("<div id='img-container'><img class='main-img' height='150px' src= " + art.img + " alt='Main Image'></div>")
+               .append("<div id='article-content'><p>" + art.content +"</p></div>")
+               .append("<em id='article-created'>Created: "+art.dateCreate+"</em>")
+               .append("<em id='article-updated'>Updated: "+art.dateModif+"</em>")
+               .append("<div id='comm-count'>" + art.commCount + " comments </div>");
+    
+    if(user.isAdmin){
+        articleElem.append($("<button id='edit-article'>Edit</button>").click(editArticleClick))
+                   .append($("<button id='delete-article'>Delete</button>").click(deleteArticleClick));
+    }
+    
+    return articleElem;
+}//END createArticleElement
+
+// --------------------------------------------------------------NAVIGATION Menu----------------------------------------------------------
+//function for creation of pagination menu
+ function createArticlesNavigation(pages){
+
+	var pagesContainer = $(".pagination-pages"); //Get container for pages
+	var stepContainer = $(".pagination-step");  //Get container for Newer/Older buttons
+	
+	//Add Newer Older buttons
+	stepContainer.append(newPage("previous","<-Older")); //Add Older button
+	stepContainer.append(newPage('next','Newer->'));     //Add Newer Button
+	
+	//create pages menus
+		pagesContainer.append(newPage('first','&laquo;')); //Add << button
+	
+	//Add each page and make page 1 active
+	for(var i = 1; i <= pages; i++){
+		pagesContainer.append(newPage(i,i));   
+	}
+	pagesContainer.append(newPage('last','&raquo;')); //Add >> button
+	
+	//Manage visual aspects
+	$("#previous").addClass('hidden'); //hide Older button in the begining
+	$("#first").addClass('disabled'); //disable first button
+	
+	//if only one page - hide Newer button and disable last button
+	if(pages == 1){
+	$("#next").addClass('hidden');
+	$("#last").addClass('disabled');
+	}
+	$("#1").addClass('active'); //Set first page as active
+    
+}//END createArticlesNavigation
+
+function newPage(id,text){
+     return $("<a id='" + id + "' href='#'>" + text + "</a>").click(navigate);
+}
+     
 //Function to handle navigation buttons clicks
 function navigate(){
 	var clicked = $(this);                     //get clicked element in the navigation panel
@@ -188,8 +219,64 @@ function navigate(){
 	}
 	
 }//END Navigation function
+// --------------------------------------------------------------/NAVIGATION Menu----------------------------------------------------------
 
+// ---------------------------------------------------------------Events Handle-----------------------------------------------------------
 
-function deleteArticle(){
-	console.log("Articles-deleteArticle");
-}
+//function for handling mouse click on elements from top menu
+function topMenuClick(){
+  
+   var clicked = $(this);
+   
+   switch (clicked.attr('id')){
+       case 'login':
+       case 'logout':
+           window.location.href = UI_PAGE + "login.html";
+       break;
+       case 'new-article':
+           window.location.href = UI_PAGE + "newArticle.html";
+       break;
+       case 'contact-us':
+           window.location.href = UI_PAGE + "ContactUs.html";
+       break;
+       case 'go-to-articles':
+             window.location.href = UI_PAGE + "articles.html";
+       break;
+   }
+}//END topMenuCLick() function
+
+//Edit Article click event handler
+function editArticleClick(event){
+  
+    event.stopPropagation();
+    var article = new Article();
+    var markedId = $(this).parents('article').attr("data-value");
+    window.location.href = UI_PAGE + "newArticle.html?id=" + markedId;
+
+}//END EditArticleClick
+
+//Delete Article click event handler
+function deleteArticleClick(event){
+  
+     event.stopPropagation();
+     var articles = new Articles();
+     var markedId = $(this).parents('article').attr("data-value");
+     
+     if(markedId){
+         articles.removeArticle(markedId).done(deleteResponse);
+     }else{
+         console.log("error getting article ID");
+     }
+
+}//END deleteArticleClick
+
+function deleteResponse(response,statusText,jqXHR){
+
+        if(response.success === true){
+            console.log(response.message);
+            window.location.href = UI_PAGE + "articles.html"; 
+        }else{
+            console.log(response.message);
+        }
+}//End deleteResponse
+// ---------------------------------------------------------------/Events Handle-----------------------------------------------------------

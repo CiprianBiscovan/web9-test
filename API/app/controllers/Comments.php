@@ -55,7 +55,22 @@
                 return $this->comments->getCommentsForArtID($_GET["article_id"]);
             }
             else{
-                return "You must specify and article ID!";
+                array('success'=>false,'message'=>"Article could not be identified!");
+            }
+        }
+        
+           function getComment(){
+          
+            if(!isset($_SESSION['isLogged']) || $_SESSION['isLogged'] === false){
+                return array("success"=>false,"message"=>"Only logged users can edit comments");
+            }
+           
+            if(isset($_GET["id"]) && !empty($_GET["id"])){
+                
+                return $this->comments->getComment($_GET["id"]);
+            }
+            else{
+                return array('success'=>false,'message'=>"Comment could not be identified!");
             }
         }
         
@@ -116,12 +131,12 @@
                     
                     //get current date
                     date_default_timezone_set("Europe/Bucharest");
-                    $REQUEST['last-modified'] = date("Y-m-d H:i:s");
+                    $REQUEST['last_modified'] = date("Y-m-d H:i:s");
                     $DbResult = $this->comments->updateItem($REQUEST);
                     if($DbResult['error'] === null){
-                        return array("success"=>true,"message"=>"Comment deleted successfully");
+                        return array("success"=>true,"message"=>"Comment updated successfully");
                     }else{
-                        return array("success"=>false,"message"=>"Error deleting comment");
+                        return array("success"=>false,"message"=>"Error updating comment");
                     }
                 }else{
                     return array("success"=>false,"message"=>"All fields are required!");

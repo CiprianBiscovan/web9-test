@@ -14,6 +14,8 @@
     $routes['/comments/delete'] = array("class"=>"Comments", "method"=>"deleteItem");
     $routes['/comments/edit'] = array("class"=>"Comments", "method"=>"updateItem");
     
+    $routes['/comment'] = array("class"=>"Comments", "method"=>"getComment");
+     
     $routes['/login'] = array("class"=>"Accounts", "method"=>"login");
     $routes['/logout'] = array("class"=>"Accounts", "method"=>"logout");
     

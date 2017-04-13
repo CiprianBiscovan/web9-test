@@ -1,3 +1,0 @@
-[12-Apr-2017 19:35:40 UTC] PHP Parse error:  syntax error, unexpected 'else' (T_ELSE), expecting function (T_FUNCTION) in /home/ubuntu/workspace/Blog/API/app/controllers/Accounts.php on line 68
-[12-Apr-2017 19:35:40 UTC] PHP Stack trace:
-[12-Apr-2017 19:35:40 UTC] PHP   1. {main}() /home/ubuntu/workspace/Blog/API/index.php:0

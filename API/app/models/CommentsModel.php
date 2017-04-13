@@ -33,6 +33,18 @@ class CommentsModel extends DB{
          return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
+      function getComment($commId){
+        //$sql = 'SELECT * FROM comments WHERE article_id = ?';
+         $sql = 'SELECT comm . * , usr.nick_name AS nickname, CONCAT( usr.first_name,  " ", usr.last_name ) AS userName
+                FROM comments comm
+                INNER JOIN users usr ON comm.user_id = usr.id
+                HAVING comm.id = ? AND comm.deleted = 0';
+         $stmt = $this->dbh->prepare($sql);
+         $stmt->execute(array($commId));
+         
+         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
      function deleteItem($id,$dateModif){
         $sql = 'UPDATE comments SET deleted = 1, last_modified = ? where id = ?';
         $stmt = $this->dbh->prepare($sql);

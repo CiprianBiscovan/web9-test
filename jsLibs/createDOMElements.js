@@ -101,41 +101,41 @@ function addCommentSection(){
     commentSection.find("#post-comment").click(saveCommentClick);
 }//END addCommentSection funtion
 
- //function for creation of pagination menu
- function createArticlesNavigation(pages){
+//  //function for creation of pagination menu
+//  function createArticlesNavigation(pages){
 
-	var pagesContainer = $(".pagination-pages"); //Get container for pages
-	var stepContainer = $(".pagination-step");  //Get container for Newer/Older buttons
+// 	var pagesContainer = $(".pagination-pages"); //Get container for pages
+// 	var stepContainer = $(".pagination-step");  //Get container for Newer/Older buttons
 	
-	//Add Newer Older buttons
-	stepContainer.append(newPage("previous","<-Older")); //Add Older button
-	stepContainer.append(newPage('next','Newer->'));     //Add Newer Button
+// 	//Add Newer Older buttons
+// 	stepContainer.append(newPage("previous","<-Older")); //Add Older button
+// 	stepContainer.append(newPage('next','Newer->'));     //Add Newer Button
 	
-	//create pages menus
-		pagesContainer.append(newPage('first','&laquo;')); //Add << button
+// 	//create pages menus
+// 		pagesContainer.append(newPage('first','&laquo;')); //Add << button
 	
-	//Add each page and make page 1 active
-	for(var i = 1; i <= pages; i++){
-		pagesContainer.append(newPage(i,i));   
-	}
-	pagesContainer.append(newPage('last','&raquo;')); //Add >> button
+// 	//Add each page and make page 1 active
+// 	for(var i = 1; i <= pages; i++){
+// 		pagesContainer.append(newPage(i,i));   
+// 	}
+// 	pagesContainer.append(newPage('last','&raquo;')); //Add >> button
 	
-	//Manage visual aspects
-	$("#previous").addClass('hidden'); //hide Older button in the begining
-	$("#first").addClass('disabled'); //disable first button
+// 	//Manage visual aspects
+// 	$("#previous").addClass('hidden'); //hide Older button in the begining
+// 	$("#first").addClass('disabled'); //disable first button
 	
-	//if only one page - hide Newer button and disable last button
-	if(pages == 1){
-	$("#next").addClass('hidden');
-	$("#last").addClass('disabled');
-	}
-	$("#1").addClass('active'); //Set first page as active
+// 	//if only one page - hide Newer button and disable last button
+// 	if(pages == 1){
+// 	$("#next").addClass('hidden');
+// 	$("#last").addClass('disabled');
+// 	}
+// 	$("#1").addClass('active'); //Set first page as active
     
-}//END createArticlesNavigation
+// }//END createArticlesNavigation
 
-function newPage(id,text){
-     return $("<a id='" + id + "' href='#'>" + text + "</a>").click(navigate);
-}
+// function newPage(id,text){
+//      return $("<a id='" + id + "' href='#'>" + text + "</a>").click(navigate);
+// }
 
 function topMenuClick(){
   
@@ -180,7 +180,6 @@ function deleteArticleClick(event){
      }else{
          console.log("error getting article ID");
      }
-
 
 }//END deleteArticleClick
 
@@ -289,7 +288,7 @@ function deleteResponse(response,statusText,jqXHR){
         }else{
             console.log(response.message);
         }
-}//End manageArticlesOperations
+}//End deleteResponse
 
 //Callback function for add/delete/update ajax requests
 function commentsOperation(response,textStatus,jqXHR){

@@ -6,6 +6,22 @@ function User(options){
         this.email = options.email;
         this.pass = options.pass;
     }
+    
+	this.isLogged = false;
+	
+    //check if user is logged In
+	if($.cookie("loggedIn")){
+		this.isLogged = true;
+		var loggedUser = JSON.parse($.cookie("loggedIn"));
+		this.loggedUserId = loggedUser.id;
+		this.loggedUserName = loggedUser.name;
+		this.loggedUserRole = loggedUser.role.toUpperCase();
+		if(loggedUser.role.toLowerCase() === 'admin'){
+		    this.isAdmin = true;
+		}else{
+		    this.isAdmin = false;
+		}
+	}
 }
 
 //SignIn method
