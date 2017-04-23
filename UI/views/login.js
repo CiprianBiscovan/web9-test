@@ -68,38 +68,6 @@ function onHtmlLoaded(){
           
         }); //END LogIn Subscription
         
-        //Subscription to click event on logout button
-        logoutBtn.on("click",function(){
-            
-            if(!$.cookie("loggedIn")){
-                alert("You are not logged in!");
-                return;
-            }
-            
-            var logoutModel = new User();
-            
-            var logoutReq = logoutModel.logout(); //send data to server
-            
-            logoutReq.done(function(){
-                
-                if(logoutModel.success){
-                    $.removeCookie("loggedIn");
-                    
-                    if(!$.cookie("loggedIn")){
-                        alert("You successfully LogOut!");
-                    }
-                    
-                    window.location.href = UI_PAGE + "login.html";
-                    
-                }else{
-                    
-                    alert(logoutModel.message);
-                }
-            });
-            
-       });//END LogOut Subscription
-        
-        
         // Processing user data if successfull authentication
         function redirectUserToArticlesPage(){
             

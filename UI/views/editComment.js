@@ -8,6 +8,11 @@ if(user.isLogged === false){
     window.location.href = UI_PAGE + "unauthorizedAccess.html";
 }
 function onHtmlLoaded(){
+    
+    
+if(user.isLogged === false){
+    return;
+}
     var commentId = getUrlParam('id');
     var comment = new Comment();
     var buttonSave = $('#save-comment');
@@ -40,9 +45,9 @@ function displayComment(response){
         $("input[name='commTitle']").val(comment.title);
         $("textarea[name='commContent']").val(comment.content);
         if(user.loggedUserId !== comment.userId){
-            $('h1').html("You can edit only youre own comments!")
+            $('h1').html("You can edit only youre own comments!");
         }else{
-            $('h1').html("Edit comment!")
+            $('h1').html("Edit comment!");
         }
         
     }else{

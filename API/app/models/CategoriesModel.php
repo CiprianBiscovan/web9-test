@@ -22,10 +22,20 @@ class categoriesModel extends DB{
        return array("lastInsertedID"=>$this->dbh->lastInsertId(),"error"=>$stmt->errorInfo()[1]);
     }//END insetItem function
     
-    function deleteItem($id){
-        $sql = "UPDATE category SET active = 0 WHERE id = ?";
+     function reactivateCategory($categoryName,$update){
+       $sql = "UPDATE category SET active = 1, last_modified = ? WHERE name = ?";
+       
+       $stmt = $this->dbh->prepare($sql);
+       $stmt->execute(array($update,$categoryName));
+       
+       return array("rowsAffected"=>$stmt->rowCount(),"error"=>$stmt->errorInfo()[1]);
+       
+    }//END insetItem function
+    
+    function deleteItem($id,$update){
+        $sql = "UPDATE category SET active = 0, last_modified = ? WHERE id = ?";
         $stmt = $this->dbh->prepare($sql);
-        $stmt->execute(array($id));
+        $stmt->execute(array($update,$id));
         
         return array('rowsAffected'=>$stmt->rowCount());
        

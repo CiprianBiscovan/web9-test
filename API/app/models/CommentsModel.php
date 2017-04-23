@@ -21,12 +21,22 @@ class CommentsModel extends DB{
            
          return $this->dbh->lastInsertId();
     }
-    function getCommentsForArtID($artId){
+    function getCommentsForArtID($artId,$pageNum,$pageSize){
         //$sql = 'SELECT * FROM comments WHERE article_id = ?';
          $sql = 'SELECT comm . * , usr.nick_name AS nickname, CONCAT( usr.first_name,  " ", usr.last_name ) AS userName
                 FROM comments comm
                 INNER JOIN users usr ON comm.user_id = usr.id
-                HAVING comm.article_id = ? AND comm.deleted = 0';
+                HAVING comm.article_id = ? AND comm.deleted = 0
+                ORDER BY creation_date DESC';
+         $sql .= ' LIMIT ' . (($pageNum-1) * $pageSize) . "," . $pageSize;      
+         $stmt = $this->dbh->prepare($sql);
+         $stmt->execute(array($artId));
+         
+         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+       function countComments($artId){
+         $sql = 'SELECT count(id) AS totalComments FROM comments comm WHERE comm.article_id = ? AND comm.deleted = 0';
          $stmt = $this->dbh->prepare($sql);
          $stmt->execute(array($artId));
          

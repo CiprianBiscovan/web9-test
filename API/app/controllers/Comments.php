@@ -50,9 +50,26 @@
         
         function getCommentsForArticle(){
             
-            if(!empty($_GET["article_id"])){
+            if(isset($_GET["article_id"]) && !empty($_GET["article_id"])){
                 
-                return $this->comments->getCommentsForArtID($_GET["article_id"]);
+                if(isset($_GET["page"],$_GET["pageSize"]) && !empty($_GET["page"]) && !empty($_GET["pageSize"])){
+                    
+                    return $this->comments->getCommentsForArtID($_GET['article_id'],$_GET['page'],$_GET['pageSize']);
+                }else{
+                    
+                    return array('success'=>false,'message'=>"Page could not be determined!");
+                }
+            }
+            else{
+                return array('success'=>false,'message'=>"Article could not be identified!");
+            }
+        }
+        
+          function commentsCount(){
+             
+            if(!empty($_GET["article_id"])){
+                $dbResult =  $this->comments->countComments($_GET["article_id"]);
+                return $dbResult;
             }
             else{
                 array('success'=>false,'message'=>"Article could not be identified!");

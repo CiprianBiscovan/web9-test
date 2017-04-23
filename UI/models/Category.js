@@ -26,8 +26,9 @@ Category.prototype.add = function(newCategoryName){
         },
         
         //function to be executed in case of fail
-        error: function(){
-            console.log("Oops! something went wrong while adding category!")
+        error: function(response){
+            console.log("Oops! something went wrong while adding category!");
+            console.log(response);
         }
     };
     
@@ -51,8 +52,9 @@ Category.prototype.delete = function(categoryId){
         },
         
         //function to be executed in case of fail
-        error: function(){
-            console.log("Oops! something went wrong while deleting category!")
+        error: function(response){
+            console.log("Oops! something went wrong while deleting category!");
+            console.log(response);
         }
     };
     

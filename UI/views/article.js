@@ -5,7 +5,12 @@
 $(document).ready(onHtmlLoaded);
 
 var user = new User();
-
+var commCount = undefined;
+var commTotalPages = 0;
+var commCurrentPage = 1;
+var commPageSize = 5;
+var currentArticleId = undefined;
+var expectedCommentsNo = undefined;
 //always check if HTML is loaded before doing anything
 //HTML operations on view
 function onHtmlLoaded(){
@@ -13,44 +18,32 @@ function onHtmlLoaded(){
 addTopMenu();
 // addArticlesLink();
 
-    var currentArticleId = getUrlParam("id");  //Get selected article ID
+    currentArticleId = getUrlParam("id");  //Get selected article ID
     
     var article = new Article();                                    //create new article instance 
     article.getArticleById(currentArticleId).done(displayArticle);  //request article by id and display it
     
-    //get comments for current article
     var comments = new Comments();
-    comments.getCommentsForArticle(currentArticleId).done(displayComments);
-    
-    //Function to display selected Article
-    function displayArticle(response){
-       
-       if(response.length > 0 && (response[0].id === currentArticleId) ){
-           var art = new Article(response[0]);
-           
-           var container = $("#container");
-           container.append(createArticleElement(art));
-           addCommentSection();
-       }
-       else{
-           console.log("Article received not as expected!");
-       }
-    }//END displayArticle
-    
-    function displayComments(response){
-       
-        if(response.length > 0 && response[0].article_id === currentArticleId){
-            var commentsContainer = $("#comments-list");
-            for(var i = 0; i < response.length; i++){
-                var comm = new Comment(response[i]);
-                commentsContainer.append(createCommentElement(comm));            
-            }
-            
+    comments.commentsCount(currentArticleId).done(function(response){
+        
+        if(response.length > 0){
+            commCount = response[0].totalComments;
+            commTotalPages = Math.ceil(commCount/commPageSize);
+        }else{
+            commTotalPages = 0;
         }
-        else{
-             console.log("Comments received not as expected!");
+        if(commTotalPages > 0){
+            createCommentsNavigation(commTotalPages);
         }
-    }
+        
+        comments.getCommentsForArticle(currentArticleId,commCurrentPage,commPageSize).done(displayComments);
+    });
+
+    //get comments for current article
+  
+   
+  
+   
 }//END OnHtmlLoaded function
 
 // ------------------------------------------------DOM Manipulation------------------------------------------------------------
@@ -127,6 +120,87 @@ function addCommentSection(){
 }//END addCommentSection funtion
 // -------------------------------------------------------------/DOM Manipulation----------------------------------------------------------
 
+// --------------------------------------------------------------NAVIGATION Menu----------------------------------------------------------
+//function for creation of pagination menu
+ function createCommentsNavigation(pages){
+
+	var pagesContainer = $(".pagination-pages"); //Get container for pages
+	
+	//create pages menus
+		pagesContainer.append(newPage('first','&laquo;')); //Add << button
+	
+	//Add each page and make page 1 active
+	for(var i = 1; i <= pages; i++){
+		pagesContainer.append(newPage(i,i));   
+	}
+	pagesContainer.append(newPage('last','&raquo;')); //Add >> button
+	
+	//Manage visual aspects
+	$("#first").addClass('disabled'); //disable first button
+	
+	//if only one page - Disable last button
+	if(pages == 1){
+	$("#last").addClass('disabled');
+	}
+	$("#1").addClass('active'); //Set first page as active
+    
+}//END createArticlesNavigation
+
+function newPage(id,text){
+     return $("<a id='" + id + "' href='#'>" + text + "</a>").click(navigate);
+}
+     
+//Function to handle navigation buttons clicks
+function navigate(){
+	var clicked = $(this);                     //get clicked element in the navigation panel
+	var currentPage = parseInt($(".active").attr('id'),10); //get current page number
+	var futurePage= currentPage;
+	switch(clicked.attr('id')){
+		case 'first':
+			//if the current page is not first page
+			if(currentPage > 1){
+				futurePage = 1;
+			}
+		break;
+		case 'last':
+			//if current page is not last page
+			if(currentPage < commTotalPages){
+				futurePage = commTotalPages;
+			}
+		break;
+		default:
+			var newPage = clicked.attr('id');  //get clicked page number
+			//if clicked page is in valid page range
+			if(newPage >= 1 && newPage <=commTotalPages){
+				futurePage = newPage;
+			}
+		break;
+	} //End Switch
+	
+	
+	
+	var comments = new Comments();
+	comments.getCommentsForArticle(currentArticleId,futurePage,commPageSize).done(displayComments); //get and display new articles;
+	
+	//Manage visual spects
+	$("a").removeClass('active');           //remove active class for all elements
+	$("#" + futurePage).addClass('active'); //activate new page
+	
+	if(parseInt(futurePage,10) === 1 ){
+		$("#first").addClass('disabled');
+		$("#last").removeClass('disabled');
+	}else if(parseInt(futurePage,10) === commTotalPages ){
+		$("#first").removeClass('disabled');
+		$("#last").addClass('disabled');
+	}
+	else{
+		$("#first").removeClass('disabled');
+		$("#last").removeClass('disabled');
+	}
+	
+}//END Navigation function
+// --------------------------------------------------------------/NAVIGATION Menu----------------------------------------------------------
+
 // ---------------------------------------------------------------Events Handle-----------------------------------------------------------
 
 //function for handling mouse click on elements from top menu
@@ -136,14 +210,15 @@ function topMenuClick(){
    
    switch (clicked.attr('id')){
        case 'login':
+            window.location.href = UI_PAGE + "login.html";
        case 'logout':
-           window.location.href = UI_PAGE + "login.html";
+           window.location.href = UI_PAGE + "logout.html";
        break;
        case 'new-article':
            window.location.href = UI_PAGE + "newArticle.html";
        break;
        case 'contact-us':
-           window.location.href = UI_PAGE + "ContactUs.html";
+           window.location.href = UI_PAGE + "contactUs.html";
        break;
        case 'go-to-articles':
              window.location.href = UI_PAGE + "articles.html";
@@ -151,13 +226,44 @@ function topMenuClick(){
    }
 }//END topMenuCLick() function
 
+  //Function to display selected Article
+    function displayArticle(response){
+       
+       if(response.length > 0 && (response[0].id === currentArticleId) ){
+           var art = new Article(response[0]);
+           
+           var container = $("#container");
+           container.append(createArticleElement(art));
+           expectedCommentsNo = art.commCount;
+           addCommentSection();
+       }
+       else{
+           console.log("Article received not as expected!");
+       }
+    }//END displayArticle
+
+ function displayComments(response){
+    
+        if(response.length > 0 && response[0].article_id === currentArticleId){
+            var commentsContainer = $("#comments-list");
+            commentsContainer.empty();
+            for(var i = 0; i < response.length; i++){
+                var comm = new Comment(response[i]);
+                commentsContainer.append(createCommentElement(comm));            
+            }
+        }
+        else if(expectedCommentsNo != undefined && expectedCommentsNo != response.length){
+             console.log("Comments received not as expected!");
+        }
+    }
+
 //Edit Article click event handler
 function editArticleClick(event){
   
     event.stopPropagation();
     //var article = new Article();
     var markedId = $(this).parents('article').attr("data-value");
-    window.location.href = UI_PAGE + "newArticle.html?id=" + markedId;
+    window.location.href = UI_PAGE + "editArticle.html?id=" + markedId;
 
 }//END EditArticleClick
 

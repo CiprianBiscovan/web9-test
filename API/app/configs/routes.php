@@ -13,13 +13,24 @@
     $routes['/comments/add'] = array("class"=>"Comments", "method"=>"createItem");
     $routes['/comments/delete'] = array("class"=>"Comments", "method"=>"deleteItem");
     $routes['/comments/edit'] = array("class"=>"Comments", "method"=>"updateItem");
+    $routes['/comments/count'] = array("class"=>"Comments", "method"=>"commentsCount");
     
     $routes['/comment'] = array("class"=>"Comments", "method"=>"getComment");
      
     $routes['/login'] = array("class"=>"Accounts", "method"=>"login");
     $routes['/logout'] = array("class"=>"Accounts", "method"=>"logout");
+    $routes['/signup'] = array("class"=>"Accounts", "method"=>"createAccount");
+    $routes['/users/update'] = array("class"=>"Accounts", "method"=>"updateUser");
+    $routes['/users/changePassword'] = array("class"=>"Accounts", "method"=>"changePassword");
+    $routes['/users/changeRole'] = array("class"=>"Accounts", "method"=>"changeRole");
+    $routes['/users/getUser'] = array("class"=>"Accounts", "method"=>"getUser");
+    $routes['/users/delete'] = array("class"=>"Accounts", "method"=>"deleteUser");
+    $routes['/users'] = array("class"=>"Accounts", "method"=>"getAll");
     
     $routes['/categories'] = array('class'=>"Categories",'method'=>"getAll");
     $routes['/categories/add'] = array('class'=>"Categories",'method'=>"createItem");
     $routes['/categories/delete'] = array('class'=>"Categories",'method'=>"deleteItem");
+    
+    $routes['/contactUs'] = array('class'=>"ContactUs",'method'=>"sendMessage"); 
+    
 ?>

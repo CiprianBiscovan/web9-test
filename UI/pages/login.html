@@ -5,19 +5,60 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script> <!--for coockies-->
         <script type="text/javascript" src="../configs/configs.js"></script>
         <script type="text/javascript" src="../models/User.js"></script>
-        <script type="text/javascript" src="../views/user.js"></script>
+        <script type="text/javascript" src="../views/login.js"></script>
+        <script type="text/javascript" src="../views/signup.js"></script>
     </head>
     <body>
         <p id="user-logged"></p>
-        <section>
+        <section id='login'>
+            <h3>Login</h3>
             <input type="email" name="user_email" placeholder="Email"/>
             <p id="error-email" class="">*</p>
-            <br>
+            
             <input type="password" name="user_password" placeholder="Password"/>
             <p id="error-pass" class="">*</p>
-            <br>
+           
             <button id="login_btn">Login</button>
-            <button id="logout_btn">Logout</button>
+             <br>
+        </section>
+        <section id='sign-up'>
+            <h3>Create Account</h3>
+            
+            <label for="firstname">*Firstname:</label>
+            <input type="text" name="firstname"/>
+            <div id='error-signup-firstname'><p>*</p></div>
+           
+            
+            <label for="name">*Name:</label>
+            <input type="text" name="name"/>
+            <div id='error-signup-name'><p>*</p></div>
+            
+            <label for="email">*Email:</label>
+            <input type="text" name="email"/>
+            <div id='error-signup-email'><p>*</p></div>
+            
+             <label for="password">*Password:</label>
+            <input type="password" name="password"/>
+            <div id='error-signup-password'><p>*</p></div>
+            
+             <label for="repassword">*Reenter Password:</label>
+            <input type="password" name="repassword"/>
+            <div id='error-signup-repassword'><p>*</p></div>
+            
+            <label for="nickname">Nickname:</label>
+            <input type="text" name="nickname"/>
+            <div id='error-signup-nickname'><p>*</p></div>
+            
+            <label for="age">Age:</label>
+            <input type="number" min='10' max='150' name="age"/>
+            <div id='error-signup-age'><p>*</p></div>
+            
+             <label for="gender">Gender:</label>
+            <input type="radio" name="gender" value='M'> Male
+            <input type="radio" name="gender" value='F'> Female
+            <div id='error-signup-age'><p>*</p></div>
+            
+            <button id="signup_btn">Sign Up</button>
         </section>
     </body>
 </html>

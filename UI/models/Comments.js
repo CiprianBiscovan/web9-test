@@ -24,21 +24,45 @@ Comments.prototype.getAll= function(){
     return $.ajax(config); //send req. to server and return the response
 }//END getAll function
 
-//Function for getting all comments for given article
-Comments.prototype.getCommentsForArticle = function(articleId){
+//Function for getting all comments from server
+Comments.prototype.commentsCount= function(articleId){
     
-    var that = this //save current object
+    //Configure the request for comments
+    var config = {
+        url:    URL_PHP + "comments/count",
+        method: "GET",
+        data:{
+            article_id: articleId
+        },
+        //function to execute on req. fail
+        error: function(response){
+            console.log(response);
+            console.log("Oops! Something went wrong while getting comments");
+        }
+    }; //END Config Object
+    
+    return $.ajax(config); //send req. to server and return the response
+};//END getAll function
+
+
+//Function for getting all comments for given article
+Comments.prototype.getCommentsForArticle = function(articleId,page,pageSize){
+    
+    var that = this; //save current object
     
     //Configure the request for comments
     var config = {
         url:    URL_PHP + "comments/forArticle",
         method: "GET",
         data:{
-            article_id: articleId
+            article_id: articleId,
+            page:page,
+            pageSize:pageSize
         },
        
         //function to execute on req. fail
-        error: function(){
+        error: function(response){
+            console.log(response);
             console.log("Oops! Something went wrong while getting comments");
         }
     }; //END Config Object

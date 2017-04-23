@@ -1,5 +1,5 @@
 /*global $*/
-/*global Articles*/
+/*global Articles User*/
 /*global UI_PAGE*/
 
 //always check if HTML is loaded before doing anything
@@ -9,8 +9,9 @@ $(document).ready(onHtmlLoaded);
 	var totalArticles;   //Total number of articles in DB
 	var pageSize = 5;    //Max. Number of articles on each page 
 	var totalPages = 0; //Total number of page - initialized with 0
-	var articles = new Articles(); //create Articles object
+	var articles = undefined;
 	var user = new User();
+	var filter = null;
 
 //Function executed after document is fully loaded
 function onHtmlLoaded() {
@@ -18,9 +19,25 @@ function onHtmlLoaded() {
 	//Add top buttons and links based on user logged in 
 	addTopMenu();
 	
-	//get total number of articles existing in DB
-	articles.Count().done(function(count){
+	$('#search-button').on('click',searchArticles);
 	
+	filter = getUrlParam('filter');
+	
+	if(filter !== null){
+		displayFilter();
+	}
+	
+	buildArticlesList();
+
+}//END onHtmlLoaded function
+
+function buildArticlesList(){
+	
+	articles = new Articles(); //create Articles object
+	
+		//get total number of articles existing in DB
+	articles.Count(filter).done(function(count){
+	   
 		if(count.length > 0 ){
 			totalArticles = parseInt(count[0].NumOfArticles,10);
 			if(totalArticles > 0){
@@ -33,9 +50,9 @@ function onHtmlLoaded() {
 		createArticlesNavigation(totalPages);
 	});
 	
-	articles.getPageArticles(1,pageSize).done(displayArticles);
+	articles.getPageArticles(1,pageSize,filter).done(displayArticles);
 	
-}//END onHtmlLoaded function
+}//END buildArticlesList function
 
 // ------------------------------------------------DOM Manipulation------------------------------------------------------------
 //Function for creating top menu 
@@ -44,6 +61,7 @@ function addTopMenu(){
    
         user.isLogged ? topMenu.append("<h3>"+ user.loggedUserRole + ": " + user.loggedUserName + "</h3>").append("<button id='logout'>Logout</button>") :
                    topMenu.append("<button id='login'>Login</button>");
+                          
         
         user.isAdmin ? topMenu.append("<button id='new-article'>New Article</button>") :
                   topMenu.append("<button id='contact-us'>Contact Us</button>");
@@ -58,7 +76,7 @@ function displayArticles(){
 	var container = $("#container"); //get data container <ul>
 
 	container.empty();//clear list of old content
-
+   
 	//iterate through articles list and add them to the <ul> container
 	for(var i = 0; i<articles.models.length; i++) {
 		var articleElem = createArticleListElement(articles.models[i]);
@@ -99,13 +117,26 @@ function createArticleElement(art){
     return articleElem;
 }//END createArticleElement
 
+function displayFilter(){
+	var activeFilter = $('#active-filter');
+	var clearFilter = $("<h4>X<h4>");
+	clearFilter.on('click',function() {
+	    window.location.href = UI_PAGE + "articles.html";
+	});
+	activeFilter.append("<h5>Articles with title containing word "+ filter +"</h5>")
+	            .append(clearFilter);
+	
+	
+}//END displayFilter
+
 // --------------------------------------------------------------NAVIGATION Menu----------------------------------------------------------
 //function for creation of pagination menu
  function createArticlesNavigation(pages){
 
 	var pagesContainer = $(".pagination-pages"); //Get container for pages
 	var stepContainer = $(".pagination-step");  //Get container for Newer/Older buttons
-	
+	pagesContainer.empty();
+	stepContainer.empty();
 	//Add Newer Older buttons
 	stepContainer.append(newPage("previous","<-Older")); //Add Older button
 	stepContainer.append(newPage('next','Newer->'));     //Add Newer Button
@@ -194,7 +225,7 @@ function navigate(){
 	
 	//displayArticles(futurePage); //display new articles;
 	articles = new Articles(); //create new object to reset models[] array
-	articles.getPageArticles(futurePage,pageSize).done(displayArticles); //get and display new articles;
+	articles.getPageArticles(futurePage,pageSize,filter).done(displayArticles); //get and display new articles;
 	
 	//Manage visual spects
 	$("a").removeClass('active');           //remove active class for all elements
@@ -230,14 +261,16 @@ function topMenuClick(){
    
    switch (clicked.attr('id')){
        case 'login':
+       	 window.location.href = UI_PAGE + "login.html";
+       break;
        case 'logout':
-           window.location.href = UI_PAGE + "login.html";
+           window.location.href = UI_PAGE + "logout.html";
        break;
        case 'new-article':
            window.location.href = UI_PAGE + "newArticle.html";
        break;
        case 'contact-us':
-           window.location.href = UI_PAGE + "ContactUs.html";
+           window.location.href = UI_PAGE + "contactUs.html";
        break;
        case 'go-to-articles':
              window.location.href = UI_PAGE + "articles.html";
@@ -249,9 +282,9 @@ function topMenuClick(){
 function editArticleClick(event){
   
     event.stopPropagation();
-    var article = new Article();
+    //var article = new Article();
     var markedId = $(this).parents('article').attr("data-value");
-    window.location.href = UI_PAGE + "newArticle.html?id=" + markedId;
+    window.location.href = UI_PAGE + "editArticle.html?id=" + markedId;
 
 }//END EditArticleClick
 
@@ -270,6 +303,22 @@ function deleteArticleClick(event){
 
 }//END deleteArticleClick
 
+//Function for searching articles by title
+function searchArticles(){
+	var searchText = $('input[name="search"]').val().trim();
+	var searchError = $('#error-search-input');
+	
+	if(searchText.length > 0){
+		searchError.html("*");
+		window.location.href = UI_PAGE + "articles.html?filter="+searchText+"";
+		// filter='%' + searchText + '%';
+		// buildArticlesList();
+	}else{
+		searchError.html("*Nothing to search for");
+	}
+	
+}//END searchArticles function
+
 function deleteResponse(response,statusText,jqXHR){
 
         if(response.success === true){
@@ -280,3 +329,14 @@ function deleteResponse(response,statusText,jqXHR){
         }
 }//End deleteResponse
 // ---------------------------------------------------------------/Events Handle-----------------------------------------------------------
+
+//util function, will return the url param for the provided key
+    function getUrlParam(name){
+        var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+        if (results==null){
+           return null;
+        }
+        else{
+           return results[1] || 0;
+        }
+    }

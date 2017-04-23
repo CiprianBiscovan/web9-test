@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script> <!--for coockies-->
+        <script type="text/javascript" src="../configs/configs.js"></script>
+        <script type="text/javascript" src="../models/User.js"></script>
+        <script type="text/javascript" src="../views/myAccount.js"></script>
+    </head>
+    <body>
+        <p id="user-logged"></p>
+        <h1>Account Details</h1>
+       <div id='top-menu'></div>
+        <section id='current-user-data'>
+            <fieldset>
+                <legend>Profile</legend>
+                <div> 
+                <h3 id='name'></h3>
+                <p><em>a.k.a</em></p>
+                <h3 id='nickname'></h3>
+                <p id='loggin-date'><em>Logged In:</em></p>
+                </div>
+                 <div>
+                    <h3>Role:</h3>
+                    <p id='role'><em></em></p>
+                </div>
+                <div>
+                    <h3>Email:</h3>
+                    <p id='email'><em></em></p>
+                </div>
+                 <div>
+                    <h3>Age:</h3>
+                    <p id='age'><em></em></p>
+                </div>
+                 <div>
+                    <h3>Gender:</h3>
+                     <p id='gender'><em></em></p>
+                </div>
+                <div>
+                    <p id='created'><em>Created:</em></p>
+                    <p id='modified'><em>Modified:</em></p>
+                </div>
+            </fieldset>
+        </section>
+        <section id='edit-user-data'>
+            <fieldset>
+            <legend>Update Profile</legend>
+            
+            <label for="firstname">*Firstname:</label>
+            <input type="text" name="firstname"/>
+            <div id='error-edit-firstname'><p>*</p></div>
+            
+            <label for="name">*Name:</label>
+            <input type="text" name="name"/>
+            <div id='error-edit-name'><p>*</p></div>
+            
+            <label for="email">*Email:</label>
+            <input type="text" name="email"/>
+            <div id='error-edit-email'><p>*</p></div>
+            
+            <label for="nickname">Nickname:</label>
+            <input type="text" name="nickname"/>
+            <div id='error-edit-nickname'><p>*</p></div>
+            
+            <label for="age">Age:</label>
+            <input type="number" min='10' max='150' name="age"/>
+            <div id='error-edit-age'><p>*</p></div>
+            
+             <label for="gender">Gender:</label>
+            <input type="radio" name="gender" value='M'> Male
+            <input type="radio" name="gender" value='F'> Female
+            <div id='error-edit-age'><p>*</p></div>
+            
+            <button id="update-button">Update</button>
+            </fieldset>
+        </section>
+        <section id='change-password'>
+            <fieldset>
+            
+            <legend>Change Password</legend>
+            
+            <label for="password">Current Password:</label>
+            <input type="password" name="password"/>
+            <div id='error-edit-password'><p>*</p></div>
+            
+            <label for="newpassword">New Password:</label>
+            <input type="password" name="newpassword"/>
+            <div id='error-edit-newpassword'><p>*</p></div>
+            
+             <label for="repassword">Reenter Password:</label>
+            <input type="password" name="repassword"/>
+            <br>
+            
+            <button id="update-password-button">Update</button>
+            </fieldset>
+        </section>
+         <section id='existing-accounts'>
+        </section>
+    </body>
+</html>

@@ -10,6 +10,8 @@
             try{
                 
                 $this->dbh = new PDO("mysql:host=" . DBHOST . ";dbname=" . DBNAME, DBUSER, DBPASS);
+                //$this->dbh->exec("SET GLOBAL time_zone = '" . date_default_timezone_set('Europe/Bucharest') . "'");
+                $this->dbh->exec("SET GLOBAL time_zone = '+03:00'");
                 
             }catch(PDOException $e){
                 

@@ -36,11 +36,15 @@ Articles.prototype.getAll = function() {
 };//END getAll method
 
 //Method for retrieving number of articles stored in DB
-Articles.prototype.Count = function(){
+Articles.prototype.Count = function(userFilter){
+
 	var config = {
 		url: URL_PHP + "articles/count",
 		method:'GET',
 		dataType: 'JSON',
+		data:{
+			filter:userFilter
+        },
 		error: function(){
 			console.log("Oops! Somethign went wrong while counting articles");
 		}
@@ -51,7 +55,7 @@ Articles.prototype.Count = function(){
 };//END Count method
 
 //Method for getting articles for current page
-Articles.prototype.getPageArticles = function(pageNum,pageSize){
+Articles.prototype.getPageArticles = function(pageNum,pageSize,userFilter){
 
 	var that = this; //save current object instance
 	 
@@ -62,7 +66,8 @@ Articles.prototype.getPageArticles = function(pageNum,pageSize){
 		dataType: 'JSON',
 		data:{
 			pageNum: pageNum,
-			pageSize: pageSize
+			pageSize: pageSize,
+			filter: userFilter
 		},
 		
 		// Function to execute in case of req. succeded

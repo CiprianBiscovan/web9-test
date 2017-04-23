@@ -33,45 +33,54 @@ class Categories{
            $dbResult = $this->categoriesModel->insertItem(trim($_POST['name']));
            
            if($dbResult['lastInsertedID'] > 0){
-              return array("success"=>true,"lastInsertedID"=>$dbResult['lastInsertedID']);               
+              return array("success"=>true,"lastInsertedID"=>$dbResult['lastInsertedID'],"message"=>"Category successfully added!");               
            }
            else if($dbResult['error'] == DB_DUPLICATE_ENTRY){
                
-               return array("succes"=>false,"message"=>"Category already exist!");
+               date_default_timezone_set("Europe/Bucharest");
+               $update = date("Y-m-d H:i:s");
+               $dbResult = $this->categoriesModel->reactivateCategory(trim($_POST['name']),$update);
+               if($dbResult['rowsAffected'] === 1){
+                    return array("success"=>true,"message"=>"Category successfully added!");
+               }else{
+                    return array("success"=>false,"message"=>"Category could not be added!");
+               }
            }
             
         }else{
-            return array("succes" => false, "message" => "Category name is required."); 
+            return array("success" => false, "message" => "Category name is required."); 
         }
            
         }else{
            
            http_response_code(401);
-           return array("succes" => false, "message" => "Unauthorized. You have to be logged to create categories.");
+           return array("success" => false, "message" => "Unauthorized. You have to be logged to create categories.");
         }
    }//END createItem function
    
    function deleteItem(){
        
        global $REQUEST;
+        date_default_timezone_set("Europe/Bucharest");
+        $update = date("Y-m-d H:i:s");
        
         if($this->isAdmin){
             
             if(isset($REQUEST['id']) && !empty(trim($REQUEST['id']))){
                 
-                $dbResult = $this->categoriesModel->deleteItem(trim($REQUEST['id']));
+                $dbResult = $this->categoriesModel->deleteItem(trim($REQUEST['id']),$update);
                 if($dbResult['rowsAffected'] == 1){
                     return array("success"=>true,"message"=>"Category deleted"); 
                 }
                 else{
-                    return array("succes"=>false,"message"=>"Error deleting selected category");
+                    return array("success"=>false,"message"=>"Error deleting selected category");
                 }
             }else{
-                return array("succes" => false, "message" => "Category name is required."); 
+                return array("success" => false, "message" => "Category name is required."); 
             }
         }else{
            http_response_code(401);
-           return array("succes" => false, "message" => "Unauthorized. You have to be logged to create categories.");
+           return array("success" => false, "message" => "Unauthorized. You have to be logged to create categories.");
         }
    }
     

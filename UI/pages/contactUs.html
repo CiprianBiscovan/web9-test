@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script type="text/javascript" src="../configs/configs.js"></script>
+        <script type="text/javascript" src="../models/Contact.js"></script>
+        <script type="text/javascript" src="../views/contactUs.js"></script>
+    </head>
+    <body>
+        <div id='container'>
+            <h1>Contact Us:</h1>
+            <label for="name">Your Name:</label><br>
+             <input type="text" name="name" placeholder="Name"/>
+            <div id='error-name'><p>*</p>
+            </div><br>
+            <label for="email">Your E-mail:</label><br>
+            <input type="text" name="email" placeholder="Email"/>
+            <div id='error-email'><p>*</p>
+            </div><br>
+            <label for="phone">Phone Number(optional):</label><br>
+             <input type="number" name="phone" placeholder="Phone"/>
+            <div id='error-phone'><p>*</p>
+            </div><br>
+            <label for="email">Subject:</label><br>
+            <input type="text" name="subject" placeholder="Subject"/>
+            <div id='error-subject'><p>*</p>
+            </div><br>
+            <label for="message">Message:</label><br>
+            <textarea name="message" rows='20' cols='70' placeholder='Your message...'></textarea>
+            <div id='error-message'><p>*</p>
+            </div><br>
+            <button id='submit'>Send Message</button>
+        </div>
+    </body>
+</html>

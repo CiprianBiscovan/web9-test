@@ -27,15 +27,26 @@
             }
         }
         function count(){
-            
-            return $this->articlesModel->countArticles($this->isAdmin);
+           
+            if(isset($_GET['filter']) && !is_null($_GET['filter']) && !empty($_GET['filter'])){
+                $_GET['filter'] = '%' . $_GET['filter'] . '%';
+            }else{
+                $_GET['filter'] = '%';
+            }
+           
+            return $this->articlesModel->countArticles($this->isAdmin,$_GET['filter']);
         }
         
         function getArticlesForPage(){
             
+            if(isset($_GET['filter']) && !is_null($_GET['filter']) && !empty($_GET['filter'])){
+                $_GET['filter'] = '%' . $_GET['filter'] . '%';
+            }else{
+                $_GET['filter'] = '%';
+            }
             if(isset($_GET['pageNum']) && isset($_GET['pageSize'])){
                 if($_GET['pageNum']>=0 && $_GET['pageSize'] >=0 ) {
-                     return $this->articlesModel->selectArticlesPage($_GET['pageNum'],$_GET['pageSize'],$this->isAdmin);
+                     return $this->articlesModel->selectArticlesPage($_GET['pageNum'],$_GET['pageSize'],$_GET['filter'],$this->isAdmin);
                 }else{
                      return "Page number and/or number of articles per page invalid!";
                 }
@@ -96,7 +107,7 @@
         }
         
         function editItem() {
-            
+           
             // if no user is logged -> return error code 401
             if ($this->isAdmin === false ) {
                 http_response_code(401);
