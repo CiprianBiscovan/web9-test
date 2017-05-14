@@ -82,7 +82,7 @@ button{
     
     font-family: arial;
     font-size: x-large;
-    line-height: 0px;
+    /*line-height: 0px;*/
     /*margin: 10px 50px 0px 50px;*/
     margin:10px 50px;
     color:white;
