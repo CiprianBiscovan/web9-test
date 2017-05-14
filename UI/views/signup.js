@@ -1,31 +1,40 @@
 /*global $*/
+/* global User */
+/* global setError resetError popUp*/
 
+//always check if HTML is loaded before doing anything
+//HTML operations on view
 $(document).ready(onHtmlLoaded);
-
+    
+    //Global variables for user inputs
     var firstnameText     = undefined;
-    var nameText       = undefined;
-    var emailText      = undefined;
-    var passwordText   = undefined;
-    var repasswordText = undefined;
-    var nicknameText   = undefined;
-    var ageText        = undefined;
+    var nameText          = undefined;
+    var emailText         = undefined;
+    var passwordText      = undefined;
+    var repasswordText    = undefined;
+    var nicknameText      = undefined;
+    var ageText           = undefined;
     var selGender         = undefined;
 
+//Function executed after document is fully loaded
 function onHtmlLoaded(){
     
-   var submit = $('#signup_btn');
+   var submit = $('#signup_btn');                                               //get submit button
    
-   submit.on('click',signUp);
+   submit.on('click',signUp);                                                   //attach click event to submit button
     
 }//END onHtmlLoaded function
 
 //Function for handling clicks on <Sign Up> button
 function signUp(){
-    
+    //check if user inputs are valid
     if(validInputs()){
-        console.log("Signing Up..");
-        var user = new User();
-        var newUser={
+     
+        resetError($("#inputs-in-error"));                                     //reset any previous error on inputs
+     
+        var user = new User();                                                  //new User object
+        
+        var newUser={                                                           //user object containing user data
             firstname: firstnameText,
             name: nameText,
             email: emailText,
@@ -37,70 +46,97 @@ function signUp(){
             
         };
         
+        //request to create accont
         user.signUp(newUser).done(function(response){
-            console.log(response.message);
-        });
+         
+            if(response.success === true){
+                popUp("success",response.message);
+                window.location.reload();
+                
+            }else{
+                popUp("error",response.message,response.responseText);
+            }
+        }); //create account request completed
+        
+    }else{
+        setError($("#inputs-in-error"),"You have errors on inputs above!");
     }
     
 }//END signUp function
 
-//function for validationg user inputs
+//Validate user inputs
 function validInputs(){
-    var validInputs = true;
-   firstnameText = $("input[name='firstname']").val().trim();
-   nameText = $("input[name='name']").val().trim();
-   emailText = $("input[name='email']").val().trim();
-   passwordText = $("input[name='password']").val();
-   repasswordText = $("input[name='repassword']").val();
-   nicknameText = $("input[name='nickname']").val().trim();
-   ageText = $("input[name='age']").val().trim();
-   selGender = $("input[type='radio']:checked").val();
    
+   var validInputs = true;                                                      //assume there are no errors - set flag to true
+                                                                                // any error found set flag to false
+   //Get user inputs
+   firstnameText   = $("input[name='firstname']").val().trim();
+   nameText        = $("input[name='name']").val().trim();
+   emailText       = $("input[name='email']").val().trim();
+   passwordText    = $("input[name='password']").val();
+   repasswordText  = $("input[name='repassword']").val();
+   nicknameText    = $("input[name='nickname']").val();
+   ageText         = $("input[name='age']").val().trim();
+   selGender       = $("input[type='radio']:checked").val();
+   
+   //validate each input
    if(firstnameText.length === 0 ){
-       $('#error-signup-firstname').html('*Firstname cannot be empty');
+       setError($('#error-signup-firstname'),"*Firstname cannot be empty!");
        validInputs = false;
    }else{
-       $('#error-signup-firstname').html('*');
+       resetError($('#error-signup-firstname'));
    }
+   
    if(nameText.length === 0 ){
-       $('#error-signup-name').html('*Name cannot be empty');
+       setError( $('#error-signup-name'),"*Name cannot be empty!");
        validInputs = false;
    }else{
-       $('#error-signup-name').html('*');
+       resetError($('#error-signup-name'));
    }
+   
    if(emailText.length === 0 ){
-       $('#error-signup-email').html('*Email cannot be empty');
+       setError( $('#error-signup-email'),"*Email cannot be empty!");
        validInputs = false;
    }else if(!isValidEmail(emailText)){
-        $('#error-signup-email').html('*Email is not valid');
+        setError( $('#error-signup-email'),"*Email is not valid!");
         validInputs = false;
    }else{
-       $('#error-signup-email').html('*');
-    }
+       resetError($('#error-signup-email'));
+   }
     
    if(passwordText.length === 0 ){
-       $('#error-signup-password').html('*Password cannot be empty');
+       setError($('#error-signup-password'),"*Password cannot be empty!");
        validInputs = false;
    }else if(passwordText.length < 3){
-       $('#error-signup-password').html('*Password too short');
+       setError($('#error-signup-password'),"*Password too short!(Min.3 characters)");
        validInputs = false;
-    }else if(passwordText !== repasswordText){
-       $('#error-signup-password').html('*Passwords don`t match');
-       validInputs = false;
-    }else{
-       $('#error-signup-password').html('*');
-   }
-   if(!isValidAge(ageText) && ageText.length > 0){
-       $('#error-signup-age').html('*Age is not valid');
-       validInputs = false;
-   }else if(ageText.length == 1 || ageText > 150){
-       $('#error-signup-age').html('*Age must be between 10 and 150!');
+   }else if(passwordText !== repasswordText){
+       setError($('#error-signup-password'),"*Passwords don`t match!");
        validInputs = false;
    }else{
-        $('#error-signup-age').html('*');
+       resetError($('#error-signup-password'));
+   }
+   
+   if(nicknameText.length > 0 && nicknameText.length !== nicknameText.trim().length){
+       setError($('#error-signup-nickname'),"*Leading/tailing spaces are not allowed!");
+       validInputs = false;
+   }else{
+       resetError($('#error-signup-nickname'));
+   }
+   
+   if(!isValidAge(ageText) && ageText.length > 0){
+       setError($('#error-signup-age'),"*Age is not valid!");
+       validInputs = false;
+   }else if(ageText.length == 1 || ageText > 150){
+       setError($('#error-signup-age'),"*Age must be between 10 and 150!");
+       validInputs = false;
+   }else{
+        resetError($('#error-signup-age'));
    }
 
    return validInputs;
+
+ 
 }//END validInputs
 
  //Validate user email
@@ -110,6 +146,7 @@ function validInputs(){
      return email.match(regEx);
             
  }//END isValidEmail function
+ 
  //Validate user email
  function isValidAge(age){
      

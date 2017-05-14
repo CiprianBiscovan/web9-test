@@ -3,154 +3,288 @@
     <head>
         <title>Ciprian`s Blog - Homepage</title>
         
-        <!--Incarcare fisier extern CSS -->
-        <link rel="stylesheet" href="css/style.css" type="text/css" />
+        <!--Load external CSS files -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css" type="text/css" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/Blog/css/homepage.css" type="text/css" />
+        <link rel="stylesheet" href="/Blog/css/articles.css" type="text/css" />
+        <link rel="stylesheet" href="/Blog/css/inputErrorReporting.css" type="text/css" />
         
-        <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css" type="text/css" />-->
-        
-        <!--Internal Stylesheet - stilizare titlu-->
-        <style type="text/css">
-        
-            .title{
-                color:blue;
-                background-color:lightgreen;
-                text-align:center;
-                padding:15px;
-                text-shadow:2px 3px #808080/*(color gray)*/;
-                font-family:"Times New roman";
-                margin:1px;
-            }
-            
-        </style>
-        
+        <!--Load external Javascript files-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script><!--for coockies-->
+        <script type="text/javascript" src="/Blog/UI/configs/configs.js"></script>
+        <script type="text/javascript" src="/Blog/UI/models/User.js"></script>
+        <script type="text/javascript" src="/Blog/UI/models/Articles.js"></script>
+        <script type="text/javascript" src="/Blog/UI/models/Article.js"></script>
+        <script type="text/javascript" src="/Blog/UI/views/index.js"></script>
+        <script type="text/javascript" src="/Blog/UI/views/logout.js"></script>
+        <script type="text/javascript" src="/Blog/UI/views/inputErrorReporting.js"></script>
     </head>
     
     <body>
-        <!-- Titlu Pagina-->
-        <h1 id="top" class="title">Welcome to Ciprian`s blog!</h1>
+        <!--Grid System Container-->
+        <div class="container-fluid">
+            
+            <!--Row 1-->
+            <div class="row">
+                
+                <!--Column 1-Row 1-->
+                <div class="col-xs-5 col-sm-3 col-md-2 col-lg-2 text-center">
+                    <img class="img-rounded " height="100px" src="Resources/New_logo.png" alt="MyLogo">
+                </div> <!--Column 1-Row 1-->
+                
+                <!--Column 2-Row 1-->
+                <div class="col-xs-5 col-sm-7 col-md-8 col-lg-8">
+                    <h1 id="top" class="title text-center">Welcome to Ciprian`s blog!</h1>  <!-- Page Title-->
+                </div><!--Column 2-Row 1-->
+               
+                <!--Column 3 Row 1-->
+                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                   <a id='login' class="btn btn-lg btn-success btn-block" href='/Blog/UI/pages/login.html'>Login</a> 
+                   <a id='logout' class="btn btn-lg btn-danger btn-block hidden" href=''>Logout</a> 
+                   <a id='contact-us' class="btn btn-lg btn-primary btn-block" disabled="disabled" href='/Blog/UI/pages/contactUs.html'>Contact Us</a>           
+                </div> <!--Column 3 Row 1-->
+                
+            </div><!--Row 1-->
+            
+            <!--Extra row for logged username-->
+            <div class='row'>
+                <div class='col-xs-10'>
+                    <div id='logged-user'></div>
+                </div>
+                <div class='col-xs-2'>
+                    <div id='accounts-btn'></div>
+                </div>
+            </div> <!--Extra row for logged username-->
         
-        <!-- Disclaimer -->
-         <article>
-             <img class= "float-left" align = "Left|Top" src="./Resources/underconstruction.jpg" height="80" alt="Under Construction icon"> 
-                   <p>
-                   <i><b>Hello and Welcome again dear visitor!</b><br>This, really is my first blog and my first webpage 
-                        so, i`m sorry if may seem a little bit sloppy and promiscuous right now but, I promise to stylize, beautify and improve it. 
-                   </i>
-                   </p>
-        </article>
-        
-        <!--Linie -->
+        <!--Header delimiter -->
         <hr>
         
-        <!--Navigation Menu-->
-            <nav id="navmenu">
-                <a class="menuitem float-left" href="./index.html">Home &#x21BB</a>
-                <a class="menuitem float-left" href="#about">About &#x21B7; </a>
-                <a class="menuitem float-left" href="#My-BlogRoll">BlogRoll&#x21B7; </a>
-                <a class="menuitem float-left" href="#footer">Footer &#x21B7;</a>
-            </nav>
-        
-        <!-- About Section -->
-        <section id="about">
-            <h3>About Me:</h3>
+            <!--Row 2-->
+            <div class="row">
             
-            <figure class="float-left">
-            <img class="mypic float-left" src="./Resources/BISCOVAN Ciprian-Alexandru.jpg" height="100" width="70" alt="My Photo"> <br>
-            <figcaption>Me</figcaption>
-            </figure>
+                <!--Column1 - Row 2-->
+                <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
+                
+                    <!--Navigation Menu-->
+                    <nav id="navmenu nav-stacked">
+                        <a class="menuitem  btn btn-success btn-lg btn-block" href="/Blog/UI/pages/articles.html">Blog &#9782;</a>
+                        <a class="menuitem  btn btn-primary btn-lg btn-block" href="#about">About &#x21B7; </a>
+                        <a class="menuitem  btn btn-info btn-lg btn-block"  href="#My-BlogRoll">BlogRoll&#x21B7; </a>
+                        <a class="menuitem  btn btn-warning btn-lg btn-block" href="#footer">Footer &#x21B7;</a>
+                    </nav>
             
-            <p>
-                My name is <span style="color:blue"><strong><u>Ciprian Biscovan</u></strong></span> (<strong><u>Not</u></strong> B<span style="color:red"><strong><u>r</u></strong></span>iscovan, B<span style="color:red"><strong><u>a</u></strong></span>scovan or <span style="color:red"><strong><u>Cristi</u></strong></span> as I`ve seen in the blogrolls of other colleages :-P), 
-                I am 30 years old and I am from Bistrita. I came in Cluj ( not necessarly for the first time :-) ) almost 10 years ago to continue my studies at university which, by the way, is <abbr title="Technical University in Cluj-Napoca">UTCN</abbr>, best known as <strong>"Poli"</strong>.<br>
-                After graduation I started my current job at a company here in Cluj. The job was very interesting and i have learned many new and interesting things, I have met a lot of people and i have traveled a lot.<br>
-                I applied for this course because computer programming is my passion even from highschool and i want to go on this path further. Although, Web development is a new area for me, I want to take a look on it.   
-            </p>
-            
-            <p>
-                <strong><s>Hobbies</s> What I like:</strong> <br>
-                <i>- I`ve already mentioned computer programming so, i`ll skipp it here</i> <br>
-                - reading news and surfing the web; <br>
-                - watching videos on youtube <br>
-                - horror movies and stories <br>
-                - stories, movies, documentaries about mafia and mobsters <br>
-                - music broadcasted by radio stations in general and hip-hop music <br>
-                - driving and cars <br>
-                - romanian comedy shows  and stand-up comedy shows<br>
-            </p>
-            <p>
-                *My favorite TV series of all is <strong>House M.D.</strong>: <br>
-            </p> 
-             <figure class="house-pos">
-                    <a href="http://www.imdb.com/title/tt0412142/" alt="Link to the article about House M.D. on IMDB.com" target="_blank">
-                       <img class="" title="House M.D." src="http://www.impawards.com/tv/posters/house_md_ver4.jpg" height="200" alt="House M.D. logo" border="2">
-                    </a>
-                    <figcaption>House M.D.</figcaption>
-               </figure>
-        </section>
+                </div><!--Column1 - Row 2-->
         
-        <!--BLOGROLL lista cu linkurile la blogurile colegilor de grupa-->
-        <section id="blogroll">
-        <h3>BlogRoll</h3>
-        <p class="list-caption">Below is a list of Blogs that I like:</p>
-        <ul id="My-BlogRoll">
-            <li>
-                <a href="https://preview.c9users.io/spinusorin/web9/Blog/Index.html?_c9_id=livepreview1&_c9_host=https://ide.c9.io" target="_blank"> Spanu Sorin </a>
-            </li>
-             <li>
-                <a href="https://preview.c9users.io/paulsomlea/web9/blog/index.html?_c9_id=livepreview3&_c9_host=https://ide.c9.io" target="_blank"> Paul Somlea </a>
-            </li>
-              <li>
-                <a href="https://preview.c9users.io/auxentiu/web9/blog/blog.html?_c9_id=livepreview3&_c9_host=https://ide.c9.io" target="_blank"> Auxentiu L. </a>
-            </li>
-              <li>
-                <a href="https://preview.c9users.io/lexmedia/web9/BlogProject/index.html?_c9_id=livepreview5&_c9_host=https://ide.c9.io" target="_blank"> Sebastian Balog </a>
-            </li>
-            <li>
-                <a href="https://preview.c9users.io/andrei7/web9/Blog/index1.html?_c9_id=livepreview1&_c9_host=https://ide.c9.io" target="_blank"> Ples Calin</a>
-            </li>
-            <li>
-                <a href="https://preview.c9users.io/sergiuvalenas/web9/Blog/index.html?_c9_id=livepreview2&_c9_host=https://ide.c9.io" target="_blank">Valenas Sergiu</a>
-            </li>
-            <li>
-                <a href="https://preview.c9users.io/benybagut/web9/blog/index.html?_c9_id=livepreview2&_c9_host=https://ide.c9.io" target="_blank">Beny Bagut</a>
-            </li>
-            <li>
-                <a href="https://preview.c9users.io/iraresrazvan/webd9/curs1/Blog/Index.html?_c9_id=livepreview1&_c9_host=https://ide.c9.io" target="_blank">Ienciu Rares Razvan</a>
-            </li>
-            <li>
-                <a href="https://preview.c9users.io/rares25/web9/Curs%201/Blog.html?_c9_id=livepreview1&_c9_host=https://ide.c9.io" target="_blank">Dascal rares</a>
-            </li>
-            <li>
-                <a href="https://preview.c9users.io/andrei/web9/Blog/index.html" target="_blank">Andrei Pop</a>
-            </li>
-            <li>
-                <a href="https://preview.c9users.io/didisuperapple/web9/Blog/index.html?_c9_id=livepreview3&_c9_host=https://ide.c9.io" target="_blank">Diana D</a>
-            </li>
-            <li>
-                <a href="https://preview.c9users.io/rebekkanechita/web9/Blog/index.html?_c9_id=livepreview9&_c9_host=https://ide.c9.io" target="_blank">Rebekka Nechita</a>
-            </li>
-            <li>
-                <a href="https://preview.c9users.io/andahu/web9/Blog/index.html?_c9_id=livepreview0&_c9_host=https://ide.c9.io" target="_blank">Alexandra Huluban</a>
-            </li>
-             <li>
-                <a href="https://preview.c9users.io/sebastianx/web_d/blog/index.html" target="_blank">Stan Sebastian</a>
-            </li>
-        </ul>
-        </section>
+                <!--Column 2 - Row 2-->
+                <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
+                    <div class="text-right">
+                       <h3 id='articles-intro'>Top 5 newest articles...</h3>
+                    </div>
+                    <div>
+                        <!--Top 5 articles-->
+                        <section id='articles-list'>
+                        <ul id="container"></ul>
+                        </section>
+                   </div>
+                </div><!--Column 2 - Row 2-->
         
-         <!-- Footer section -->
+            </div><!--Row 2-->
+        
+         <!-- Delimiter -->
         <hr>
-        <footer id="footer">
-            <address>
-            <p>
-                Created by: Ciprian Biscovan &copy Copyright 2016     
-                <a href="#top">Go to the top of the page &uarr;</a>
-            </p>
-            <p>You can contact me by e-mail: <a href="mailto:ciprian.biscovan@yahoo.com">ciprian.biscovan@yahoo.com</a></p>
-            <p>or by Skype&trade; - my ID is: <span style="color:green"><strong>"ciprianny_bis"</strong></span></p>
-        </address>
-        <cite class="text-danger">***Stylized using OWN stylesheet</cite>
-        </footer>
+             <!--Row 3-->
+            <div class="row">
+                
+                <!--Column 1 - Row 3-->
+                <div class="col-xs-12">
+                    
+                      <!-- About Section -->
+                    <section id="about">
+                    
+                        <h2 class="text-left">About Me:</h2>
+            
+                        <figure class="float-left pull-left text-center">
+                            <img class="mypic float-left img-rounded" src="./Resources/BISCOVAN Ciprian-Alexandru.jpg" height="200" alt="My Photo"> <br>
+                            <figcaption>Me</figcaption>
+                        </figure>
+            
+                        <p class="description lead text-info">
+                            My name is <span style="color:blue"><strong><u>Ciprian Biscovan</u></strong></span> (<strong><u>Not</u></strong> B<span style="color:red"><strong><u>r</u></strong></span>iscovan, B<span style="color:red"><strong><u>a</u></strong></span>scovan or <span style="color:red"><strong><u>Cristi</u></strong></span> as I`ve seen in the blogrolls of other colleages :-P), 
+                            I am 32 years old and I am from Bistrita. I came in Cluj ( not necessarly for the first time :-) ) almost 10 years ago to continue my studies at university which, by the way, is <abbr title="Technical University in Cluj-Napoca">UTCN</abbr>, best known as <strong>"Poli"</strong>.<br>
+                        </p>
+                        <p class="description lead text-info">
+                            After graduation I started my current job at a company here in Cluj. The job was very interesting and i have learned many new and interesting things, I have met a lot of people and i have traveled a lot.<br>
+                        </p>
+                        <p class="description lead text-info">
+                             I applied for this course because computer programming is my passion even from highschool and i want to go on this path further. Although, Web development is a new area for me, I want to take a look on it. 
+                        </p>
+                        
+                        <div class='horizontal-align'>
+                            <h4><s>Hobbies</s> What I like:</h4>
+                            <ul id='hobbies'>
+                                <li><i>I`ve already mentioned computer programming so, i`ll skipp it here...</i> </li>
+                                <li> reading news and surfing the web; </li>
+                                <li> watching videos on youtube; </li>
+                                <li> horror movies and stories; </li>
+                                <li>stories, movies, documentaries about mafia and mobsters; </li>
+                                <li>music broadcasted by radio stations in general and hip-hop music; </li>
+                                <li> driving; </li>
+                                <li> romanian comedy shows  and stand-up comedy shows;</li>
+                            </ul>
+                        </div>
+                        
+                        <div class='horizontal-align'>
+                            
+                        <p>
+                            *My favorite TV series of all is <strong>House M.D.</strong>: <br>
+                        </p>
+                        <figure class="house-pos text-center">
+                            <a href="http://www.imdb.com/title/tt0412142/" alt="Link to the article about House M.D. on IMDB.com" target="_blank">
+                               <img class="img-rounded" title="House M.D." src="http://www.impawards.com/tv/posters/house_md_ver4.jpg" height="200" alt="House M.D. logo" border="2">
+                            </a>
+                            <figcaption>House M.D.</figcaption>
+                        </figure>
+                        </div>
+                        
+                    </section> <!-- About Section -->
+                    
+                </div>   <!--Column 1 - Row 3--> 
+            
+            </div> <!--Row 3-->   
+            
+            <!--Row 4-->
+            <div class="row">
+                
+                 <!--Column 1 - Row 4-->
+                <div class="col-xs-12 ">
+                    
+                     <!--BLOGROLL lista cu linkurile la blogurile colegilor de grupa-->
+                    <section id="My-BlogRoll">
+                        
+                        <h2 class="text-left">BlogRoll:</h2>
+                        
+                        <p class="list-caption">Below is a list of Blogs that I like:</p>
+                        
+                        <ul id="blogroll" class="list-group">
+                            <li class="list-group-item">
+                                <a href="https://preview.c9users.io/spinusorin/web9/Blog/Index.html?_c9_id=livepreview1&_c9_host=https://ide.c9.io" target="_blank"> Spanu Sorin </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="https://preview.c9users.io/paulsomlea/web9/blog/index.html?_c9_id=livepreview3&_c9_host=https://ide.c9.io" target="_blank"> Paul Somlea </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="https://preview.c9users.io/auxentiu/web9/blog/blog.html?_c9_id=livepreview3&_c9_host=https://ide.c9.io" target="_blank"> Auxentiu L. </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="https://preview.c9users.io/lexmedia/web9/BlogProject/index.html?_c9_id=livepreview5&_c9_host=https://ide.c9.io" target="_blank"> Sebastian Balog </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="https://preview.c9users.io/andrei7/web9/Blog/index1.html?_c9_id=livepreview1&_c9_host=https://ide.c9.io" target="_blank"> Ples Calin</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="https://preview.c9users.io/sergiuvalenas/web9/Blog/index.html?_c9_id=livepreview2&_c9_host=https://ide.c9.io" target="_blank">Valenas Sergiu</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="https://preview.c9users.io/benybagut/web9/blog/index.html?_c9_id=livepreview2&_c9_host=https://ide.c9.io" target="_blank">Beny Bagut</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="https://preview.c9users.io/iraresrazvan/webd9/curs1/Blog/Index.html?_c9_id=livepreview1&_c9_host=https://ide.c9.io" target="_blank">Ienciu Rares Razvan</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="https://preview.c9users.io/rares25/web9/Curs%201/Blog.html?_c9_id=livepreview1&_c9_host=https://ide.c9.io" target="_blank">Dascal rares</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="https://preview.c9users.io/andrei/web9/Blog/index.html" target="_blank">Andrei Pop</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="https://preview.c9users.io/didisuperapple/web9/Blog/index.html?_c9_id=livepreview3&_c9_host=https://ide.c9.io" target="_blank">Diana D</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="https://preview.c9users.io/rebekkanechita/web9/Blog/index.html?_c9_id=livepreview9&_c9_host=https://ide.c9.io" target="_blank">Rebekka Nechita</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="https://preview.c9users.io/andahu/web9/Blog/index.html?_c9_id=livepreview0&_c9_host=https://ide.c9.io" target="_blank">Alexandra Huluban</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="https://preview.c9users.io/sebastianx/web_d/blog/index.html" target="_blank">Stan Sebastian</a>
+                            </li>
+                        </ul>
+                    </section> <!--BlogRoll-->
+                    
+                </div> <!--Column 1 - Row 4-->
+                
+            </div> <!--Row 4-->
+            
+            <!--Row 5-->
+            <div class="row">
+            
+                <!--Column 1 - Row 5-->
+                <div class="col-xs-12">
+         
+                    <footer id="footer">
+                        
+                        <address>
+                            
+                            <!--Second Grid System-->
+                            <div class="container-fluid">
+                                
+                                <!--ROW 1  -->
+                                <div class='row'>
+                                    
+                                    <!--COLUMN1 - ROW1  -->
+                                    <div class ='col-xs-4 text-center'>
+                                         <strong>Created by: Ciprian Biscovan</strong>
+                                    </div>
+                                    
+                                    <!--COLUMN 2 - ROW 1-->
+                                    <div class ='col-xs-4 text-center'>
+                                        <strong>
+                                            &copy Copyright   
+                                            
+                                            <!--Script for getting current year-->
+                                            <script>
+                                                document.write(new Date().getFullYear());
+                                            </script> 
+                                        </strong>
+                                    </div>
+                                    
+                                    <!--COLUMN3 - ROW 1-->
+                                    <div class ='col-xs-4 text-center bg-text'>
+                                            <a href="#top"><i class="fa fa-home" aria-hidden="true"></i>&uarr;</a>
+                                    </div>
+                                
+                                </div><!--ROW 1-->
+                                
+                                <!--ROW2-->
+                                <div class='row'>
+                                    
+                                    <!--COLUMN1 - ROW2-->
+                                    <div class='col-xs-4'>
+                                        <p><strong><u>Reach me:</u></strong></p>
+                                        <p><i class="fa fa-phone" aria-hidden="true"></i> 0741791596</p>
+                                        <p><a href="mailto:ciprian.biscovan@yahoo.com"><i class="fa fa-envelope" aria-hidden="true"></i> ciprian.biscovan@yahoo.com</a></p>
+                                        <p><a href="skype:ciprianny_bis?chat"><i class="fa fa-skype" aria-hidden="true"></i> Chat with Me</a></p>
+                                        <p><a href="https://www.facebook.com/Ciprian.Biscovan"><i class="fa fa-facebook-square" aria-hidden="true"></i> Ciprian Biscovan</a></p>
+                                    </div>
+                                   
+                                </div><!--ROW 2-->
+                                  
+                            </div> <!--Second Grid System-->
+                         
+                        </address>
+                         
+                        <cite class="text-danger">***Stylized using bootstrap.css</cite>
+                    
+                    </footer>
+        
+                </div> <!--Column 1 - Row 5-->
+               
+            </div><!--Row 5-->
+        
+       </div> <!--Grid Sys Container-->
        
     </body>
 </html>

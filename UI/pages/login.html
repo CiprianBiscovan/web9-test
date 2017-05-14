@@ -1,64 +1,154 @@
 <!DOCTYPE html>
 <html>
     <head>
+        
+        <!--Load external CSS files -->
+        <link href='https://fonts.googleapis.com/css?family=Arizonia' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/Blog/css/pageLayout.css" type="text/css" />
+        <link rel="stylesheet" href="/Blog/css/login.css" type="text/css" />
+        <link rel="stylesheet" href="/Blog/css/inputErrorReporting.css" type="text/css" />
+        
+        <!--Load external Javascript files-->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script> <!--for coockies-->
         <script type="text/javascript" src="../configs/configs.js"></script>
         <script type="text/javascript" src="../models/User.js"></script>
         <script type="text/javascript" src="../views/login.js"></script>
         <script type="text/javascript" src="../views/signup.js"></script>
+         <script type="text/javascript" src="../views/inputErrorReporting.js"></script>
     </head>
     <body>
-        <p id="user-logged"></p>
-        <section id='login'>
-            <h3>Login</h3>
-            <input type="email" name="user_email" placeholder="Email"/>
-            <p id="error-email" class="">*</p>
+        
+        <!--Top menu container-->
+        <div id='top-menu' >
+            <div id="user-logged" class='inline-block'></div>     <!--Logged username container-->
+            <div id='buttons-wrapper' class='inline-block'></div> <!--Buttons container-->
+            <div class="clearfix"></div>                          <!--Clear float property-->
+        </div> <!--Top menu container-->
+        
+        <!--Navigation between Login/Signup-->
+        <nav>
+            <div> <a id= 'opt-login' href='' class='active'>Login</a></div>
+            <div><a>|</a></div>
+            <div> <a id='opt-signup' href=''>Sign-Up</a></div>
+        </nav>
+        
+        <!--Login section-->
+        <section id='login' class=''>
             
-            <input type="password" name="user_password" placeholder="Password"/>
-            <p id="error-pass" class="">*</p>
+            <div class='image-wrapper'>
+                <img src="/Blog/Resources/Staff.png" height="200px" alt='Login Icon'>
+            </div>
            
-            <button id="login_btn">Login</button>
+            <div class='input-wrapper'>
+                <input type="email" name="user_email" placeholder='E-mail'/>
+            </div><!-- For horizontal alignment of inline-blocks 50% width
+        --><div id='error-email' class='tooltip no-display' input-name='user_email'>
+                <p id='error-email-input' class='tooltiptext bottom'>*</p>
+            </div>
+            <br>
+            
+            <div class='input-wrapper'>
+                <input type="password" name="user_password" placeholder="Password"/>
+            </div><!--For horizontal alignment of inline-blocks 50% width
+        --><div id='error-pass' class='tooltip no-display' input-name='user_password'>
+                <p id='error-pass-input' class='tooltiptext bottom'>*</p>
+            </div>
+           
+            <input type="submit" id="login_btn" value='Login'/>
              <br>
-        </section>
-        <section id='sign-up'>
-            <h3>Create Account</h3>
+             
+        </section> <!--Login section-->
+        
+        <!--Signup section-->
+        <section id='sign-up' class='no-display'>
             
-            <label for="firstname">*Firstname:</label>
-            <input type="text" name="firstname"/>
-            <div id='error-signup-firstname'><p>*</p></div>
-           
+            <!--Top image-->
+            <div class='image-wrapper'>
+                <img src="/Blog/Resources/signup-icon.png" height="200px" alt='Login Icon'>
+            </div>
             
-            <label for="name">*Name:</label>
-            <input type="text" name="name"/>
-            <div id='error-signup-name'><p>*</p></div>
+            <!--Info message - mandatory fileds-->
+            <div id='info-form'class='error-container visible'><p class='infotext'>
+                <strong>INFO:</strong> Fields starting with <span class='star-color'>*</span> are mandatory!
+                </p>
+            </div>
             
-            <label for="email">*Email:</label>
-            <input type="text" name="email"/>
-            <div id='error-signup-email'><p>*</p></div>
+            <!--Firstname input-->
+            <div class="input-horiz-align right-margin">
+                <label for="firstname"><span class='star-color'>*</span>Firstname:</label>
+                <input type="text" name="firstname"/>
+                <div id='error-signup-firstname' class='tooltip no-display' input-name='firstname' >
+                    <p class='tooltiptext bottom'>*</p>
+                </div>
+            </div><!--
             
-             <label for="password">*Password:</label>
-            <input type="password" name="password"/>
-            <div id='error-signup-password'><p>*</p></div>
+            Lastname input
+        --><div class="input-horiz-align">
+                <label for="name"><span class='star-color'>*</span>Name:</label>
+                <input type="text" name="name"/>
+                <div id='error-signup-name'class='tooltip no-display' input-name='name' >
+                    <p class='tooltiptext bottom'>*</p>
+                </div>
+            </div>
             
-             <label for="repassword">*Reenter Password:</label>
-            <input type="password" name="repassword"/>
-            <div id='error-signup-repassword'><p>*</p></div>
+            <!--Email input-->
+            <div class='wrapper'>
+                <label for="email"><span class='star-color'>*</span>E-mail:</label>
+                <input type="email" name="email"/>
+                <div id='error-signup-email' class='tooltip no-display' input-name='email' >
+                    <p class='tooltiptext bottom'>*</p>
+                </div>
+            </div>
             
-            <label for="nickname">Nickname:</label>
-            <input type="text" name="nickname"/>
-            <div id='error-signup-nickname'><p>*</p></div>
+            <!--Password input-->
+            <div class='wrapper'>
+                <label for="password"><span class='star-color'>*</span>Password:</label>
+                <input type="password" name="password"/>
+                <div id='error-signup-password' class='tooltip no-display' input-name='password' >
+                    <p class='tooltiptext bottom'>*</p>
+                </div>
+            </div>
+            <!--Repassword input-->
+            <div class='wrapper'>
+                <label for="repassword"><span class='star-color'>*</span>Reenter Password:</label>
+                <input type="password" name="repassword"/>
+                <div id='error-signup-repassword' class='tooltip no-display' input-name='repassword' >
+                    <p class='tooltiptext bottom'>*</p>
+                </div>
+            </div>
             
-            <label for="age">Age:</label>
-            <input type="number" min='10' max='150' name="age"/>
-            <div id='error-signup-age'><p>*</p></div>
+            <!--Nickname input-->
+            <div class='wrapper'>
+                <label for="nickname">Nickname:</label>
+                <input type="text" name="nickname"/>
+                <div id='error-signup-nickname' class='tooltip no-display' input-name='nickname' >
+                    <p class='tooltiptext bottom'>*</p>
+                </div>
+            </div>
             
-             <label for="gender">Gender:</label>
-            <input type="radio" name="gender" value='M'> Male
-            <input type="radio" name="gender" value='F'> Female
-            <div id='error-signup-age'><p>*</p></div>
+            <!--Age input-->
+            <div class='wrapper'>
+                <label for="age">Age:</label>
+                <input type="number" min='10' max='150' name="age"/>
+                <div id='error-signup-age' class='tooltip no-display' input-name='age' >
+                    <p class='tooltiptext bottom'>*</p>
+                </div>
+            </div>
             
-            <button id="signup_btn">Sign Up</button>
-        </section>
+            <!--Gender input-->
+            <div class='wrapper'>
+                <label for="gender">Gender:</label>
+                <input type="radio" name="gender" value='M'><span>Male</span>
+                <input type="radio" name="gender" value='F'><span>Female</span>
+            </div>
+            
+            <!--Submit button-->
+            <div id='inputs-in-error'class='error-container no-display'><p class='errortext'>*</p></div>
+            <input type="submit" id="signup_btn" value="Sign-Up"/>
+            
+        </section> <!--Signup section-->
     </body>
 </html>

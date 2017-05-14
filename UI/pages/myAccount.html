@@ -1,100 +1,269 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <!--Load external CSS files -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/Blog/css/pageLayout.css" type="text/css" />
+        <link rel="stylesheet" href="/Blog/css/myAccount.css" type="text/css" />
+        <link rel="stylesheet" href="/Blog/css/inputErrorReporting.css" type="text/css" />
+        
+          <!--Load external Javascript files-->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script> <!--for coockies-->
         <script type="text/javascript" src="../configs/configs.js"></script>
         <script type="text/javascript" src="../models/User.js"></script>
         <script type="text/javascript" src="../views/myAccount.js"></script>
+        <script type="text/javascript" src="../views/inputErrorReporting.js"></script>
+        <script type="text/javascript" src="../views/logout.js"></script>
     </head>
     <body>
-        <p id="user-logged"></p>
-        <h1>Account Details</h1>
-       <div id='top-menu'></div>
+       
+        <!--Top menu container-->
+        <div id='top-menu' >
+            <div id='page-title' class='top-menu-wrapper'>
+                <h1>Account Details</h1>
+            </div>
+            
+            <div id='buttons-wrapper' class='top-menu-wrapper'></div>
+            
+        </div>
+        
+        <!--User info section-->
         <section id='current-user-data'>
-            <fieldset>
-                <legend>Profile</legend>
+            
+                <h2>Your Profile:</h2>
+                
+                <!--Username-->
                 <div> 
-                <h3 id='name'></h3>
-                <p><em>a.k.a</em></p>
-                <h3 id='nickname'></h3>
-                <p id='loggin-date'><em>Logged In:</em></p>
+                    <div class='info-name'>
+                        <h3>Username:</h3>    
+                    </div>
+                    <div class='info-value'>
+                        <h3 id='name'></h3>
+                        <p><em>a.k.a</em></p>
+                        <h3 id='nickname'></h3>
+                    </div>
                 </div>
-                 <div>
-                    <h3>Role:</h3>
-                    <p id='role'><em></em></p>
-                </div>
+                
+                <!--Last login time-->
                 <div>
-                    <h3>Email:</h3>
-                    <p id='email'><em></em></p>
+                     <div class='info-name'>
+                       <h3>Last login:</h3>   
+                    </div>
+                    <div class='info-value'>
+                        <p id='loggin-date'><em></em></p>
+                    </div>
                 </div>
-                 <div>
-                    <h3>Age:</h3>
-                    <p id='age'><em></em></p>
-                </div>
-                 <div>
-                    <h3>Gender:</h3>
-                     <p id='gender'><em></em></p>
-                </div>
+                
+                <!--Role-->
                 <div>
-                    <p id='created'><em>Created:</em></p>
-                    <p id='modified'><em>Modified:</em></p>
+                     <div class='info-name'>
+                        <h3>Role:</h3>
+                    </div>
+                    <div class='info-value'>
+                        <p id='role'><em></em></p>
+                    </div>
                 </div>
-            </fieldset>
-        </section>
-        <section id='edit-user-data'>
-            <fieldset>
-            <legend>Update Profile</legend>
+                
+                <!--Email-->
+                <div>
+                    <div class='info-name'>
+                        <h3>E-mail:</h3>
+                    </div>
+                    <div class='info-value'>
+                        <p id='email'><em></em></p>
+                    </div>
+                </div>
+                
+                <!--Age-->
+                 <div>
+                    <div class='info-name'>
+                        <h3>Age:</h3>
+                    </div>
+                    <div class='info-value'>
+                        <p id='age'><em></em></p>
+                    </div>
+                </div>
+                
+                <!--Gender-->
+                <div>
+                    <div class='info-name'>
+                        <h3>Gender:</h3>
+                    </div>
+                    <div class='info-value'>
+                        <p id='gender'><em></em></p>
+                    </div>
+                </div>
+                
+                <!--Acount creation and modify dates-->
+                <div id='account-dates'>
+                    <div id='created-wrapper'>
+                        <p id='created'>Created:</p>
+                    </div>
+                    <div id='modified-wrapper'>
+                        <p id='modified'>Modified:</p>
+                    </div>
+                </div>
+                
+                <!--buttons-->
+                <div id='buttons-container'></div>
+                
+        </section><!--User info section-->
+       
+       <!--Edit user data section background-->
+       <div id='edit-background' class='window-background fixed no-display'>
+        
+        <!--Edit user data section-->
+        <section id='edit-user-data' >
             
-            <label for="firstname">*Firstname:</label>
-            <input type="text" name="firstname"/>
-            <div id='error-edit-firstname'><p>*</p></div>
+            <h2> Update Profile:</h2>
             
-            <label for="name">*Name:</label>
-            <input type="text" name="name"/>
-            <div id='error-edit-name'><p>*</p></div>
+            <!--Information message about mandatory fields-->
+            <div id='error-comment' class='error-container visible'><p class='infotext'>
+                Fields starting with <span>*</span> are mandatory!
+                </p>
+            </div>
             
-            <label for="email">*Email:</label>
-            <input type="text" name="email"/>
-            <div id='error-edit-email'><p>*</p></div>
+            <!--Firstname input-->
+            <div>
+                <label for="firstname"><span>*</span>Firstname:</label>
+                <div>
+                    <input type="text" name="firstname"/>
+                    <div id='error-edit-firstname' class='tooltip no-display' input-name='firstname'>
+                        <p id='error-name-input' class='tooltiptext right'>*</p>
+                    </div>
+                </div>
+            </div>
             
-            <label for="nickname">Nickname:</label>
-            <input type="text" name="nickname"/>
-            <div id='error-edit-nickname'><p>*</p></div>
+            <!--Lastname input-->
+            <div>
+                <label for="name"><span>*</span>Name:</label>
+                <div>
+                    <input type="text" name="name"/>
+                    <div id='error-edit-name' class='tooltip no-display' input-name='name'>
+                        <p id='error-name-input' class='tooltiptext right'>*</p>
+                    </div>
+                </div>
+            </div>
             
-            <label for="age">Age:</label>
-            <input type="number" min='10' max='150' name="age"/>
-            <div id='error-edit-age'><p>*</p></div>
+            <!--Email input-->
+            <div>
+                <label for="email"><span>*</span>Email:</label>
+                <div>
+                    <input type="text" name="email"/>
+                    <div id='error-edit-email' class='tooltip no-display' input-name='email'>
+                        <p id='error-name-input' class='tooltiptext right'>*</p>
+                    </div>
+                </div>
+            </div>
             
-             <label for="gender">Gender:</label>
-            <input type="radio" name="gender" value='M'> Male
-            <input type="radio" name="gender" value='F'> Female
-            <div id='error-edit-age'><p>*</p></div>
+            <!--Nickname input-->
+            <div>
+                <label for="nickname">Nickname:</label>
+                <div>
+                    <input type="text" name="nickname"/>
+                    <div id='error-edit-nickname' class='tooltip no-display' input-name='nickname'>
+                        <p id='error-name-input' class='tooltiptext right'>*</p>
+                    </div>
+                </div>
+            </div>
             
-            <button id="update-button">Update</button>
-            </fieldset>
-        </section>
+            <!--Age input-->
+            <div>
+                <label for="age">Age:</label>
+                <div>
+                    <input type="number" min='10' max='150' name="age"/>
+                    <div id='error-edit-age' class='tooltip no-display' input-name='age'>
+                        <p id='error-name-input' class='tooltiptext right'>*</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!--Gender input-->
+            <div>
+                <div>
+                    <label for="gender">Gender:</label>
+                    <input type="radio" name="gender" value='M'><span>Male</span>
+                    <input type="radio" name="gender" value='F'><span>Female</span>
+                    <div id='error-edit-age' class='tooltip no-display' input-name='gender'>
+                        <p id='error-name-input' class='tooltiptext right'>*</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!--Buttons-->
+            <div id='inputs-in-error' class='error-container no-display'><p class='errortext'>You have errors on your inputs!</p></div>
+            <div id='buttons-container'>
+                <input type='submit' id="update-button" class='green' value='Update'/>
+                <input type='submit' id="cancel-update-button" class='cancel-button red' value='Cancel'/>
+            </div>
+        </section>   <!--Edit user data section-->
+        
+        </div> <!--Edit user data section Background-->
+        
+        <!--Change password section background-->
+        <div id='changepass-background' class='window-background fixed no-display'>
+        
+        <!--Change password section-->    
         <section id='change-password'>
-            <fieldset>
             
-            <legend>Change Password</legend>
+            <h2> Change Password:</h2>
             
-            <label for="password">Current Password:</label>
-            <input type="password" name="password"/>
-            <div id='error-edit-password'><p>*</p></div>
+            <!--Current Password input-->
+            <div>
+                <label for="password">Current Password:</label>
+                <div>
+                    <input type="password" name="password" section='change-password'/>
+                    <div id='error-edit-password' class='tooltip no-display' input-name='password'>
+                        <p id='error-name-input' class='tooltiptext right'>*</p>
+                    </div>
+                </div>
+            </div><!--Current Password input-->
             
-            <label for="newpassword">New Password:</label>
-            <input type="password" name="newpassword"/>
-            <div id='error-edit-newpassword'><p>*</p></div>
+            <!--New password input-->
+            <div>
+                <label for="newpassword">New Password:</label>
+                <div>
+                    <input type="password" name="newpassword" section='change-password'/>
+                    <div id='error-edit-newpassword' class='tooltip no-display' input-name='newpassword'>
+                        <p id='error-name-input' class='tooltiptext right'>*</p>
+                    </div>
+                </div>
+            </div><!--New password input-->
             
-             <label for="repassword">Reenter Password:</label>
-            <input type="password" name="repassword"/>
-            <br>
+            <!--New repassword-->
+            <div>
+                <label for="repassword">Reenter Password:</label>
+                <div>
+                    <input type="password" name="repassword" section='change-password'/>  
+                    <div id='error-edit-repassword' class='tooltip no-display' input-name='repassword'>
+                        <p id='error-name-input' class='tooltiptext right'>*</p>
+                    </div>
+                </div>
+            </div> <!--New repassword-->
             
-            <button id="update-password-button">Update</button>
-            </fieldset>
-        </section>
-         <section id='existing-accounts'>
-        </section>
+            <!--Inputs in error warning message-->
+            <div id='changepass-inputs-in-error' class='error-container no-display'>
+                <p class='errortext'>You have errors on your inputs!</p>
+            </div>
+            
+            <!--Buttons-->
+            <div id='buttons-container'>
+                <input type='submit' id="update-password-button" class='green' value='Update'/>
+                <input type='submit' id="cancel-update-button" class='cancel-button red' value='Cancel'/>
+            </div>
+                
+        </section> <!--Change password section-->
+        
+        </div> <!--Change password section background-->
+        
+        <!--Manage accounts section background-->
+        <div id='manage-acc-background' class="window-background no-display">
+            
+            <!--Manage accounts section-->
+            <section id='existing-accounts'>
+            </section>
+            
+        </div>   <!--Manage accounts section background-->
     </body>
 </html>

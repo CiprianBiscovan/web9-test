@@ -1,0 +1,95 @@
+
+#navigation{
+    text-align:center;
+}
+#navigation.hidden{
+    display: none;
+}
+
+/*Used for positioning <Older><Newer> buttons*/
+#wrapper{
+    position:relative;
+    display:inline-block;
+    text-align:left;
+    min-width:175px;
+}
+/*Position Older button to the right end*/
+#previous{
+    position:absolute;
+    right:0;
+}
+/*Add arrow ->*/
+#previous:after{
+    content:"\2192";
+}
+/*Add arrow <-*/
+#next:before{
+    content:"\2190";
+}
+.pagination-pages>a{
+    display:inline-block; /*for forcing parent to extend to contain this element*/
+    padding:8px;
+    border: 1px solid black ;
+    margin-bottom:2px;
+    width:40px;
+    text-align:center;
+    text-decoration:none;
+    color:black;
+    font-weight: bold;
+    
+    
+}
+.pagination-pages>a:first-child{
+    border-radius:10px 0px 0px 10px;
+}
+.pagination-pages>a:last-child{
+    border-radius:0px 10px 10px 0px;
+}
+.pagination-step>a{
+    display:inline-block; /*for forcing parent to extend to contain this element*/
+    padding:8px;
+    width:70px;
+    border: 1px solid black ;
+    border-radius:30px;
+    margin-top:2px;
+    text-align:center;
+    text-decoration:none;
+    color:OrangeRed;
+    font-weight: bold;
+}
+
+.pagination-step>a:hover,
+.pagination-pages>a:hover:not(.active){
+    background-color: #c4d9df;
+}
+
+/*Overqualified selectors to increase specificity*/
+.pagination-pages>a.active,
+.pagination-step>a:active,
+.pagination-pages>a:last-child:active,
+.pagination-pages>a:first-child:active{
+    background-color:brown;
+    color:white;
+}
+.hidden{
+    visibility:hidden;
+}
+a.disabled:not(.active){
+    pointer-events:none;
+    background:gainsboro;
+    color:darkgray;
+}
+
+
+/*----------------------------------Comments Specifics-------------------------------*/
+
+.comments .pagination-pages>a{
+    padding: 5px 10px;
+    width:auto;
+}
+
+.comments .pagination-pages>a:active,
+.comments .pagination-pages>a.active{
+    background-color: green;
+    
+}

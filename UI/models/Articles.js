@@ -1,52 +1,26 @@
 /*global $ URL_PHP Article*/
+/*global popUp*/
 
 //Articles class
 function Articles(){
-	this.models = []; // articles list
+	this.models = [];                                                           // articles list
 }
-
-// Method to get all articles from DB
-Articles.prototype.getAll = function() {
-	   
-	    var that = this; //save current object instance
-		
-		//Configure request for getting articles from server
-		var config = {
-			
-			url: URL_PHP + "articles", //URL points to articles php page
-			method: "GET",             //Method used - GET
-			
-			// Function to execute in case of req. succeded
-			success: function(resp) {
-			 
-				//load articles received from server to articles list
-				for (var i=0; i<resp.length; i++) {
-					var article = new Article(resp[i]);
-					that.models.push(article);
-				}
-			},
-			
-			//function to execute in case of request fails
-			error: function(){
-				console.log("Something went wrong while getting articles");
-			}
-		};
-		
-	return $.ajax(config); //send request to the server and return result received
-};//END getAll method
 
 //Method for retrieving number of articles stored in DB
 Articles.prototype.Count = function(userFilter){
 
+    //Ajax configuration object
 	var config = {
-		url: URL_PHP + "articles/count",
-		method:'GET',
-		dataType: 'JSON',
-		data:{
-			filter:userFilter
+		     url: URL_PHP + "articles/count",                                   //PHP API path
+	  	  method: 'GET',                                                        //Req. method to be used
+		dataType: 'JSON',                                                       //Expected response data type
+		data:{                                                                  //data for PHP API
+			filter: userFilter
         },
-		error: function(){
-			console.log("Oops! Somethign went wrong while counting articles");
+        
+        //function executed in case of request fails
+		error: function(jqXHR){
+			popUp("error","Oops! Request for articles count failed!",jqXHR.responseText);
 		}
 	};
 	
@@ -57,22 +31,23 @@ Articles.prototype.Count = function(userFilter){
 //Method for getting articles for current page
 Articles.prototype.getPageArticles = function(pageNum,pageSize,userFilter){
 
-	var that = this; //save current object instance
+	var that = this;                                                            //save current object instance
 	 
+	//AJAX configuration object 
 	var config = {
 		
-		url: URL_PHP + "articles/page",
-		method:'GET',
-		dataType: 'JSON',
-		data:{
-			pageNum: pageNum,
-			pageSize: pageSize,
-			filter: userFilter
-		},
+		     url: URL_PHP + "articles/page",                                    //PHP API path
+		  method: 'GET',                                                        //req. method to be used
+		dataType: 'JSON',                                                       //expected response type
+		    data:{                                                              //data for PHP API
+				 pageNum: pageNum,
+				pageSize: pageSize,
+				  filter: userFilter
+			},
 		
 		// Function to execute in case of req. succeded
 		success: function(resp) {
-			 
+			
 			//load articles received from server to articles list
 			for (var i=0; i<resp.length; i++) {
 				var article = new Article(resp[i]);
@@ -81,8 +56,9 @@ Articles.prototype.getPageArticles = function(pageNum,pageSize,userFilter){
 		},
 		
 		//function to execute in case of request fails	
-		error: function(){
-			console.log("Oops! Somethign went wrong while counting articles");
+		error: function(jqXHR){
+			
+			popUp("error","Oops! Request for articles for current page failed!",jqXHR.responseText);
 		}
 	};
 
@@ -98,29 +74,26 @@ Articles.prototype.removeArticle = function(articleId) {
 	
 	//config request for deleting article
 	var config = {
-		url: URL_PHP + "articles/delete",
-		method: 'DELETE',
-		data: {
-			id: articleId	
-		},
+		   url: URL_PHP + "articles/delete",                                    // PHP API path
+		method: 'DELETE',                                                       // req. method to be used
+		  data: {                                                               //data for PHP API
+				id: articleId	
+		  },
+		
 		//function to be executed in case of error
-		error: function(){
-			console.log("Oops! Something went wrong while trying to delete article");
+		error: function(jqXHR){
+			popUp("error","Oops! Request to delete article failed!",jqXHR.responseText);
 		}
 	};
 	
 	return $.ajax(config); //send request to the server and return the response
 	
-	
-	
 };//END Delete Article method
 
 //Method to save new article
 Articles.prototype.save = function(articleData) {
-
-	var that = this; //save current object
 	
-	 //prepare data with image to upload
+	 //prepare data containing image to upload
 	 var formData = new FormData();
 	 formData.append("main_image_url",articleData.img);
   	 formData.append("title", articleData.title);
@@ -131,11 +104,11 @@ Articles.prototype.save = function(articleData) {
 	 //configure request for uploading pictures/file
 	 var config = {
 	 	
-	 	url: URL_PHP + "articles/add",
-        method: "POST",
-        data: formData,
-        processData:false,        // To send DOMDocument or non processed data file it is set to false
-	    contentType: false,
+	 	        url: URL_PHP + "articles/add",                                  //PHP API path
+             method: "POST",                                                    // Method to be used
+               data: formData,                                                  // data for PHP API
+        processData: false,                                                     // To send DOMDocument or non processed data file it is set to false
+	    contentType: false,                                                     //used for multipart/form-data forms that pass files
 	   
 	    //function to execute in case of req. succeded
         success: function(response){
@@ -144,7 +117,7 @@ Articles.prototype.save = function(articleData) {
         
         //function to execute in case of req. fails
         error: function(xhr,status,error){
-        	alert("Oops!Something is wrong" + error);
+        	popUp("error","Oops!Request to save article failed!",xhr.responseText);
         },
         
         //function to execute when req. is completed
@@ -153,6 +126,6 @@ Articles.prototype.save = function(articleData) {
         }
     };
     
-    return $.ajax(config); //send request to the server and return the result
+    return $.ajax(config);                                                      //send request to the server and return the result
     
 }; //END Save Article Method

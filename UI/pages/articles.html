@@ -1,7 +1,17 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="Blog/css/articles.css" type="text/css" />
+        
+        <!--Load external CSS files -->
+        <link href='https://fonts.googleapis.com/css?family=Arizonia' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/Blog/css/pageLayout.css" type="text/css" />
+        <link rel="stylesheet" href="/Blog/css/articles.css" type="text/css" />
+        <link rel="stylesheet" href="/Blog/css/navigation.css" type="text/css" />
+        <link rel="stylesheet" href="/Blog/css/inputErrorReporting.css" type="text/css" />
+        
+         <!--Load external Javascript files-->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script><!--for coockies-->
         <script type="text/javascript" src="../models/User.js"></script>
@@ -9,38 +19,53 @@
         <script type="text/javascript" src="../models/Article.js"></script>
         <script type="text/javascript" src="../models/Articles.js"></script>
         <script type="text/javascript" src="../views/articles.js"></script>
+        <script type="text/javascript" src="../views/inputErrorReporting.js"></script>
+        <script type="text/javascript" src="../views/logout.js"></script>
     </head>
     <body>
-        <section id='header-section'>
-            <div id='header-container'>
-                <h1>Ciprian`s Blog</h1>
-            </div>
-        </section>
-        <div id='top-menu'></div>
-        <div id='search'>
-            <input type="text" name="search" placeholder='Search Articles..'/>
-            <button id='search-button'>Search</button>
-            <div>
-                <p id='error-search-input'>*</p>
-            </div>
-        </div>
-        <div id='active-filter'></div>
-        <ul id="container"></ul>
-        <div class='pagination-pages'></div>
-        <div class='pagination-step'></div>
         
-        <footer id="footer">
-            <address>
-                <p>
-                    Created by: Ciprian Biscovan &copy Copyright   
-                    <script>
-                        document.write(new Date().getFullYear());
-                    </script>     
-                    <a href="#top">Go to the top of the page &uarr;</a>
-                </p>
-                <p>You can contact me by e-mail: <a href="mailto:ciprian.biscovan@yahoo.com">ciprian.biscovan@yahoo.com</a></p>
-                <p>or by Skype&trade; - my ID is: <span style="color:green"><strong>"ciprianny_bis"</strong></span></p>
-            </address>
-        </footer>
+        <!--Header section-->
+        <section id='header-section'>
+            
+            <div id='header-container'>
+                <h1>Ciprian`s blog</h1>
+            </div>
+            
+            <div id='delimiter'>
+                <div id='circle'></div>
+            </div>
+           
+           <!--User menu-->
+            <div id='user-menu'> 
+                <div id='top-menu'></div><!--Remove space between inline-block elements
+            --><div id='search-main-container'>
+                    <div id='error-search' class='tooltip' input-name='search'>
+                        <p id='error-search-input' class='tooltiptext left'>*</p>
+                    </div>
+                    
+                    <div id='search'>
+                        <input id='search-text' type="text" name="search" placeholder='Search articles...'/>
+                        <button id='search-button'>Search</i></button>
+                    </div>
+                </div><!--User menu-->
+                
+            <div id='active-filter'></div>  
+            </div>
+        </section> <!--Header section-->
+        
+        <!--Article list section-->
+        <section id='articles-list'>
+            <ul id="container"></ul>
+            
+            <!--Navigation panel for articles-->
+            <div id='navigation' class='hidden'>
+                <div id='wrapper'>
+                    <div class='pagination-pages'></div>
+                    <div class='pagination-step'></div>
+                </div>
+            </div><!--Navigation panel for articles-->
+            
+        </section><!--Article list section-->
+        
     </body>
 </html>

@@ -1,33 +1,66 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <!--Load external CSS files -->
+        <link href='https://fonts.googleapis.com/css?family=Arizonia' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/Blog/css/pageLayout.css" type="text/css" />
+        <link rel="stylesheet" href="/Blog/css/editComment.css" type="text/css" />
+        <link rel="stylesheet" href="/Blog/css/inputErrorReporting.css" type="text/css" />
+        
+        <!--Load external Javascript files-->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script><!--for coockies-->
         <script type="text/javascript" src="../models/User.js"></script>
         <script type="text/javascript" src="../configs/configs.js"></script>
-         <script type="text/javascript" src="../models/Comment.js"></script>
+        <script type="text/javascript" src="../models/Comment.js"></script>
         <script type="text/javascript" src="../views/editComment.js"></script>
+        <script type="text/javascript" src="../views/inputErrorReporting.js"></script>
+        <script type="text/javascript" src="../views/logout.js"></script>
     </head>
     <body>
-        <section id='selected-comment'>
-            <h1>Edit Comment</h1>
-            <fieldset>
-            <legend>Comment Details</legend>
-            <div id='comment-element-container'>
-                
+        
+        <!--Top menu container-->
+        <div id='top-menu' >
+            
+            <!--Username container-->
+            <div id='username-wrapper' class='top-menu-wrapper'></div>
+            
+            <!--Page title container-->
+            <div id='page-title' >
+                <h1></h1>
             </div>
-            </fieldset>
+            
+            <!--Navigation buttons container-->
+            <div id='buttons-wrapper' class='top-menu-wrapper'></div>
+            
+        </div><!--Top menu container-->
+        
+        <!--Selected comment current info-->
+        <section id='selected-comment'>
+            <div id='comment-element-container'></div>
         </section>
         
+        <!--Edit comment section-->
         <section id='edit-comment'>
-            <fieldset>
-            <legend>Edit Comment</legend>
-                <input type='text' name='commTitle' placeholder='Title'/> <br>
-                <textarea name='commContent' placeholder='Your comment'rows='10' cols='40'></textarea> <br>
-                <button id='save-comment'>Save</button>
-                <button id='cancel-edit'>Cancel</button>
-                <div id='error-comment'><p>*</p></div>
-            </fieldset>
-        </section>
+            <div class='inputs-wrapper'>
+                 <label>Title:</label><br>
+                <input type='text' name='commTitle' placeholder='New title' maxlength = '64' /> <br>
+            </div>  
+            
+            <div class='inputs-wrapper'>
+                 <label>Comment:</label><br>
+                <textarea name='commContent' placeholder='New comment...'rows='10' cols='1' maxlength = '255' ></textarea> <br>
+                <div id='error-comment' class='error-container no-display'><p class='errortext'>*</p></div>
+            </div>    
+            
+            <div id='buttons-container'>
+                <button id='save-comment' class="blue"><span><i class='fa fa-save'></i></span>Save</button>
+                <button id='cancel-edit' class='red'><span><i class='fa fa-ban'></i></span>Cancel</button>
+            </div>
+            
+        </section><!--Edit comment section-->
+        
     </body>
 </html>

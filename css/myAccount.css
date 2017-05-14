@@ -1,0 +1,197 @@
+#top-menu{
+    min-width: 820px;
+}
+#page-title{
+    padding: 10px 0px;
+    color:white;
+    background-color:ForestGreen ;
+}
+
+#page-title>h1{
+    background: url("/Blog/Resources/myaccount_logo.jpg") no-repeat ;
+    background-size: 40px;
+    background-position: left center;
+    margin:0 0 0 100px;
+    padding: 0 0 0 45px;
+}
+#buttons-wrapper{
+    background: WhiteSmoke;
+    text-align: right;
+     border-bottom: 3px solid darkgreen;
+}
+#buttons-wrapper>button{
+    margin: 5px 30px;
+}
+section{
+    position: relative;
+    width:60%;
+    border:1px solid darkgreen;
+    border-radius: 10px;
+    margin:20px 0 0 100px;
+    padding: 30px;
+    min-width: 650px;
+}
+#current-user-data{
+    background: url("/Blog/Resources/profile.jpg") no-repeat top right;
+    background-size: 100px;
+     background-color:#d6ff99;
+}
+#current-user-data>div{
+    margin-top: 10px;
+}
+section>h2{
+    color:darkgreen;
+    border-bottom:1px dotted red;
+    width:80%;
+}
+
+.info-name{
+    display: table-cell;
+    width: 120px;
+    font-size: 110%;
+    color: Magenta;
+    text-align: right;
+}
+.info-value,
+.info-value>*{
+    display: table-cell;
+    padding: 0 10px;
+    font-size: 110%;
+    color: brown;
+}
+#account-dates{
+    position: relative;
+    color:navy;
+    font-weight: bold;
+}
+#created-wrapper,
+#modified-wrapper{
+    display: inline-block;
+}
+
+#modified-wrapper{
+    position: absolute;
+    right:0;
+}
+#buttons-container{
+    text-align: center;
+}
+input[type='submit']{
+    font-weight: bold;
+    color: white;
+    width:30%;
+    min-width: 180px;
+    margin: auto 1%
+}
+
+.fixed{
+    position:fixed;
+    z-index: 1;
+    width:100%;
+    height:100%;
+    top:0;
+    background: rgba(0,0,0,0.5);
+     overflow:auto;
+}
+
+#edit-user-data{
+    background: url("/Blog/Resources/signup-icon.png") no-repeat top right;
+    background-size: 100px;
+    background-color: #ccffff;
+    margin: auto auto;
+    min-width:350px;
+    min-height:10vh;
+    
+}
+input[type=radio]{
+    width:auto;
+}
+input[type=radio] span{
+    font-size: large;
+    
+}
+
+label{
+    font-weight: bold;
+    font-size: large;
+    color: brown;
+}
+label span,
+p span{
+    color:red;
+}
+
+section>div{
+    margin: 30px auto;
+}
+ input[type ='text'],
+ input[type ='number'],
+ input[type ='password']{
+     
+    width: 60%;
+}
+#change-password {
+     background: url("/Blog/Resources/change_pass.png") no-repeat top right;
+    background-size: 100px;
+    background-color: #ccffff;
+    margin:10vh auto;
+    background-color:#ffffcc;
+    min-width:350px;
+    min-height:10vh;
+}
+#change-password label{
+    color:GoldenRod ;
+}
+
+#existing-accounts{
+background: url("/Blog/Resources/users-list.png") no-repeat top right;
+    background-size: 90px;
+   width:auto;
+   display:inline-block;
+   background-color:Snow ;
+    
+}
+
+#existing-accounts input[type='submit']{
+    display:table-cell;
+     width:100px;
+     min-width:80px;
+}
+table{
+    border:none;
+    border-spacing: 0;
+}
+td{
+    text-align: center;
+    font-size: 110%;
+    border:none;
+    border-bottom: 1px solid black;
+}
+
+th{
+    font-family: "Arial Black", Gadget, sans-serif;
+    color: white;
+    background-color:teal;
+    height:50px;
+    /*border:none;*/
+    border-bottom: 1px solid black;
+    box-shadow: 10px 10px 5px #888888;
+}
+
+
+td h3{
+    color:green;
+    font-weight:bold;
+    font-size:120%;
+    margin: 20px 0;
+}
+
+table>tr:nth-child(even){
+    background-color: GhostWhite;
+}
+table>tr:nth-child(odd){
+    background-color:#ffffb3;
+}
+#cancel-mngacc-button{
+    float:right;
+}

@@ -1,66 +1,133 @@
 <!DOCTYPE html>
 <html>
     <head>
+        
+        <!--Load external CSS files -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/Blog/css/pageLayout.css" type="text/css" />
+        <link rel="stylesheet" href="/Blog/css/inputErrorReporting.css" type="text/css" />
+        <link rel="stylesheet" href="/Blog/css/manageArticles.css" type="text/css" />
+        
+        <!--Load external Javascript files-->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script><!--for coockies-->
         <script type="text/javascript" src="../models/User.js"></script>
         <script type="text/javascript" src="../configs/configs.js"></script>
         <script type="text/javascript" src="../models/Category.js"></script>
         <script type="text/javascript" src="../models/Categories.js"></script>
-        <!--<script type="text/javascript" src="/Blog/jsLibs/createDOMElements.js"></script>-->
         <script type="text/javascript" src="../models/Articles.js"></script>
         <script type="text/javascript" src="../models/Article.js"></script>
         <script type="text/javascript" src="../views/editArticle.js"></script>
+        <script type="text/javascript" src="../views/inputErrorReporting.js"></script>
+        <script type="text/javascript" src="../views/logout.js"></script>
     </head>
-    <body>
-        <div id='top-menu' ></div>
-        <!--<form >-->
-            <fieldset>
-                <legend id='legend-articles'>Edit Article</legend>
+      <body>
+          
+        <!--Top menu container  -->
+        <div id='top-menu' >
+            
+            <!--Username container-->
+            <div id='username-wrapper' class='top-menu-wrapper'></div>
+            
+            <!--Buttons container-->
+            <div id='buttons-wrapper' class='top-menu-wrapper'></div>
+            
+        </div><!--Top menu container  -->
+            
+            <!--Article info-->
+            <section id="article-section">
+                
+                <h2 id='legend-articles'>Edit Article</h2>
+                
+                <!--Image related inputs-->
                 <div id='img-container'>
-                    <div id='warning-image'> <p>*</p></div>
-                    <img id='main-image' src='/Blog/Resources/image_comming_soon.png'>
+                    
+                    <!--Image warning message-->
+                    <div id='warning-image'class='error-container no-display'><p class='warningtext'>*</p></div>
+                    
+                    <!--Image container-->
+                    <img id='main-image' src='/Blog/Resources/image_comming_soon.png'><br>
+                    
+                    <!--Choose file button - only image files accepted-->
+                    <input type="file" id="article_file" name="main_image_url" accept="image/*"/><br>
+                    <button id='delete-img' class='red'><span><i class="fa fa-eraser"></i></span>Delete Image</button>
                     <br>
-                    <input type="file" id="article_file" name="main_image_url" accept="image/*"/>
-                    <br>
-                    <button id='delete-img'>Delete Image</button>
-                    <br>
-                </div>
+                </div><!--Image related inputs-->
+                
+                <!--Text inputs and associated error messages-->
                 <div id='inputs-container'>
-                    <label for="title">Title</label><br>
-                    <input type="text" name="title" id="title" size="100" placeholder='Article title...'/><br>
-                    <div id='error-title'> <p>*</p></div>
-                    <p>About</p>
-                    <h3 id='category'>Default Topic</h3>
-                    <p><em>!Choose category from < Manage Categories > section below...</em></p>
-                    <div id='error-category'> <p>*</p></div>
-                    <br>
-                    <label for="content">Content</label><br>
-                    <textarea type="text" name="content" id="content" rows="20" cols="100" placeholder='Content here...'></textarea><br>
-                    <div id='error-content'> <p>*</p></div>
-                    <br>
-                    <label for="publish">Publish:</label>
-                    <input type="radio" name="publish" value='1'/> Yes
-                    <input type="radio" name="publish" value='0' checked/>No
-                    <div id='warning-publish'> <p>*</p></div>
-                    <br>
-                    <input type="submit" id="save-btn" value="Save Article" />
-                    <!--<input type="submit" id="publish-btn" value="Publish Article" />-->
-                </div>
-            </fieldset>
-        <!--</form>-->
-            <fieldset>
-                <legendid='legend-categories'>Manage Categories</legend>
-                <div>
+                    <div>
+                        <label for="title">Title:</label><br>
+                        <input type="text" name="title" id="title" size="50" placeholder='Article title...'/>
+                        <div id='error-title' class='tooltip' input-name='title'> <p class='tooltiptext right'>*</p></div>
+                    </div>
+                    
+                    <div id='category-wrapper' >
+                        <label>Category:</label><br>
+                        <select id='categories-art-sect'>
+                            <option value='' selected>Choose Category</option>
+                        </select>
+                        <div id='error-category'class='tooltip' input-id='categories-art-sect'> <p class='tooltiptext right'>*</p></div>
+                        <input type="submit" name="manageCategoriesButton" value="Manage Categories"/>
+                    </div>
+                    
+                    <div>
+                        <label for="content">Content:</label><br>
+                        <textarea type="text" name="content" id="content" rows="20" cols="1" placeholder='Content here...'></textarea><br>
+                        <div id='error-content'class='tooltip no-display' input-id='content'> <p class='tooltiptext bottom'>*</p></div>
+                    </div>
+                    
+                    <div>
+                        <label for="publish">Publish:</label>
+                        <input type="radio" name="publish" value='1'/><span>Yes</span>
+                        <input type="radio" name="publish" value='0' checked/><span>No</span>
+                        <div id='warning-publish'class='error-container no-display'><p class='warningtext'>*</p></div>
+                    </div>
+                    
+                    <div id='submit-wrapper'>
+                        <div id='inputs-in-error'class='error-container no-display'><p class='errortext'>*</p></div>
+                        <input type="submit" id="save-btn" class='green' value="Save Article" />
+                    </div>
+                    
+                </div><!--Text inputs and associated error messages-->
+                
+            </section>   <!--Article info-->
+        
+        <!--Manage categories window background    -->
+        <div id="category-section-background"  class='no-display'>
+            
+            <!--Manage categories sections-->
+            <section id="category-section">
+                
+                <!--Close X button-->
+                <span id='close-manage-categories' class='close'>&times;</span>
+                
+                <h2 id='legend-categories'>Manage Categories</h2>
+                
+                <!--Inputs container-->
+                <div id='manage-category-content-wrapper'>
+                    
+                    <!--Add category-->
                     <input type="text" name="newCategoryName" placeholder="New Category Name"/>
-                    <select id='categories'>
-                        <option value='' selected>Choose Category</option>
-                    </select>
-                    <div id='error-new-category'> <p>*</p></div>
+                    <button id='add-category' class='manage-categories green'><span><i class="fa fa-plus"></i></span>Add</button><br>
+                    <div id='error-new-category'class='tooltip no-display' input-name='newCategoryName'> 
+                        <p class='tooltiptext bottom'>*</p>
+                    </div>
                     <br>
-                    <button id='add-category' class='manage-categories'>Add Category</button>
-                    <button id='delete-category' class='manage-categories'> Delete Selected Category</button>
-                </div>
-            </fieldset>
+                    
+                    <!--Delete category-->
+                    <select id='categories-cat-section'>
+                        <option value="" selected>Choose Category</option>
+                    </select>
+                    <button id='delete-category' class='manage-categories red'><span><i class="fa fa-minus"></i></span>Delete Selected</button><br>
+                    <div id='error-delete-category'class='tooltip no-display visible' input-id='categories-cat-section'> <p class='tooltiptext bottom'>*</p></div>
+                    
+                </div><!--Inputs container-->
+                
+            </section><!--Manage categories sections-->
+            
+        </div><!--Manage categories window background-->
+        
     </body>
 </html>

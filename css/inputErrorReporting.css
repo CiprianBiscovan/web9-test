@@ -1,0 +1,169 @@
+/* Error container */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    visibility: hidden;
+    margin:10px;
+    
+      /* Fade in error */
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+/* Error text */
+.tooltip .tooltiptext {
+    min-width: 60px;
+    background-color: red;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    padding: 5px 5px;
+    border-radius: 6px;
+}
+
+/* error top arrow down */
+.tooltip .top::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -8px;
+    border-top: 8px solid red;
+    border-right: 8px solid transparent;
+    border-left: 8px solid transparent;
+}
+
+/* error right arrow left */
+.tooltip .right::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    margin-top: -8px;
+    border-right: 8px solid red;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+}
+
+/* error bottom arrow up */
+.tooltip .bottom::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -8px;
+    border-bottom: 8px solid red;
+    border-right: 8px solid transparent;
+    border-left: 8px solid transparent;
+}
+
+/* error left arrow right */
+.tooltip .left::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    margin-top: -8px;
+    border-left: 8px solid red;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+}
+
+/*------------------------------------Notifications-------------------------*/
+
+.error-container{
+    visibility: hidden;
+    padding: 5px 0px;
+    width:auto;
+    box-sizing: border-box;
+}
+
+.errortext {
+    background-color: #ffdddd;
+    border-left: 6px solid #f44336;
+    min-height: 2em;
+    padding: 1em 0em 0em .5em;
+}
+.warningtext {
+    background-color:  #ffffcc;
+    border-left: 6px solid #ffeb3b;
+    min-height: 2em;
+    padding: 1em 0em 0em .5em;
+}
+.infotext {
+    background-color: #e7f3fe;
+    border-left: 6px solid #2196F3;
+    min-height: 2em;
+    padding: 1em 0em 0em .5em;
+}
+/*------------------------------PopUps------------------------------------*/
+#popUp{
+   position: fixed;
+   z-index: 100;
+   width: 100%;
+   height:100%;
+   top:0;
+   text-align: center;
+   background-color: transparent;
+   background-color: rgba(0,0,0,0.7);
+   
+}
+
+#popup-content{
+    position: relative;
+    font-size: 1vmax;
+    display: inline-block;
+    margin-top: 30vh;
+    /*height: 5vmax;*/
+    width: 60vw;
+    padding-top: 4vh;
+    padding-bottom: 2vh;
+}
+
+.close{
+    position:absolute;
+    display: inline-block;
+    margin:0;
+    padding:0;
+    top:0;
+    right:1%;
+    font-size: 2vmax;
+    color:black;
+    cursor: pointer;
+}
+
+#popUp .success{
+    background-color: lightgreen;
+    border-left: 1vw solid green;
+    color:green;
+}
+
+#popUp .error{
+    background-color: LightSalmon;
+    border-left: 1vw solid red;
+    color:red;
+}
+
+#popUp .warning{
+    background-color:  orange;
+    border-left: 1vw solid OrangeRed;
+    color:OrangeRed;
+}
+
+/*Show element when class is set*/
+.visible {
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.no-display{
+    display: none;
+}
+
+.input-error{
+    border:2px solid red !important;
+}
+
+.input-clear{
+    border: inherit;
+}

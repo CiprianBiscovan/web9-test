@@ -1,4 +1,321 @@
-body{
-    margin:0;
+
+#user-menu{
     position:relative;
+}
+#top-menu{
+    margin: 0px;
+    display:inline-block;
+    width:50%;
+    min-width: 300px;
+}
+#home-button{
+    position:absolute;
+    color:Yellow;
+    font-size: xx-large;
+    font-weight: bold;
+    top:-45px;
+    right:10px;
+}
+#username{
+    position: absolute;
+    top:-55px;
+    color:white;
+    margin: 0;
+    padding:0;
+    font-size:25px;
+}
+#username>span{
+    position:relative;
+    top:5px;
+    color:white;
+    margin: 0;
+    padding:0;
+    font-size:150%;
+}
+
+#top-menu button{
+    position:relative;
+}
+
+#search-main-container{
+    vertical-align: bottom;
+    text-align: right;
+    display:inline-block;
+    width:50%;
+    white-space: nowrap;
+}
+
+#search{
+    position:relative;
+    border: 1px solid #c4d9df;
+    display: inline-block;
+    border-radius: 50px 50px 50px 50px;
+    padding: 8px;
+    background-image: linear-gradient(#fff, #d4e8ec); 
+    white-space: nowrap;
+    max-width:400px;
+    width:60%;
+    text-align: left;
+    
+}
+#search-button{
+    margin: 0;
+    height: 30px;
+    max-width:80px;
+    min-width: 60px;
+    width:70px;
+    background-image: linear-gradient(#95d788, #6cbb6b);
+    border-radius: 3px 50px 50px 3px; 
+    color: black;
+    font-size: medium;
+    padding: 0;
+}
+#search-button:hover {       
+    background-color: #95d788;
+    background-image: linear-gradient(#6cbb6b, #95d788);
+} 
+
+#search-button:active {       
+    background: #95d788;
+    outline: none;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5) inset;       
+}
+
+input[name="search"]{
+    border: 1px solid #a4c3ca;
+    border-radius: 50px 3px 3px 50px;
+    height:35px;
+    width: 81%;
+    margin: 0px;
+    padding: 5px 5px 5px 35px;
+    font-size: medium;
+    background-image: url(/Blog/Resources/search-img.png);
+    background-position: 5px center;
+    background-repeat: no-repeat;
+    background-size: 20px;
+    background-color: Ivory;
+}
+input[name="search"]:focus{
+    outline:none;
+}
+
+@keyframes fadeIn{
+    from{opacity:0;}
+    to{opacity:1;}
+}
+
+@keyframes fadeOut{
+    from{opacity:1;}
+    to{opacity:0;}
+}
+
+/* The alert message box */
+#active-filter{
+    display: none;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #2196F3;
+    color:white;
+    padding: 10px;
+    animation: fadeIn 2s;
+}
+
+/* The close button */
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* When moving the mouse over the close button */
+.closebtn:hover {
+    color: black;
+}
+#articles-list{
+    position: relative;
+    width:100%;
+    background:ghostwhite;
+    visibility: hidden;
+    min-width: 650px;
+}
+
+#articles-list ul{
+    display:block;
+    margin: 0;
+    padding: 7px 0px 0px 0px;
+}
+
+#articles-list li{
+    position:relative;
+    list-style-type:none;
+    border:1px solid FloralWhite;
+    border-radius:10px;
+    border-top: 10px solid tomato;
+    width:70%;
+    min-height: 450px;
+   
+    margin:auto auto;
+    margin-bottom: 35px;
+    margin-top: 15px;
+    padding:20px;
+    background:Ivory;
+}
+
+/*Folded corner*/
+#articles-list li:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  border-width: 70px 70px 0px 0px;
+  border-style: solid;
+  border-color: #fffff0 #F8F8FF #FFFFF0 #FFFFF0;
+  box-shadow: 1px 1px 0px rgba(248, 248, 255,1),-10px -10px 10px rgba(0,0,0,0.2);
+  border-radius: 10px 0px 0px 0px;
+  
+  transition:border-width 0.5s ease-out;
+}
+
+/*trigger animation*/
+#articles-list li:hover:after{
+    border-width: 90px 90px 0px 0px;
+}
+
+article .fa-link{
+    position: absolute;
+    top: -30px;
+    left:50%;
+    background-color: tomato;
+    padding: 10px;
+    border-radius:50% 50%;
+    color:white;
+    font-size: xx-large;
+}
+
+li h1{
+    font-size:xx-large;
+    font-family: Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
+    margin:10px;
+}
+
+.article-title-container{
+    display: inline-block;
+    width: 50%;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.article-category{
+    display: inline-block;
+    width:50%;
+    text-align: center;
+    font-style: oblique;
+    vertical-align: middle;
+}
+
+.content-container{
+    height: 270px;
+    overflow:hidden;
+    padding:10px 20px 0px 20px;
+    min-width: 220px;
+}
+
+.img-container{
+    float: left;
+    max-width: 220px;
+    padding-top: 10px;
+}
+
+.img-container>img{
+   border: 1px solid black;
+   border-radius: 5px;
+   padding:5px;
+   width:100%;
+   max-height: 250px;
+}
+
+.article-content>p{
+    margin:0;
+    font-family: Avant Garde, Avantgarde, Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+    font-size: 150%;
+    text-align: justify;
+    text-indent: 33px;
+    height: 210px;
+    overflow:hidden;
+    margin-bottom:  15px;
+    white-space: pre-wrap;
+}
+
+.read-more-container{
+    font-size: large;
+    text-align: right;
+    margin-right: 3%;
+}
+.read-more{
+    color:tomato;
+    border:1px solid tomato;
+    border-radius:5px;
+    padding:10px;
+   
+}
+
+.manage-article-btn-container{
+    text-align: center;
+}
+
+article a{
+    text-decoration: none;
+    color: black;
+}
+
+article a:hover{
+    color: DeepSkyBlue;
+    border-color: DeepSkyBlue;
+}
+
+
+.material-icons+span{
+  color:gray;
+  position:relative;
+  top: -8px;
+  padding:5px;
+    
+}
+
+.material-icons.green{
+    color:green;
+    background-color: inherit;
+}
+.material-icons.blue{
+    color:blue;
+    background-color: inherit;
+}
+.material-icons.red{
+    color:tomato;
+    background-color: inherit;
+}
+.inline-block{
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.strikeout{
+    text-decoration: line-through;
+}
+
+.text-green{
+    color:forestgreen;
+}
+.text-red{
+    color:red;
+}
+
+.published-container{
+    font-weight: bold;
+    margin:10px 0;
 }

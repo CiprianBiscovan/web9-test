@@ -1,0 +1,158 @@
+body{
+    background:	#1d3549 ;
+}
+
+.inline-block{
+    display: inline-block;
+    vertical-align: bottom;
+}
+#buttons-wrapper{
+    float:right;
+    overflow: hidden;
+    color:red;
+}
+#buttons-wrapper>button{
+    display: block;
+}
+#username{
+    color:white;
+    padding:0 0 .5em .5em ;
+    font-size:25px;
+    min-height: 60px;
+}
+#username>span{
+    position:relative;
+    top:5px;
+    color:white;
+    margin: 0;
+    padding:0;
+    font-size:150%;
+}
+
+nav{
+    height: 60px;
+    background: rgba(255,255,255,.05); 
+    margin:0;
+    padding: 0;
+    overflow: hidden;
+    padding-left: 10%; 
+}
+nav>div{
+    display: inline-block;
+    color:white;
+}
+nav a{
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 2px;
+    text-decoration: none;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: xx-large;
+}
+a.active{
+    color:Turquoise;
+}
+
+section{
+    position: relative;
+    background:WhiteSmoke ;
+    width: 60%;
+    padding:1% 5%;
+    margin-top: 5px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    min-width: 400px;
+    left:10%;
+}
+section:before{
+    content:'';
+    border-width:20px;
+    border-style: solid;
+    border-color: transparent transparent WhiteSmoke transparent;
+    position: absolute;
+    top: -40px;
+    left:20px;
+}
+
+#sign-up:before{
+    left:150px;
+}
+
+#sign-up>div{
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+    
+}
+
+
+input[type='submit']{
+    background-color: Turquoise;
+    font-weight: bold;
+    font-size: xx-large;
+}
+
+input[type="email"]{
+    background: url("/Blog/Resources/email_icon.png") no-repeat left;
+    background-size: 40px;
+    background-color: white;
+    padding-left: 45px;
+}
+
+input[type="password"]{
+    background: url("/Blog/Resources/pass_icon.png") no-repeat left;
+    background-size: 40px;
+    background-color: white;
+    padding-left: 45px;
+}
+
+input[type="text"]{
+    background: url("/Blog/Resources/tag.png") no-repeat left;
+    background-size: 40px;
+    background-color: white;
+    padding-left: 45px;
+}
+
+input[type="number"]{
+    background: url("/Blog/Resources/Top10Input.png") no-repeat left;
+    background-size: 40px;
+    background-color: white;
+    padding-left: 45px;
+}
+
+.image-wrapper{
+    text-align: center;
+    margin-top:0;
+    margin-bottom:0;
+}
+
+label{
+    font-size: larger;
+    font-weight: bold;
+    color: Navy;
+}
+
+input[type='radio']{
+    width:auto;
+    height: auto;
+}
+
+input[type='radio']+span{
+    font-size: larger;
+    font-weight: bold;
+    margin-right:15px;
+}
+
+.input-horiz-align{
+    display: inline-block;
+    width: 49%;
+    vertical-align: top;
+}
+.input-horiz-align.right-margin{
+    margin-right: 2%;
+}
+
+.star-color{
+    color:red;
+}

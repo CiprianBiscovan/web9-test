@@ -1,78 +1,150 @@
-/* global $ Articles*/
+/* global $ */
+/* global User Articles Categories Category*/
+/* global UI_PAGE logout*/
+/* global setError resetError popUp*/
+
+//always check if HTML is loaded before doing anything
+//HTML operations on view
 $(document).ready(onHtmlLoaded);
   
-  //Get user information
-  var user = new User();
-  if(user.isLogged === false || user.isAdmin === false){
-       window.location.href = UI_PAGE + "unauthorizedAccess.html";
-  }
+  var user = new User();                                                        //Get logged user information
+  
+if(user.isLogged === false || user.isAdmin === false){                          //If user is not admin redirect to unauthorized page
+    window.location.href = UI_PAGE + "unauthorizedAccess.html";
+}
   
 //global variables
-var imgFile = '';
+var imgFile          = '';
 var validationErrors = false;
-var article = new Article();
-var articleId = null;
+var publish          = false;
 
 function onHtmlLoaded(){
-   if(user.isLogged === false || user.isAdmin === false){
+    
+    //get reference to html elements that 
+    var saveButton        = $("#save-btn");                                     //get Save Button element
+    var chooseImg         = $("#article_file");                                 //get Choose File button Element
+    var deleteImage       = $('#delete-img');                                   // get delete image button
+    var radioBtn          = $("input[type='radio']");                           //get radio buttons
+    var closeCat          = $("#close-manage-categories");                      //get close button on manage categories section
+    var manageCat         = $("input[name='manageCategoriesButton']");          //get manage categories submit button
+
+    //If nobody is logged or logged user is not admin stop script   
+    if(user.isLogged === false || user.isAdmin === false){
        return;
-  }    
-  fillCategorySelectElement();  //Create list with available categories
-  articleId = getUrlParam('id');
+    } 
+     
+    //Check published status 
+    checkPublish();
   
-  
-  //get reference to html elements that 
-    var saveButton        = $("#save-btn");       //get Save Button element
-    var chooseImg         = $("#article_file");   //get Choose File button Element
-    var categoryList      = $('#categories');     // get category list element
-    var deleteImage       = $('#delete-img');     // get delete image button
+    fillCategorySelectElement();                                                //Create list with available categories
     
     //Subscribe elements to events
     saveButton.on("click",sendData);
     chooseImg.change(pictureSelected);
-    categoryList.change(selectionChanged);
     $(".manage-categories").on("click",manageCategories);
-   deleteImage.on("click",function(){
+    deleteImage.on("click",function(){
        imgFile = '';
        chooseImg.val("");
        $("#main-image").attr('src','/Blog/Resources/image_comming_soon.png');
-   });
+       resetError($("#warning-image"));
+    }); //END delete image button event handler
+   
+    radioBtn.change(checkPublish);
+   
+    closeCat.on('click',function(){
+       $('#category-section-background').addClass('no-display');
+       
+    }); //END close category button event handler
+   
+    manageCat.on('click',function(){
+       $('#category-section-background').removeClass('no-display');
+       fillCategorySelectElement();
+       resetError($("#error-new-category"));
+       resetError($("#error-delete-category"));
+ 
+    }); //END manage category button event handler
     
-    addTopMenu();                 //Add top menu buttons
+    addTopMenu();                                                               //Add top menu buttons
    
     
 } //END onHtmlLoaded
 
+//Function to check if publish=yes and set/reset warning
+function checkPublish(){
+    
+    publish = $("input[type='radio']:checked").val().trim();                    //get published status
+    
+    //if article is not published warn user it will not be visible 
+    if(publish.trim() !== "1") {
+        setError($("#warning-publish"),"*Unpublished articles will not be visible to other users!");
+        return true;
+    }else{
+        resetError($("#warning-publish"));
+        return false;
+    }
+     
+}//END checkPublish function
+
 // ------------------------------------------------DOM Manipulation------------------------------------------------------------
-//Function for creating top menu 
+
+// Create top menu 
 function addTopMenu(){
-    var topMenu = $("#top-menu");
-   
-        user.isLogged ? topMenu.append("<h3>"+ user.loggedUserRole + ": " + user.loggedUserName + "</h3>").append("<button id='logout'>Logout</button>") :
-                   topMenu.append("<button id='login'>Login</button>");
-                  
-        topMenu.append("<button id='go-to-articles'>Articles</button>");
-      
-        topMenu.children().click(topMenuClick);
+    
+    //get existing containers
+    var topMenu           = $("#top-menu");
+    var usernameContainer = $("#username-wrapper");
+    var btnsContainer     = $("#buttons-wrapper");
+    
+    //Init. role icon variable
+    var roleIcon          = '';
+	
+	//determine role icon to use based on user role
+	if (user.loggedUserRole === 'ADMIN'){
+		roleIcon = "&#9812;";
+	}else{
+		roleIcon = "&#9817;";
+	}
+    
+    //Add logged user name and buttons to top menu 
+    topMenu.append(usernameContainer)
+           .append(btnsContainer);
+    
+    //if user is logged in add username and logout button
+    //else add login button
+    if(user.isLogged) {
+        usernameContainer.append("<h3 id='username'><span>"+ roleIcon + "</span> " + user.loggedUserName + "</h3>");
+        btnsContainer.append("<button id='logout' class='red'><span><i class='fa fa-power-off'></i></span>Logout</button>");
+    }else{
+        btnsContainer.append("<button id='login' class='green'><span><i class='fa fa-key'></i></span>Login</button>");
+    }
+    
+    btnsContainer.append("<button id='go-to-articles' class='blue'><span><i class='fa fa-list-ul'></i></span>Articles</button>");
+    
+    //Subscribe to click events on top menu buttons  
+    topMenu.children().find('button').click(topMenuClick);
     
 }//END addTopMenu function
 
-//Function for building category list in Select element
+//Create category list - fill Select element
 function fillCategorySelectElement(){
     
-    var selectElement = $("#categories"); //get select element container
-    var categories = new Categories();    //create Categories instance
+    var selectElement = $('select');                                            //get select element container
+    var newCategoryText = $("input[name='newCategoryName']");                   //get Text input for new category name
     
-    selectElement.empty();
-    selectElement.append("<option value='' selected>Choose Category</option>");
+    newCategoryText.val('');                                                    //reset new category text input
     
-    //function to get all categories from server and add them to the options list
+    var categories = new Categories();                                          //New Categories object
+    
+    selectElement.empty();                                                      //Clear select element
+    selectElement.append("<option value='' selected>Choose Category</option>"); //Add default option
+    
+    //Get all categories from server and add them to the options list
     categories.getAll().done(function(){
       
         for(var i = 0; i < categories.categoriesList.length; i++){
-        selectElement.append("<option value=" + categories.categoriesList[i].id + ">" + categories.categoriesList[i].name + "</option>");
-    }
-    }); //End fillCategorySelectElement function
+            selectElement.append("<option value=" + categories.categoriesList[i].id + ">" + categories.categoriesList[i].name + "</option>");
+        }
+    }); //Get all categories request completed
     
     
 }//END fillCategorySelectElement function
@@ -81,55 +153,48 @@ function fillCategorySelectElement(){
 
 // ---------------------------------------------------------------Events Handle----------------------------------------------------------- 
 
-//function to get data from inputs and prepare it for ajax requeste
+//Get data from inputs and prepare it for ajax requeste
 function sendData(ev){
     
-    // ev.preventDefault(); 
+    validationErrors     = false;
     
-    var titleText = $("#title").val().trim();
-    var contentText = $("#content").val().trim();
+    //Get user inputs
+    var titleText        = $("#title").val().trim();
+    var contentText      = $("#content").val().trim();
     var selectedCategory = $("select").val().trim();
-    var publish = $("input[type='radio']:checked").val().trim();
    
    //Check and create error messages for each required field
     if(titleText.trim() === "") {
         
-        $("#error-title>p").html("*Article`s title cannot be empty!");
+        setError($("#error-title"),"*Article`s title cannot be empty!");
         validationErrors = true;
-    }
-    else{
-         $("#error-title>p").html("*");
+    }else{
+        resetError($("#error-title"));
     }
 
     if(selectedCategory === ''){
-          $("#error-category>p").html("*Please select a category for this article");
-    }
-    else{
-        $("#error-category>p").html("*");
+        setError($("#error-category"),"*Please select a category for this article");
+        validationErrors = true;
+    }else{
+        resetError($("#error-category"));
     }
     
     if(contentText.trim() === "") {
-      
-       $("#error-content>p").html("*Article`s content cannot be empty!");
+        setError($("#error-content"),"*Article`s content cannot be empty!");
         validationErrors = true;
-    }
-    else{
-        $("#error-content>p").html("*");
-    }
-    if(publish.trim() !== "1") {
-      
-       $("#warning-publish>p").html("*Unpublished articles are not be visible to other users!");
-        
-    }
-    else{
-        $("#warning-publish>p").html("*");
+    }else{
+         resetError($("#error-content"));
     }
    
    //If there were any errors return this function now
-    if(validationErrors) return;
+    if(validationErrors){
+        setError($("#inputs-in-error"),"*You have errors on your inputs!");
+        return;
+    }else{
+         resetError($("#inputs-in-error"));
+    }
     
-    var newArticle= {
-        id: articleId,
+    var newArticle= {                                                           //article object with user data
         title: titleText,
         content:contentText,
         category_id: selectedCategory,
@@ -137,130 +202,127 @@ function sendData(ev){
         published: publish,
     };
         
-        var articles = new Articles();
-        articles.save(newArticle).done(showArticles);
+    var articles = new Articles();                                              //new Articles object
+    articles.save(newArticle).done(showArticles);                               // Save new article request
      
-}   //End sendData function
+}  //End sendData function
 
- //Function to display selected picture
+ //Display selected picture
  function pictureSelected(ev){
-     var fileType = ev.target.files[0].type;
      
-     if(fileType.match(/^image\/.*$/gmi)){
+     var fileType = ev.target.files[0].type;                                    //get selected file type
+     
+     if(fileType.match(/^image\/.*$/gmi)){                                      //check if file is image
          
-         imgFile = ev.target.files[0]; 
-         var reader = new FileReader();
-         reader.onload = function(output){
+        imgFile = ev.target.files[0];                                           //get selected picture
+        var reader = new FileReader();                                          //new file reader object
+        reader.readAsDataURL(imgFile);                                          //read image file
+        
+        reader.onload = function(output){                                       //load read data intu image html element
              $("#main-image").attr("src",output.target.result);
         };
-        reader.readAsDataURL(imgFile);
-        $("#warning-image>p").html("*");
+        
+        resetError( $("#warning-image"));
      }
      else{
          imgFile = '';
-       
-         $("#warning-image>p").html("* Selected file is not valid. Only images are accepted!");
+         setError($("#warning-image"),"* Selected file is not valid. Only images are accepted!");
      }
  }
  
- //function to handle selection changes
- function selectionChanged(){
-     var option = this.selectedIndex;     //get selected index
-     var  category      = $('#category'); // get choosen category display element 
-     
-     //Update category element with choosen category name
-     if(option === 0){
-         category.html("Default Topic");
-     }else{
-         category.html(this.options[option].text);
-     }
- }
- 
- //Function to handle clicks on add/remove category buttons
+ // add/remove category buttons clcik evend handler
  function manageCategories(){
-     
-     switch(this.id){
-         case 'add-category':
-             var categoryName = ($("input[name='newCategoryName']").val()).trim();
-             
-             if(categoryName === ''){
-                 $("#error-new-category>p").html("*Category name cannot be empty");
-                 break;
-             }
-             else{
-                 $("#error-new-category>p").html("*");
-             }
-             var existentCategory =  $("select").has("option:contains('" + categoryName + "')");
+    
+    //determine clicked button 
+    switch(this.id){
+        case 'add-category':
             
-             if(existentCategory.length !== 0){
-                $("#error-new-category>p").html("*Category already exist");
-                 break; 
-             }else{
-                $("#error-new-category>p").html("*");
-             }
-             var newCategory = new Category();
-             newCategory.add(categoryName).done(doneModifyCategory);
+            //get category name input
+            var categoryName = ($("input[name='newCategoryName']").val()).trim(); 
+            
+            //check if  user input is valid
+            if(categoryName === ''){
+                setError( $("#error-new-category"),"*Category name cannot be empty");
+                break;
+            }else{
+                resetError( $("#error-new-category"));
+            }
+            
+            //verify if input name already exist
+            var existentCategory =  $("select").has("option:contains('" + categoryName + "')");
+            
+            if(existentCategory.length !== 0){
+               setError( $("#error-new-category"),"*Category already exist!");
+               break; 
+            }else{
+                 resetError($("#error-new-category"));
+            }
+            
+            //add category request 
+            var newCategory = new Category();
+            newCategory.add(categoryName).done(doneModifyCategory);
              
-             break;
-         case 'delete-category':
-              var selectedCategory = $("select").val().trim();
-             
-             if(selectedCategory === ''){
-                 $("#error-new-category>p").html("*Choose the category that you wish to delete");s
-                 break;
-             }
-             else{
-                 $("#error-new-category>p").html("*");
-             }
-             var category = new Category();
-             category.delete(selectedCategory).done(doneModifyCategory);
-             break;
-     }
- }
- //function executed after deleting/adding category  
+        break;
+        
+        case 'delete-category':
+            
+            //get selected category
+            var selectedCategory = $("#categories-cat-section").val().trim();
+            
+            //validate selected category 
+            if(selectedCategory === ''){
+                setError($("#error-delete-category"),"*Choose the category that you wish to delete");
+                break;
+            }else{
+                resetError($("#error-delete-category"));
+            }
+            
+            //delete category request
+            var category = new Category();
+            category.delete(selectedCategory).done(doneModifyCategory);
+        break;
+    }
+ } //END manageCategories function
+ 
+ //deleting/adding category request completed 
  function doneModifyCategory(response, textStatus, jqXHR){
+     
     if(response.success === true){
-        console.log(response.message);
+        popUp("success",response.message);
         fillCategorySelectElement();
     }else{
-        console.log(response.message);
+        popUp("error",response.message);
     }
     
- }//End doneModifyCategory
+ }//End doneModifyCategory function
  
-    function showArticles(response){
-        if(response.success === true){
-            window.location.href = UI_PAGE + "articles.html";
-        }
-        else{
-            console.log(response.message);
-            console.log(response);
-        }
+//show newlly created article
+function showArticles(response){
+    
+    if(response.success === true){
+        window.location.href = UI_PAGE + "articles.html";
+    
+    }else{
+        popUp("error",response.message);
     }
-     
- function topMenuClick(){
+} //END showArticles
+
+//top menu click event handler     
+function topMenuClick(){
   
    var clicked = $(this);
    
    switch (clicked.attr('id')){
-       case 'login':
+        case 'login':
             window.location.href = UI_PAGE + "login.html";
-       case 'logout':
-           window.location.href = UI_PAGE + "logout.html";
-       break;
-       case 'go-to-articles':
+        break;
+        case 'logout':
+            logout();
+        break;
+        case 'go-to-articles':
              window.location.href = UI_PAGE + "articles.html";
-       break;
+        break;
    }
-}
+}//END topMenuClick function
+
 // ---------------------------------------------------------------/Events Handle----------------------------------------------------------- 
-  //util function, will return the url param for the provided key
-    function getUrlParam(name){
-        var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-        if (results==null){
-           return null;
-        }
-        else{
-           return results[1] || 0;
-        }
-    }

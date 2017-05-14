@@ -1,0 +1,33 @@
+#header{
+    margin: 0;
+    overflow: hidden;
+}
+
+h1{
+    display: inline-block;
+    color: red;
+    font-weight: bold;
+    margin: 0;
+}
+
+img{
+    vertical-align: middle;
+}
+p{
+    font-size: larger;
+    font-weight: bold;
+}
+button{
+    font-size: medium;
+    font-weight: bold;
+    margin-left: 20px;
+    color: white;
+    width: 100px;
+    height: 30px;
+}
+#login{
+    background-color: green;
+}
+#go-to-articles{
+    background-color: blue;
+}

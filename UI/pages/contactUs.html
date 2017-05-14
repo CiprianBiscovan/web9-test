@@ -1,35 +1,98 @@
 <!DOCTYPE html>
 <html>
     <head>
+         <!--Load external CSS files -->
+        <link href='https://fonts.googleapis.com/css?family=Arizonia' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/Blog/css/pageLayout.css" type="text/css" />
+        <link rel="stylesheet" href="/Blog/css/inputErrorReporting.css" type="text/css" />
+        <link rel="stylesheet" href="/Blog/css/contactUs.css" type="text/css"/> 
+        
+        <!--Load external Javascript files-->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script><!--for coockies-->
         <script type="text/javascript" src="../configs/configs.js"></script>
         <script type="text/javascript" src="../models/Contact.js"></script>
+        <script type="text/javascript" src="../models/User.js"></script>
         <script type="text/javascript" src="../views/contactUs.js"></script>
+        <script type="text/javascript" src="../views/inputErrorReporting.js"></script>
+        <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB9n3b-EU_g6dksM5t6UisXZgbV8lQKl5M&callback=addMap">
+        </script><!-- google maps API-->
     </head>
     <body>
-        <div id='container'>
-            <h1>Contact Us:</h1>
-            <label for="name">Your Name:</label><br>
-             <input type="text" name="name" placeholder="Name"/>
-            <div id='error-name'><p>*</p>
+        
+        <!--Top menu container-->
+        <div id='top-menu' >
+            
+            <div id='page-title' class='top-menu-wrapper'>
+               <h1>Contact Us:</h1>
+            </div>
+            <div id='buttons-wrapper' class='top-menu-wrapper'></div>
+        </div>  <!--Top menu container-->
+        
+        <!--User input section-->
+        <section id='inputs-section'>
+            
+            <h3>SEND EMAIL:</h3>
+            
+            <input type="text" name="name" placeholder="Name"/>
+            <div id='error-name' class='tooltip no-display' input-name='name'>
+                <p id='error-name-input' class='tooltiptext right'>*</p>
+            </div> 
+            <br>
+            
+            <input type="text" name="email" placeholder="E-mail"/>
+            <div id='error-email' class='tooltip no-display' input-name='email'>
+                <p id='error-email-input' class='tooltiptext right'>*</p>
             </div><br>
-            <label for="email">Your E-mail:</label><br>
-            <input type="text" name="email" placeholder="Email"/>
-            <div id='error-email'><p>*</p>
+            
+            <input type="number" name="phone" placeholder="Phone(opt.)"/>
+            <div id='error-phone' class='tooltip no-display' input-name='phone'>
+                <p id='error-phone-input' class='tooltiptext right'>*</p>
             </div><br>
-            <label for="phone">Phone Number(optional):</label><br>
-             <input type="number" name="phone" placeholder="Phone"/>
-            <div id='error-phone'><p>*</p>
-            </div><br>
-            <label for="email">Subject:</label><br>
+            
             <input type="text" name="subject" placeholder="Subject"/>
-            <div id='error-subject'><p>*</p>
+            <div id='error-subject' class='tooltip no-display' input-name='subject'>
+                <p id='error-subject-input' class='tooltiptext right'>*</p>
             </div><br>
-            <label for="message">Message:</label><br>
-            <textarea name="message" rows='20' cols='70' placeholder='Your message...'></textarea>
-            <div id='error-message'><p>*</p>
+            
+            <textarea id='message-input' name="message" rows='10' cols='0' placeholder='Your message...' maxlength='225'></textarea>
+            <div id='error-message' class='tooltip no-display' input-id='message-input'>
+                <p id='error-message-input' class='tooltiptext bottom'>*</p>
             </div><br>
-            <button id='submit'>Send Message</button>
-        </div>
+            
+            <div id='inputs-in-error' class='error-container no-display'><p class='errortext'>*</p></div>
+            <div id='submit-positioning'>
+                <input type="submit" id='submit' name="submit" value="Send Message"/>
+            </div>
+            
+        </section> <!--User input section-->
+       
+        <!--Google map secction-->
+        <section id='map-section'>
+            
+            <h3>MY LOCATION:</h3>
+            
+            <!--Map container-->
+            <div id="googleMap" ></div>
+            
+            <!--Owner info-->
+            <address>
+                
+                <div id='address'>
+                    <span><i class="fa fa-home" aria-hidden="true"></i></span> Cluj-Napoca city, Buna Ziua street, Cluj county
+                </div>
+                
+                <div id='contact-info'>
+                    <span><i class="fa fa-phone" aria-hidden="true"></i></span>&nbsp;0741791596<br>
+                    <span><i class="fa fa-at" aria-hidden="true"></i></span> ciprian.biscovan@yahoo.com
+                </div>
+                
+            </address> <!--Owner info-->
+            
+         </section><!--Google map secction-->
+         
     </body>
 </html>

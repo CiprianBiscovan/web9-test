@@ -1,0 +1,127 @@
+
+#top-menu{
+    position: relative;
+    background-color: gainsboro;
+    min-width: 550px;
+    border-bottom: 3px solid Magenta ; 
+}
+
+.top-menu-wrapper{
+    display: inline-block;
+    width:25%;
+    overflow: hidden;
+    white-space: pre-wrap;
+    min-width: 244px;
+}
+
+#username{
+    padding:0;
+    font-size:25px;
+    margin: 0 5px;
+}
+#username>span{
+    position:relative;
+    top:5px;
+    margin: 0;
+    padding:0;
+    font-size:150%;
+}
+
+#buttons-wrapper>button{
+    display: block;
+    margin: auto;
+}
+
+
+#page-title{
+    padding: 1.5em 0;
+    background-color: lightyellow;
+    display: inline-block;
+    width:49%;
+    text-align: center;
+    
+}
+#page-title>h1{
+    margin: 0;
+    padding: 0;
+}
+
+.font-green{
+    color: green;
+}
+.font-red{
+    color:red;
+}
+
+section{
+    width:50%;
+    border:1px dashed purple;
+    border-radius: 5px;
+    /*margin:10px 0px 20px 30px;*/
+    margin: 20px auto;
+    padding: 2%;
+    background-color: lightyellow ;
+    min-width: 550px;
+    overflow: hidden;
+    
+}
+
+#comment-element-container{
+    
+    border-top: 1px solid chocolate;
+    border-left: 1px solid chocolate;
+    box-shadow: 10px 10px 5px #888888;
+    padding: 5vh;
+    background-color: LemonChiffon ;
+}
+
+.comm-title>h3{
+    margin: 0 0 1em 0;
+    color:navy;
+    font-size: 1.5em
+}
+.comm-details{
+    display: inline-block;
+    margin: 0 1vw 2vh 0vw;
+    color:DarkSeaGreen ;
+    font-size: 1.1em;
+}
+.comm-updated{
+    float:right;
+}
+
+.comm-content>p{
+    height: auto;
+    overflow: auto;
+    word-wrap: break-word;
+    font-size: 1.3em;
+    margin: 3vh 0;
+}
+
+section div{
+    margin-bottom: 3%;
+    overflow: hidden;
+}
+
+input{
+    font-size: x-large;
+    width: 80%;
+}
+
+textarea{
+    font-size: x-large;
+}
+
+label{
+    font-size: x-large;
+    font-weight: bold;
+    color:Indigo;
+}
+
+#buttons-container{
+    text-align: center;
+}
+#edit-comment{
+    background: url("/Blog/Resources/edit_comments_background.jpg") no-repeat top right;
+    background-size: 120px;
+}

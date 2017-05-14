@@ -1,9 +1,20 @@
 <!DOCTYPE html>
 <html>
     <head>
+         <!--Load external CSS files -->
+        <link href='https://fonts.googleapis.com/css?family=Arizonia' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/Blog/css/pageLayout.css" type="text/css" />
+        <link rel="stylesheet" href="/Blog/css/articles.css" type="text/css" />
+        <link rel="stylesheet" href="/Blog/css/article.css" type="text/css" />
+        <link rel="stylesheet" href="/Blog/css/comments.css" type="text/css" />
+        <link rel="stylesheet" href="/Blog/css/inputErrorReporting.css" type="text/css" />
+        <link rel="stylesheet" href="/Blog/css/navigation.css" type="text/css" />
+        
+        <!--Load external Javascript files-->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script><!--for coockies-->
-        <!--<script type="text/javascript" src="/Blog/jsLibs/createDOMElements.js"></script>-->
         <script type="text/javascript" src="../models/User.js"></script>
         <script type="text/javascript" src="../configs/configs.js"></script>
         <script type="text/javascript" src="../models/Article.js"></script>
@@ -11,15 +22,48 @@
         <script type="text/javascript" src="../views/article.js"></script>
         <script type="text/javascript" src="../models/Comment.js"></script>
         <script type="text/javascript" src="../models/Comments.js"></script>
+        <script type="text/javascript" src="../views/inputErrorReporting.js"></script>
+        <script type="text/javascript" src="../views/logout.js"></script>
     </head>
     <body>
-        <div id='top-menu'></div>
-        <div id="container"></div>
-        <div id="comm-container">
-            <ul id='comments-list'></ul>
-            <div class='pagination-pages'></div>
-        </div>
-        <div id="new-comment">
-        </div>
+        
+        <!--Header Section-->
+        <section id='header-section'>
+            
+            <div id='header-container'>
+                <h1>Ciprian`s Blog</h1>
+            </div>
+            
+            <div id='delimiter'>
+                <div id='circle'></div>
+            </div>
+            
+            <div id='user-menu'> 
+                <div id='top-menu'></div>
+            </div>
+            
+        </section><!--Header Section-->
+        
+        <!--Content section-->
+        <div id='content'>
+            
+            <!--Article content container-->
+            <div id="container"></div>
+            
+            <!--Comments container-->
+            <div id="comm-container" class='hidden'>
+                <div id='comm-header'></div>
+                <ul id='comments-list'></ul>
+                <div class='clearfix'></div>
+                <div id='navigation' class=' comments hidden'>
+                    <div class='pagination-pages'></div>
+                </div>
+            </div><!--Comments container-->
+            
+            <!--New comment container-->
+            <div id="new-comment" class='hidden'></div>
+            
+        </div><!--Content section-->
+        
     </body>
 </html>
